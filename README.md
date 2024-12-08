@@ -1,3 +1,0 @@
-# SecuritySystem
-
-# Are You GAY?
