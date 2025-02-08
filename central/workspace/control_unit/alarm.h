@@ -1,0 +1,7 @@
+#ifndef ALARM_H_
+#define ALARM_H_
+
+void _alarmInit(void);
+void _alarmStop(void);
+
+#endif

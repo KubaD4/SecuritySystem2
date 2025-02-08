@@ -10,7 +10,7 @@
 extern Graphics_Context g_sContext;
 
 void _graphicsInit();
-void displayMenu(Graphics_Context *g_sContext, uint8_t selected_option);
+void writeLCDMessage(const char* message);
 
 
 #endif

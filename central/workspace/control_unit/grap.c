@@ -24,62 +24,46 @@ void _graphicsInit() {
     Graphics_clearDisplay(&g_sContext);
 }
 
-/*
- * Mostra il menu sul display
- */
-void displayMenu(Graphics_Context *g_sContext, uint8_t selected_option) {
-    // Aggiorna il menu con tre opzioni
-    Graphics_setForegroundColor(g_sContext, GRAPHICS_COLOR_BLACK);
+// Writes specified message on the screen
+void writeLCDMessage(const char* message) {
+    // Clear previous display
+    Graphics_clearDisplay(&g_sContext);
 
-    if (selected_option == 1 || selected_option == 2) {
-        Graphics_drawStringCentered(g_sContext,
-                                    (int8_t *)"Modalita' LED Rosso",
-                                    AUTO_STRING_LENGTH,
-                                    64,
-                                    30,
-                                    TRANSPARENT_TEXT);
-    }
-    if (selected_option == 0 || selected_option == 2) {
-        Graphics_drawStringCentered(g_sContext,
-                                    (int8_t *)"Modalita' LED Verde",
-                                    AUTO_STRING_LENGTH,
-                                    64,
-                                    50,
-                                    TRANSPARENT_TEXT);
-    }
+    // Set text color to black
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
 
-    if (selected_option == 0 || selected_option == 1) {
-        Graphics_drawStringCentered(g_sContext,
-                                    (int8_t *)"Modalita' LED Blu",
-                                    AUTO_STRING_LENGTH,
-                                    64,
-                                    70,
-                                    TRANSPARENT_TEXT);
-    }
-
-    // Evidenziazione
-    Graphics_setForegroundColor(g_sContext, GRAPHICS_COLOR_RED);
-    if (selected_option == 0) {
-        Graphics_drawStringCentered(g_sContext,
-                                    (int8_t *)"Modalita' LED Rosso",
-                                    AUTO_STRING_LENGTH,
-                                    64,
-                                    30,
-                                    OPAQUE_TEXT);
-    } else if (selected_option == 1) {
-        Graphics_drawStringCentered(g_sContext,
-                                    (int8_t *)"Modalita' LED Verde",
-                                    AUTO_STRING_LENGTH,
-                                    64,
-                                    50,
-                                    OPAQUE_TEXT);
-    } else if (selected_option == 2) {
-        Graphics_drawStringCentered(g_sContext,
-                                    (int8_t *)"Modalita' LED Blu",
-                                    AUTO_STRING_LENGTH,
-                                    64,
-                                    70,
-                                    OPAQUE_TEXT);
-    }
+    // Draw the message centered on screen
+    Graphics_drawStringCentered(&g_sContext,
+                              (int8_t *)message,
+                              AUTO_STRING_LENGTH,
+                              64,  // X center position
+                              50,  // Y position
+                              TRANSPARENT_TEXT);
 }
+
+/*
+ * Vecchia
+ */
+//void displayMenu(Graphics_Context *g_sContext, uint8_t selected_option) {
+//    Graphics_clearDisplay(&g_sContext);
+//
+//    Graphics_setForegroundColor(g_sContext, GRAPHICS_COLOR_BLACK);
+//
+//    if (selected_option == 1) {
+//        Graphics_drawStringCentered(g_sContext,
+//                                    (int8_t *)"ALLARME ATTIVO",
+//                                    AUTO_STRING_LENGTH,
+//                                    64,
+//                                    50,
+//                                    TRANSPARENT_TEXT);
+//    } else if (selected_option == 0) {
+//        Graphics_drawStringCentered(g_sContext,
+//                                    (int8_t *)"ALLARME DISATTIVATO",
+//                                    AUTO_STRING_LENGTH,
+//                                    64,
+//                                    50,
+//                                    OPAQUE_TEXT);
+//    }
+//}
+
 
