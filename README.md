@@ -43,15 +43,15 @@ Its publish-subscribe model enables scalable and decoupled communication between
 Security and scalability are also key strengths, as it can be secured with TLS encryption and authentication mechanisms, ensuring safe and flexible deployments.
 In MQTT, the broker is a central server that manages message distribution between clients. It acts as an intermediary, receiving messages from publishers and forwarding them to the appropriate subscribers based on topic-based filtering.
 
-## For this project, two different solutions are available, primarily differing in how the broker is implemented:
-### 1. Broker Deployed on an ESP32
+### For this project, two different solutions are available, primarily differing in how the broker is implemented:
+#### 1. Broker Deployed on an ESP32
 In this approach, the broker runs directly on a single ESP32. This solution is ideal for a self-contained system, as all components are deployed on your devices without requiring external infrastructure. However, there are some important trade-offs to consider:
 - Security Risks: Since all data is stored locally on the ESP32, there is a higher risk of exposure in case of breaches or device failure.
 - Increased Power Consumption & Latency: The ESP32 is a low-power microcontroller, and running the broker on it adds computational overhead, leading to higher latency and reduced efficiency.
 - Limited Scalability: This setup is better suited for small-scale applications where minimal communication is needed.
 Due to these limitations, we recommend this solution only for simple applications that do not require advanced security or high-performance communication.
 
-### 2. Broker Deployed on a Separate Host
+#### 2. Broker Deployed on a Separate Host
 Instead of running the broker on an ESP32, it can be hosted on a separate, more powerful machine. A common choice for this setup is Mosquitto, an open-source MQTT broker. However, we have opted to use EMQX because it offers superior performance, enhanced security, and scalability.
 
 #### Why EMQX?
