@@ -3,6 +3,7 @@
 #include "grap.h"
 
 void prepare_disarmed(){
+    _alarmStop();
     writeLCDMessage("System Disarmed");
     opened_safe = 0;
     opened_critical = 0;
