@@ -62,14 +62,15 @@ Instead of running the broker on an ESP32, it can be hosted on a separate, more 
 This solution is ideal for larger, more complex IoT deployments where security, scalability, and performance are critical.
 
 ## Setup
+Keep in mind that everything has to be on the same network to work.
+
 ### First Solution
-Use the code provided in the ESP32_broker folder and load it with your network info
+Use the code provided in the ESP32_broker folder and load it with your network info, the "broker" code contains the necessary to create the broker and everything it need while the "publisher" node will cnnect to the broker to publish the state of the sensors.
 
 ### Second Solution
 Follow thesetup guide on EMQX on their website, we suggest to use the docker:
 [Install EMQX with Docker](https://docs.emqx.com/en/emqx/latest/deploy/install-docker.html)
 
-Keep in mind that everything has to be on the same network to work.
 Using the "subscriber" code in the Host_broker folder, add your network info and the broker ip; to do that, once you are in the EMQX interface, open the terminal on your pc and find the IPv4 address using the command "ipconfig", and put that address in the corresponding slot in the code.
 Now you can deploy it and this will be the one receiving the status of the sensor and giving them to the MSP432 board.
 
