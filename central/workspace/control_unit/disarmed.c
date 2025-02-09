@@ -7,11 +7,11 @@ void prepare_disarmed(){
     opened_safe = 0;
     opened_critical = 0;
     password_correct = 0;
+    handleLEDDisarmed();
 }
 
 
 void handle_disarmed(void) {
-    handleLEDDisarmed();
     if(password_correct) {
         finish_disarmed();
         state_code = ALARM_STATE_ARMED;

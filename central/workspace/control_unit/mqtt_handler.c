@@ -1,6 +1,7 @@
 #include "mqtt_handler.h"
 #include "alarm.h"
 #include "grap.h"
+#include "state.h"
 #include <stdio.h>
 
 // !! ASSUMING THE FOLLOWING STRUCTURE OF THE MQTT MESSAGE: [identification(1bit) - movement(1bit) - roomID(3bits)]

@@ -31,6 +31,7 @@ void handleLEDArmed(void) {
 }
 
 void handleLEDTriggered(void) {
+    stopLEDBlinking();  // prevent multiple timer starts
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);   // Green off
     // Start timer for red LED blinking
     Timer_A_configureUpMode(TIMER_A1_BASE, &upConfigLED);
