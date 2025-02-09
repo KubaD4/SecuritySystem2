@@ -378,8 +378,8 @@ void Board_init(void) {
     Interrupt_disableMaster();
 
     /*Screen init*/
-    NVIC_SetPriority(PORT4_IRQn, 1);
-    NVIC_SetPriority(ADC14_IRQn, 2);
+//    NVIC_SetPriority(PORT4_IRQn, 1);
+//    NVIC_SetPriority(ADC14_IRQn, 2);
     _graphicsInit();
 
     /* Red and Green LEDs init*/

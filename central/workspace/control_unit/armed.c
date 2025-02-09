@@ -1,10 +1,12 @@
 #include "states.h"
 #include "alarm.h"
 #include "grap.h"
+#include "led.h"
 
 
 // Bind interrupt handlers for sensor signal
 void prepare_armed(){
+    _alarmStop();
     opened_safe = 0;
     opened_critical = 0;
     password_correct = 0;
