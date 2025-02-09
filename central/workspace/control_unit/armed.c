@@ -7,11 +7,12 @@
 void prepare_armed(){
     opened_safe = 0;
     opened_critical = 0;
+    password_correct = 0;
     writeLCDMessage("System Armed");
+    handleLEDArmed();
 }
 
 void handle_armed(void) {
-    handleLEDArmed();
     if(opened_safe) {
         finish_armed();
         state_code = ALARM_STATE_GRACE;
