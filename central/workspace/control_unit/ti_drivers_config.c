@@ -377,12 +377,12 @@ void Board_init(void) {
     /* Disable interrupts during init */
     Interrupt_disableMaster();
 
-    /*screen*/
+    /*Screen init*/
     NVIC_SetPriority(PORT4_IRQn, 1);
     NVIC_SetPriority(ADC14_IRQn, 2);
     _graphicsInit();
 
-
+    /* Red and Green LEDs init*/
     setupLEDs();
 
     /* Core hardware initialization */
@@ -402,6 +402,9 @@ void Board_init(void) {
     /* TI-Drivers initialization */
     Power_init();
     Board_initHook();
+
+    /* GPIO init for the ESP*/
+    initSensorGPIO();
 
     /* Enable interrupts after all setup is complete */
     Interrupt_enableMaster();

@@ -1,6 +1,8 @@
 #ifndef MQTT_HANDLER_H
 #define MQTT_HANDLER_H
 
+#include <ti/devices/msp432p4xx/inc/msp.h>
+#include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 #include <stdint.h>
 #include "states.h"
 
@@ -12,9 +14,8 @@ typedef struct {
 } SensorData;
 
 // Function prototypes
-void handleMQTTMessage(const uint8_t* payload, uint16_t len);
-SensorData decodeSensorData(uint8_t data);
-void updateSystemState(const SensorData* sensor_data);
+void initSensorGPIO(void);
+void processSensorData(void);
 const char* getRoomName(uint8_t room_number);
 void setTriggerInfo(uint8_t room, uint8_t movement);
 
