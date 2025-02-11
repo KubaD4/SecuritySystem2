@@ -24,6 +24,7 @@ void handle_armed(void) {
         finish_armed();
         state_code = ALARM_STATE_TRIGGERED;
         prepare_triggered();
+
     }
 }
 
