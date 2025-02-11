@@ -11,6 +11,8 @@ extern volatile int grace_timer;
 extern volatile int go_in_maintenance;
 extern volatile int flag;
 
+extern volatile int menu_selection;
+
 //States constants
 #define ALARM_STATE_ARMED       1
 #define ALARM_STATE_DISARMED    2

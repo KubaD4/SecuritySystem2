@@ -18,6 +18,9 @@
 /* States module includes*/
 #include "../include/states.h"
 
+#include "../include/button1.h"
+
+//#include "../include/sound.h"
 
 void _hwInit();
 
@@ -117,4 +120,6 @@ void _hwInit()
 
     _graphicsInit();
     _adcInit();
+    _initButton();
+    //initSoundDetection();
 }
