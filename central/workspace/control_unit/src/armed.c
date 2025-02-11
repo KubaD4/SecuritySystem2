@@ -2,6 +2,7 @@
 #include "../include/alarm.h"
 #include "../include/grap.h"
 #include "../include/led.h"
+//#include "../include/sound.h"
 
 
 // Bind interrupt handlers for sensor signal
@@ -12,6 +13,7 @@ void prepare_armed(){
     password_correct = 0;
     writeLCDMessage("System Armed");
     handleLEDArmed();
+    //enableSoundDetection();
 }
 
 void handle_armed(void) {

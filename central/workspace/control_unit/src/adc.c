@@ -53,43 +53,31 @@ void _adcInit() {
 }
 
 
-void ADC14_IRQHandler(void)
-{
-    static int buttonPreviouslyPressed = 0;  // Track previous button state
-    uint64_t status;
-
-    status = ADC14_getEnabledInterruptStatus();
+void ADC14_IRQHandler(void) {
+    uint64_t status = ADC14_getEnabledInterruptStatus();
     ADC14_clearInterruptFlag(status);
 
-    /* ADC_MEM1 conversion completed */
-    if(status & ADC_INT1)
-    {
-        /* Store ADC14 conversion results */
+    if(status & ADC_INT1) {
         resultsBuffer[0] = ADC14_getResult(ADC_MEM0);
         resultsBuffer[1] = ADC14_getResult(ADC_MEM1);
 
-        if (resultsBuffer[0] > 10000) {
-            opened_safe = 1;
-        } else if (resultsBuffer[0] < 1000) {
-            opened_critical = 1;
+        // menu selection
+        if(current_state == DISARMED) {
+            if(resultsBuffer[0] > 12000) {  // Up movement
+                menu_selection = 0;  // ARMED option
+            } else if(resultsBuffer[0] < 4000) {  // Down movement
+                menu_selection = 1;  // MAINTENANCE option
+            }
+
+            // confirms selection
+            if(!(P4IN & GPIO_PIN1)) {
+                if(menu_selection == 0) {
+                    password_correct = 1;
+                } else {
+                    go_in_maintenance = 1;
+                }
+            }
         }
-
-        if (resultsBuffer[1] > 12000) {
-            go_in_maintenance = 1;
-        } else if (resultsBuffer[1] < 1000) {
-            flag = 1;
-        }
-
-        /* Detect button press only on a new press (edge detection) */
-        int buttonPressed = !(P4IN & GPIO_PIN1);  // Button is pressed when P4IN & GPIO_PIN1 == 0
-
-        if (buttonPressed && !buttonPreviouslyPressed) {
-            // Button was just pressed
-            password_correct = 1;
-        }
-
-        // Update button state for the next interrupt
-        buttonPreviouslyPressed = buttonPressed;
     }
 }
 

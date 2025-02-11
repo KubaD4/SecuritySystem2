@@ -1,14 +1,18 @@
 #include "../include/states.h"
 #include "../include/alarm.h"
 #include "../include/grap.h"
+//#include "../include/sound.h"
 
 void prepare_disarmed(){
     _alarmStop();
-    writeLCDMessage("System Disarmed");
+    writeLCDMessage("DISARMED menu: up/down");
+    writeLCDsubtitle("ARMED/MAINTENANCE");
     opened_safe = 0;
     opened_critical = 0;
     password_correct = 0;
+    menu_selection = 0;
     handleLEDDisarmed();
+    //disableSoundDetection();
 }
 
 
@@ -31,5 +35,5 @@ void handle_disarmed(void) {
 
 
 void finish_disarmed(){
-
+    menu_selection = 0;
 }

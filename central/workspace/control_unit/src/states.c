@@ -9,3 +9,5 @@ State_t current_state = DISARMED;
 
 extern volatile int flag = 0;
 extern volatile int go_in_maintenance = 0;
+extern volatile int menu_selection=0;
+
