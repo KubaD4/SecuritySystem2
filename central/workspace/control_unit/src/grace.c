@@ -30,7 +30,8 @@ void prepare_grace(){
 
     grace_timer = 30;  // 30 second grace period
 
-    writeLCDMessage("GRACE PERIOD: Enter Password");
+    writeLCDMessage("GRACE PERIOD:");
+    writeLCDsubtitle("Enter Password");
     handleLEDGrace();
 
     Timer_A_configureUpMode(TIMER_A3_BASE, &countdownConfig);
@@ -42,8 +43,10 @@ void handle_grace(void) {
     char message[32];  // Buffer to write in the screen
 
     // Update display with current time
-    sprintf(message, "GRACE PERIOD: %ds remaining", grace_timer);
-    writeLCDMessage(message);
+
+    sprintf(message, "%d s", grace_timer);
+    clearLCDtime();
+    writeLCDtime(message);
 
 
     if(password_correct) {

@@ -38,19 +38,20 @@ const char* getRoomName(uint8_t room_number) {
 // Initialize GPIO pins for sensor input
 void initSensorGPIO(void) {
     // Configure pins as input with pull-down resistors
-    GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P4, ALL_SENSOR_PINS);
+    //GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P4, ALL_SENSOR_PINS);
 
     // Configure interrupt on rising edge (when ESP sets pins high)
-    GPIO_interruptEdgeSelect(GPIO_PORT_P4, ALL_SENSOR_PINS, GPIO_HIGH_TO_LOW_TRANSITION);
+    //GPIO_interruptEdgeSelect(GPIO_PORT_P4, ALL_SENSOR_PINS, GPIO_HIGH_TO_LOW_TRANSITION);
 
     // Clear any previous interrupts
-    GPIO_clearInterruptFlag(GPIO_PORT_P4, ALL_SENSOR_PINS);
+    //GPIO_clearInterruptFlag(GPIO_PORT_P4, ALL_SENSOR_PINS);
 
     // Enable interrupts for all sensor pins
-    GPIO_enableInterrupt(GPIO_PORT_P4, ALL_SENSOR_PINS);
+   // GPIO_enableInterrupt(GPIO_PORT_P4, ALL_SENSOR_PINS);
 
     // Enable Port 4 interrupt in NVIC
-    Interrupt_enableInterrupt(INT_PORT4);
+   // Interrupt_enableInterrupt(INT_PORT4);
+
 }
 
 // Read and decode sensor data from GPIO pins
@@ -102,15 +103,24 @@ void processSensorData(void) {
     }
 }
 
+
+
+
 // Interrupt handler for Port 4
+/*
 void PORT4_IRQHandler(void) {
     uint32_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4);
 
     if (status & ALL_SENSOR_PINS) {
+
+        printf("Entrato in P4 handler");
+
         // Process the sensor data
         processSensorData();
 
         // Clear the interrupt flags
         GPIO_clearInterruptFlag(GPIO_PORT_P4, status);
+        printf("__USCITO__");
     }
-}
+}*/
+

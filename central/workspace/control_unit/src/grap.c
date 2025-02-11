@@ -40,6 +40,48 @@ void writeLCDMessage(const char* message) {
                               TRANSPARENT_TEXT);
 }
 
+// Writes specified message on the screen
+void writeLCDsubtitle(const char* message) {
+
+    // Set text color to black
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+
+    // Draw the message centered on screen
+    Graphics_drawStringCentered(&g_sContext,
+                              (int8_t *)message,
+                              AUTO_STRING_LENGTH,
+                              64,  // X center position
+                              64,  // Y position
+                              TRANSPARENT_TEXT);
+}
+
+void clearLCDsubtitle() {
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE); // Set to background color
+    Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 60, 127, 75});
+}
+
+// Writes specified message on the screen
+void writeLCDtime(const char* message) {
+
+    // Set text color to black
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+
+    // Draw the message centered on screen
+    Graphics_drawStringCentered(&g_sContext,
+                              (int8_t *)message,
+                              AUTO_STRING_LENGTH,
+                              64,  // X center position
+                              78,  // Y position
+                              TRANSPARENT_TEXT);
+}
+
+void clearLCDtime() {
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE); // Set to background color
+    Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 70, 127, 85});
+}
+
+
+
 /*
  * Vecchia
  */
