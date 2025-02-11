@@ -8,6 +8,8 @@ extern volatile int opened_safe;
 extern volatile int opened_critical;
 extern volatile int grace_timer;
 
+extern volatile int go_in_maintenance;
+extern volatile int flag;
 
 //States constants
 #define ALARM_STATE_ARMED       1
@@ -54,5 +56,21 @@ void finish_grace();
 void prepare_triggered();
 void handle_triggered();
 void finish_triggered();
+
+//Maintenance interface
+void prepare_maintenance();
+void handle_maintenance();
+void finish_maintenance();
+
+typedef enum {
+    DISARMED,
+    ARMED,
+    TRIGGERED,
+    GRACE,
+    MAINTENANCE,
+    NUM_STATES
+}State_t;
+
+extern State_t current_state;
 
 #endif //STATEMACHINEIOT_STATES_H

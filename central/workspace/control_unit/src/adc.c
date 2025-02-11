@@ -74,6 +74,12 @@ void ADC14_IRQHandler(void)
             opened_critical = 1;
         }
 
+        if (resultsBuffer[1] > 12000) {
+            go_in_maintenance = 1;
+        } else if (resultsBuffer[1] < 1000) {
+            flag = 1;
+        }
+
         /* Detect button press only on a new press (edge detection) */
         int buttonPressed = !(P4IN & GPIO_PIN1);  // Button is pressed when P4IN & GPIO_PIN1 == 0
 

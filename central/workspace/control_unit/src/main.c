@@ -18,27 +18,58 @@
 /* States module includes*/
 #include "../include/states.h"
 
-/* Prototipi */
 
 void _hwInit();
 
 
+typedef struct{
+    State_t state;
+    void (*state_function)(void);
+} StateMachine_t;
+
+
+StateMachine_t fsm[] = {
+                      {DISARMED, handle_disarmed},
+                      {ARMED, handle_armed},
+                      {TRIGGERED, handle_triggered},
+                      {GRACE, handle_grace},
+                      {MAINTENANCE, handle_maintenance}
+};
+
+
+
 /* ADC results buffer */
-static uint16_t resultsBuffer[2];
+//static uint16_t resultsBuffer[2];
 
 int main(void)
 {
     _hwInit();
     printf("main");
+
     // Hardware and stuff init
     Board_init();
     printf("board init done");
 
+    current_state = DISARMED;
 
     // Start in DISARMED state
-    state_code = ALARM_STATE_DISARMED;
+    //state_code = ALARM_STATE_DISARMED;
     prepare_disarmed();
 
+    while(1){
+            if(current_state < NUM_STATES){
+                (*fsm[current_state].state_function)();
+            }
+            else{
+                return -1;
+                //error
+            }
+
+    }
+
+
+
+    /*
     while (1)
     {
         switch (state_code) {
@@ -57,6 +88,7 @@ int main(void)
         }
     }
     return 0;
+    */
 }
 
 
