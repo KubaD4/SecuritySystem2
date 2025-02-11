@@ -27,7 +27,8 @@ void handle_triggered(void) {
     handleLEDTriggered();
     if(password_correct) {
         finish_triggered();
-        state_code = ALARM_STATE_DISARMED;
+        //state_code = ALARM_STATE_DISARMED;
+        current_state = DISARMED;
         prepare_disarmed();
     }
 }
@@ -38,6 +39,8 @@ void finish_triggered() {
     opened_critical = 0;
     triggered_room = 0;
     triggered_movement = 0;
+    flag = 0;
+    go_in_maintenance = 0;
 }
 
 void setTriggerInfo(uint8_t room, uint8_t movement) {

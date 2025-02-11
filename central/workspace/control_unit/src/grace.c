@@ -39,10 +39,16 @@ void prepare_grace(){
     Interrupt_enableInterrupt(INT_TA3_N);
 }
 
+void finish_grace(){
+    Timer_A_stopTimer(TIMER_A3_BASE);    // Stop countdown timer
+    Timer_A_stopTimer(TIMER_A1_BASE);    // Stop LED blinking timer
+    Interrupt_disableInterrupt(INT_TA3_N);
+    grace_timer = 0;
+    password_correct = 0;
+}
+
 void handle_grace(void) {
     char message[32];  // Buffer to write in the screen
-
-    // Update display with current time
 
     sprintf(message, "%d s", grace_timer);
     clearLCDtime();
@@ -51,20 +57,16 @@ void handle_grace(void) {
 
     if(password_correct) {
         finish_grace();
-        state_code = ALARM_STATE_DISARMED;
+        current_state = DISARMED;
+        //state_code = ALARM_STATE_DISARMED;
         prepare_disarmed();
     }
     else if(grace_timer <= 0) {
         finish_grace();
-        state_code = ALARM_STATE_TRIGGERED;
+        current_state = TRIGGERED;
+        //state_code = ALARM_STATE_TRIGGERED;
         prepare_triggered();
     }
 }
 
-void finish_grace(){
-    Timer_A_stopTimer(TIMER_A3_BASE);    // Stop countdown timer
-    Timer_A_stopTimer(TIMER_A1_BASE);    // Stop LED blinking timer
-    Interrupt_disableInterrupt(INT_TA3_N);
-    grace_timer = 0;
-    password_correct = 0;
-}
+
