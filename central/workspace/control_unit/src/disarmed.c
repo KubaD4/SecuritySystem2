@@ -5,14 +5,13 @@
 
 void prepare_disarmed(){
     _alarmStop();
-    writeLCDMessage("DISARMED menu: up/down");
-    writeLCDsubtitle("ARMED/MAINTENANCE");
     opened_safe = 0;
     opened_critical = 0;
     password_correct = 0;
     menu_selection = 0;
     go_in_maintenance = 0;
     go_in_armed = 0;
+    displayDisarmedMenu(menu_selection);
     handleLEDDisarmed();
     //disableSoundDetection();
 }
@@ -20,6 +19,7 @@ void prepare_disarmed(){
 
 void handle_disarmed(void) {
     static int menu_done = 0;
+    static int last_selection = 0;
 
     if ( flag ) {
         finish_disarmed();
@@ -40,6 +40,10 @@ void handle_disarmed(void) {
         menu_done = 1;
         writeLCDMessage(" Enter Password ");
         writeLCDsubtitle(" to enter selected state ");
+    }else{
+        if ( menu_selection != last_selection ) {
+            displayDisarmedMenu(menu_selection);
+        }
     }
 }
 
