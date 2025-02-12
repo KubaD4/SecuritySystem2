@@ -5,12 +5,11 @@
 #include "../include/grap.h"
 #include "../include/led.h"
 
-// In grace.c
 static const Timer_A_UpModeConfig countdownConfig = {
-    TIMER_A_CLOCKSOURCE_SMCLK,           // SMCLK (3MHz)
-    TIMER_A_CLOCKSOURCE_DIVIDER_64,      // Divide by 64
-    46875,                               // (3MHz/64/46875 = 1Hz) --> every 1 second
-    TIMER_A_TAIE_INTERRUPT_ENABLE,       // Enable interrupt
+    TIMER_A_CLOCKSOURCE_SMCLK,           // SMCLK (48MHz)
+    TIMER_A_CLOCKSOURCE_DIVIDER_64,     // Divide by 256
+    750000,                              // (48MHz/256 = 187.5kHz), count to 187500 for 1 second
+    TIMER_A_TAIE_INTERRUPT_ENABLE,
     TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE,
     TIMER_A_DO_CLEAR
 };

@@ -2,14 +2,24 @@
 #define STATEMACHINEIOT_STATES_H
 
 // volatile variables
+
+//Generic constatns
 extern volatile int state_code;
 extern volatile int password_correct;
-extern volatile int opened_safe;
-extern volatile int opened_critical;
+
+//Disarmed constants
+extern volatile int menu_selection;
+extern volatile int go_in_maintenance;
+extern volatile int go_in_armed;
+extern volatile int flag;
+
+//Grace constants
 extern volatile int grace_timer;
 
-extern volatile int go_in_maintenance;
-extern volatile int flag;
+//Triggered constants
+extern volatile int opened_safe;
+extern volatile int opened_critical;
+
 
 //States constants
 #define ALARM_STATE_ARMED       1
@@ -28,14 +38,6 @@ ARMED: System is active and monitoring for intrusions
 DISARMED: System is inactive
 GRACE: A transition period (entering/exiting)
 TRIGGERED: Alarm has been activated */
-
-
-//Disarmed constants
-
-
-//Grace constants
-
-//Triggered constants
 
 //Armed interface
 void prepare_armed();
