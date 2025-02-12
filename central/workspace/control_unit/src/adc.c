@@ -55,6 +55,58 @@ void _adcInit() {
 void ADC14_IRQHandler(void) {
     uint64_t status = ADC14_getEnabledInterruptStatus();
     static int buttonPreviouslyPressed = 0;
+    static int joystickMoved = 0; // Flag to track if movement was already registered
+
+    ADC14_clearInterruptFlag(status);
+
+    if(status & ADC_INT1) {
+        resultsBuffer[0] = ADC14_getResult(ADC_MEM0);
+        resultsBuffer[1] = ADC14_getResult(ADC_MEM1);
+
+        // Joystick Direction Handling
+        if (current_state == DISARMED) {
+            if (!joystickMoved) { // Only allow movement if joystick was previously neutral
+                if (resultsBuffer[1] > 10000 || resultsBuffer[1] < 4000) {  // movement
+                    if (menu_selection == 1){
+                        menu_selection = 0;
+                    } else if (menu_selection == 0){
+                        menu_selection = 1;
+                    }
+
+                    joystickMoved = 1; // Mark that movement happened
+                }
+
+            }
+
+            // Reset flag when joystick is released (neutral zone)
+            if (resultsBuffer[1] >= 5000 && resultsBuffer[1] <= 6000) {
+                joystickMoved = 0;
+            }
+        }
+
+        // Joystick Button Handling
+        if (current_state == DISARMED) {
+            int buttonPressed = !(P4IN & GPIO_PIN1);
+            if (buttonPressed && !buttonPreviouslyPressed) {
+                if (menu_selection == 0) {
+                    go_in_maintenance = 0;
+                    go_in_armed = 1;
+                }
+                else if (menu_selection == 1) {
+                    go_in_maintenance = 1;
+                    go_in_armed = 0;
+                }
+            }
+            buttonPreviouslyPressed = buttonPressed;
+        }
+    }
+
+}
+
+/*
+void ADC14_IRQHandler(void) {
+    uint64_t status = ADC14_getEnabledInterruptStatus();
+    static int buttonPreviouslyPressed = 0;
     ADC14_clearInterruptFlag(status);
 
     if(status & ADC_INT1) {
@@ -63,10 +115,12 @@ void ADC14_IRQHandler(void) {
 
         // Joystick Direction
         if(current_state == DISARMED) {
-            if(resultsBuffer[0] > 12000) {  // Up movement
-                menu_selection = 0;  // ARMED option
-            } else if(resultsBuffer[0] < 4000) {  // Down movement
-                menu_selection = 1;  // MAINTENANCE option
+
+            if (resultsBuffer[1] > 12000) {  // Up movement
+                menu_selection = (menu_selection - 1 + menu_options) % menu_options;
+            }
+            else if (resultsBuffer[1] < 2000) {  // Down movement
+                menu_selection = (menu_selection + 1) % menu_options;
             }
         }
 
@@ -86,5 +140,5 @@ void ADC14_IRQHandler(void) {
         }
     }
 }
-
+*/
 

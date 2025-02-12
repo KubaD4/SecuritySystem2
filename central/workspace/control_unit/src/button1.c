@@ -26,9 +26,8 @@ void PORT5_IRQHandler(void) {
     uint32_t status = GPIO_getEnabledInterruptStatus(BUTTON_PORT);
 
     if(status & BUTTON_PIN) {
-        printf("Button1 pressed\n");
 
-        flag = 1;
+        password_correct = 1;
 
         GPIO_clearInterruptFlag(BUTTON_PORT, BUTTON_PIN);
     }

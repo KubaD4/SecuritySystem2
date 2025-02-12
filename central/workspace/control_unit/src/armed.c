@@ -29,6 +29,10 @@ void handle_armed(void) {
         current_state = TRIGGERED;
         prepare_triggered();
 
+    } else if(password_correct){
+        finish_armed();
+        current_state = DISARMED;
+        prepare_disarmed();
     }
 }
 

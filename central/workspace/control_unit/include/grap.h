@@ -10,5 +10,7 @@ void writeLCDsubtitle(const char* message);
 void clearLCDsubtitle();
 void clearLCDtime();
 void writeLCDtime(const char* message);
+void updateSelection(uint8_t selected_option);
+void displayDisarmedMenu(uint8_t selected_option);
 
 #endif

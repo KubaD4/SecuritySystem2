@@ -16,6 +16,7 @@ void prepare_maintenance(){
 void handle_maintenance(){
     if(password_correct) {
             finish_triggered();
+            finish_maintenance();
             //state_code = ALARM_STATE_DISARMED;
             current_state = DISARMED;
             prepare_disarmed();
@@ -28,5 +29,7 @@ void finish_maintenance(){
     opened_safe = 0;
     opened_critical = 0;
     go_in_maintenance = 0;
+    go_in_armed = 0;
+    password_correct = 0;
     flag = 0;
 }
