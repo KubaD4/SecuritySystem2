@@ -43,7 +43,6 @@ void finish_triggered() {
     go_in_maintenance = 0;
 }
 
-void setTriggerInfo(uint8_t room, uint8_t movement) {
+void setTriggerInfo(uint8_t room) {
     triggered_room = room;
-    triggered_movement = movement;
 }

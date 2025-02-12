@@ -3,7 +3,7 @@
 
 // volatile variables
 
-//Generic constatns
+//Generic constants
 extern volatile int state_code;
 extern volatile int password_correct;
 

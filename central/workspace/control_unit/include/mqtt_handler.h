@@ -9,14 +9,12 @@
 // Structure to hold decoded sensor data
 typedef struct {
     uint8_t identification;  // 1 bit - authentication status
-    uint8_t movement;        // 1 bit - movement detection
-    uint8_t room;           // 3 bits - room number
+    uint8_t room;           // 2 bits - room number
 } SensorData;
 
 // Function prototypes
 void initSensorGPIO(void);
-void processSensorData(void);
 const char* getRoomName(uint8_t room_number);
-void setTriggerInfo(uint8_t room, uint8_t movement);
+void setTriggerInfo(uint8_t room);
 
 #endif
