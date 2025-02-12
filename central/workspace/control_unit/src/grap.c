@@ -80,6 +80,65 @@ void clearLCDtime() {
     Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 70, 127, 85});
 }
 
+void displayDisarmedMenu(uint8_t selected_option) {
+    const int CENTER_X = 64;
+    const char* MENU_ITEMS[] = {
+        "Armed",
+        "Maintenance"
+    };
+    const int MENU_Y_POSITIONS[] = {55, 75};
+
+    // Set default color and draw static text
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+
+    // Draw title
+    Graphics_drawStringCentered(
+        &g_sContext,
+        (int8_t*)"DISARMED MENU",
+        AUTO_STRING_LENGTH,
+        CENTER_X,
+        20,
+        TRANSPARENT_TEXT
+    );
+
+    // Draw instruction
+    Graphics_drawStringCentered(
+        &g_sContext,
+        (int8_t*)"Up/Down to select",
+        AUTO_STRING_LENGTH,
+        CENTER_X,
+        35,
+        TRANSPARENT_TEXT
+    );
+
+    // Draw menu items
+    for (int i = 0; i < 2; i++) {
+        // Draw all items in black first
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
+        Graphics_drawStringCentered(
+            &g_sContext,
+            (int8_t*)MENU_ITEMS[i],
+            AUTO_STRING_LENGTH,
+            CENTER_X,
+            MENU_Y_POSITIONS[i],
+            TRANSPARENT_TEXT
+        );
+
+        // If this is the selected item, redraw it in red
+        if (selected_option == i) {
+            Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
+            Graphics_drawStringCentered(
+                &g_sContext,
+                (int8_t*)MENU_ITEMS[i],
+                AUTO_STRING_LENGTH,
+                CENTER_X,
+                MENU_Y_POSITIONS[i],
+                OPAQUE_TEXT
+            );
+        }
+    }
+}
+
 
 
 /*
