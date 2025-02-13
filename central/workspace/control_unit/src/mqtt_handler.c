@@ -65,6 +65,7 @@ void PORT5_IRQHandler(void) {
 
         SensorData sensor_data = readSensorData();
 
+
         // Clear the interrupt flags for the triggered pins
         GPIO_clearInterruptFlag(GPIO_PORT_P5, status & (PIN_ROOM_0 | PIN_ROOM_1));
 
@@ -87,6 +88,7 @@ void PORT5_IRQHandler(void) {
                 opened_critical = 1;
                 return;
             }
+
 
 
     }

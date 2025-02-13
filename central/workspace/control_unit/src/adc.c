@@ -142,7 +142,7 @@ void PORT4_IRQHandler(void) {
 
             // Handle authentication
             if (sensor_data.identification) {
-               // password_correct = 1;
+               password_correct = 1;
             }
 
 
