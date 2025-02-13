@@ -1,6 +1,7 @@
 #include "../include/states.h"
 #include "../include/alarm.h"
 #include "../include/grap.h"
+#include "../include/adc.h"
 //#include "../include/sound.h"
 
 static int menu_done = 0;
@@ -34,7 +35,7 @@ void handle_disarmed(void) {
                    }
                    last_selection = menu_selection;
                }
-}
+    }
 
     if ( flag ) {
         finish_disarmed();
@@ -58,4 +59,5 @@ void handle_disarmed(void) {
 void finish_disarmed(){
     menu_selection = 0;
     menu_done = 0;
+    buttonPreviouslyPressed = 0;
 }

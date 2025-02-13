@@ -20,12 +20,10 @@ void handle_armed(void) {
     if(opened_safe) {
         finish_armed();
         current_state = GRACE;
-        //state_code = ALARM_STATE_GRACE;
         prepare_grace();
     }
     else if(opened_critical) {
         finish_armed();
-        //state_code = ALARM_STATE_TRIGGERED;
         current_state = TRIGGERED;
         prepare_triggered();
 

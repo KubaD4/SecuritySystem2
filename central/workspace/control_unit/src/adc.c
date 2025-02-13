@@ -5,9 +5,12 @@
 #include "../LcdDriver/Crystalfontz128x128_ST7735.h"
 #include <stdio.h>
 #include "../include/states.h"
+#include "../include/mqtt_handler.h"
+#include "../include/adc.h"
 
 uint16_t resultsBuffer[2];
-uint8_t joystick_moving = 0;
+uint8_t joystickMoved = 0;
+int buttonPreviouslyPressed = 0;
 
 
 /*
@@ -50,13 +53,17 @@ void _adcInit() {
          ADC14_enableConversion();
          ADC14_toggleConversionTrigger();
 
+         GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P4, GPIO_PIN1);  // Pulsante su P4.1
+         GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);  // Pulisce eventuali flag di interrupt
+         GPIO_enableInterrupt(GPIO_PORT_P4, GPIO_PIN1);  // Abilita l'interrupt per P4.1
+
+         NVIC_SetPriority(PORT4_IRQn, 1);
+         NVIC_SetPriority(ADC14_IRQn, 2);
+
 }
 
 void ADC14_IRQHandler(void) {
     uint64_t status = ADC14_getEnabledInterruptStatus();
-    static int buttonPreviouslyPressed = 0;
-    static int joystickMoved = 0; // Flag to track if movement was already registered
-
     ADC14_clearInterruptFlag(status);
 
     if(status & ADC_INT1) {
@@ -65,27 +72,44 @@ void ADC14_IRQHandler(void) {
 
         // Joystick Direction Handling
         if (current_state == DISARMED) {
-            if (!joystickMoved) { // Only allow movement if joystick was previously neutral
-                if (resultsBuffer[1] > 10000 || resultsBuffer[1] < 4000) {  // movement
-                    if (menu_selection == 1){
-                        menu_selection = 0;
-                    } else if (menu_selection == 0){
-                        menu_selection = 1;
+
+                    if (resultsBuffer[1] > 12000) { // Su
+                        if (!joystickMoved) {
+                            joystickMoved = 1;  // Joystick è in movimento
+                            if (menu_selection == 0) {
+                                menu_selection = 1; // Vai all'ultimo
+                            } else {
+                                menu_selection = 0;  // Scendi
+                            }
+                        }
+                    } else if (resultsBuffer[1] < 3000) { // Giù
+                        if (!joystickMoved) {
+                            joystickMoved = 1;  // Joystick è in movimento
+                            if (menu_selection == 1) {
+                                menu_selection = 0; // Torna al primo
+                            } else {
+                                menu_selection = 1;  // Salta
+                            }
+                        }
+                    } else {
+                        joystickMoved = 0;  // Joystick fermo
                     }
 
-                    joystickMoved = 1; // Mark that movement happened
+
                 }
 
-            }
 
-            // Reset flag when joystick is released (neutral zone)
-            if (resultsBuffer[1] >= 5000 && resultsBuffer[1] <= 6000) {
-                joystickMoved = 0;
-            }
-        }
+    }
 
-        // Joystick Button Handling
-        if (current_state == DISARMED) {
+}
+
+/*
+ * Gestione dell'interrupt per il pulsante
+ */
+void PORT4_IRQHandler(void) {
+    uint64_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4);
+    // Joystick Button Handling
+        if (status & GPIO_PIN1 && current_state == DISARMED) {
             int buttonPressed = !(P4IN & GPIO_PIN1);
             if (buttonPressed && !buttonPreviouslyPressed) {
                 if (menu_selection == 0) {
@@ -98,10 +122,28 @@ void ADC14_IRQHandler(void) {
                 }
             }
             buttonPreviouslyPressed = buttonPressed;
+            GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);
         }
-    }
 
+            if (status & PIN_IDENTIFICATION) {
+                printf("Entrato in P4 handler\n");
+
+                SensorData sensor_data = readSensorData();
+
+                // Handle authentication
+                if (sensor_data.identification) {
+                    password_correct = 1;
+                    return;
+                }
+
+
+                // Clear the interrupt flags
+                GPIO_clearInterruptFlag(GPIO_PORT_P4, PIN_IDENTIFICATION);
+                printf("__USCITO__\n");
+            }
 }
+
+
 
 /*
 void ADC14_IRQHandler(void) {

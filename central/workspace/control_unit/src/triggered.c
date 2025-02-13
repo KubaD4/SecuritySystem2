@@ -12,12 +12,10 @@ void prepare_triggered() {
 
     char message[64];
     const char* room_name = getRoomName(triggered_room);
-    const char* sensor_type = triggered_movement ? "movement" : "door";
 
     snprintf(message, sizeof(message),
-             "Alarm in %s\nType: %s",
-             room_name,
-             sensor_type);
+             "Alarm in %s",
+             room_name);
 
     writeLCDMessage(message);
     password_correct = 0;
@@ -27,7 +25,6 @@ void handle_triggered(void) {
     handleLEDTriggered();
     if(password_correct) {
         finish_triggered();
-        //state_code = ALARM_STATE_DISARMED;
         current_state = DISARMED;
         prepare_disarmed();
     }
