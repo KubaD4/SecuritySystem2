@@ -98,6 +98,9 @@ void ADC14_IRQHandler(void) {
 
                 }
 
+        if ((current_state == MAINTENANCE || current_state == DISARMED) && resultsBuffer[0] > 10000) { // SX
+                back_to_menu = 1;
+        }
 
     }
 

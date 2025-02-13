@@ -28,7 +28,7 @@ void handle_disarmed(void) {
     if (!menu_done){
         if( go_in_maintenance + go_in_armed > 0){
                writeLCDMessage(" Enter Password ");
-                   writeLCDsubtitle(" to enter ");
+                   writeLCDsubtitle("<- to go back");
                    menu_done = 1;
                }else {
                    if ( menu_selection != last_selection ) {
@@ -36,6 +36,12 @@ void handle_disarmed(void) {
                    }
                    last_selection = menu_selection;
                }
+    }
+
+    if (back_to_menu) {
+            finish_disarmed();
+            prepare_disarmed();
+            back_to_menu = 0;
     }
 
     if ( flag ) {

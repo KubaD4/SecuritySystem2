@@ -6,6 +6,7 @@
 void prepare_maintenance(){
     _alarmStop();
     writeLCDMessage("System Maintenance");
+    writeLCDsubtitle("<- to go back");
     opened_safe = 0;
     opened_critical = 0;
     password_correct = 0;
@@ -15,6 +16,7 @@ void prepare_maintenance(){
 
 void handle_maintenance(){
     if(back_to_menu) {
+        back_to_menu = 0;
         finish_triggered();
         finish_maintenance();
         current_state = DISARMED;
