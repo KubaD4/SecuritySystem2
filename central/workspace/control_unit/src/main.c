@@ -21,7 +21,7 @@
 
 #include "../include/button1.h"
 
-//#include "../include/sound.h"
+#include "../include/sound.h"
 
 void _hwInit();
 
@@ -41,10 +41,6 @@ StateMachine_t fsm[] = {
 };
 
 
-
-/* ADC results buffer */
-//static uint16_t resultsBuffer[2];
-
 int main(void){
     _hwInit();
     printf("main");
@@ -56,7 +52,7 @@ int main(void){
     current_state = DISARMED;
 
     // Start in DISARMED state
-    //state_code = ALARM_STATE_DISARMED;
+
     prepare_disarmed();
 
     while(1){

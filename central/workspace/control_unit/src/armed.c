@@ -35,5 +35,5 @@ void handle_armed(void) {
 }
 
 void finish_armed(){
-
+    password_correct = 0;
 }

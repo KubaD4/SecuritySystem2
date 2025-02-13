@@ -1,5 +1,5 @@
-#ifndef STATEMACHINEIOT_STATES_H
-#define STATEMACHINEIOT_STATES_H
+#ifndef STATES_H
+#define STATES_H
 
 // volatile variables
 
@@ -14,6 +14,7 @@ extern volatile int menu_selection;
 extern volatile int go_in_maintenance;
 extern volatile int go_in_armed;
 extern volatile int flag;
+ volatile int back_to_menu;
 
 
 //Triggered constants

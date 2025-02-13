@@ -14,6 +14,7 @@ void prepare_disarmed(){
     menu_selection = 0;
     go_in_maintenance = 0;
     go_in_armed = 0;
+    menu_done = 0;
     displayDisarmedMenu(menu_selection);
     handleLEDDisarmed();
     updateSelection(menu_selection);
@@ -60,4 +61,5 @@ void finish_disarmed(){
     menu_selection = 0;
     menu_done = 0;
     buttonPreviouslyPressed = 0;
+    password_correct = 0;
 }

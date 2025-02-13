@@ -1,5 +1,5 @@
-//#ifndef SOUND_DETECTION_H_
-//#define SOUND_DETECTION_H_
+//#ifndef SOUND_H_
+//#define SOUND_H_
 //
 //#include <ti/devices/msp432p4xx/inc/msp.h>
 //#include <ti/devices/msp432p4xx/driverlib/driverlib.h>

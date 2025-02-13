@@ -123,64 +123,30 @@ void PORT4_IRQHandler(void) {
             }
             buttonPreviouslyPressed = buttonPressed;
             GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);
-        }
-
-            if (status & PIN_IDENTIFICATION) {
-                printf("Entrato in P4 handler\n");
-
-                SensorData sensor_data = readSensorData();
-
-                // Handle authentication
-                if (sensor_data.identification) {
-                    password_correct = 1;
-                    return;
-                }
-
-
-                // Clear the interrupt flags
-                GPIO_clearInterruptFlag(GPIO_PORT_P4, PIN_IDENTIFICATION);
-                printf("__USCITO__\n");
-            }
-}
-
-
-
-/*
-void ADC14_IRQHandler(void) {
-    uint64_t status = ADC14_getEnabledInterruptStatus();
-    static int buttonPreviouslyPressed = 0;
-    ADC14_clearInterruptFlag(status);
-
-    if(status & ADC_INT1) {
-        resultsBuffer[0] = ADC14_getResult(ADC_MEM0);
-        resultsBuffer[1] = ADC14_getResult(ADC_MEM1);
-
-        // Joystick Direction
-        if(current_state == DISARMED) {
-
-            if (resultsBuffer[1] > 12000) {  // Up movement
-                menu_selection = (menu_selection - 1 + menu_options) % menu_options;
-            }
-            else if (resultsBuffer[1] < 2000) {  // Down movement
-                menu_selection = (menu_selection + 1) % menu_options;
-            }
-        }
-
-        // Joystick Button
-        if(current_state == DISARMED) {
+        } else if (status & GPIO_PIN1 && current_state == MAINTENANCE) {
             int buttonPressed = !(P4IN & GPIO_PIN1);
             if (buttonPressed && !buttonPreviouslyPressed) {
-                if ( menu_selection == 0 ){
-                    go_in_maintenance = 0;
-                    go_in_armed = 1;
-                } else if ( menu_selection == 1 ) {
-                    go_in_maintenance = 1;
-                    go_in_armed = 0;
-                }
+                back_to_menu = 1;
             }
-            buttonPreviouslyPressed = buttonPressed;
+            GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);
         }
-    }
+
+
+        if (status & PIN_IDENTIFICATION) {
+            printf("Entrato in P4 handler\n");
+
+            SensorData sensor_data = readSensorData();
+
+            // Handle authentication
+            if (sensor_data.identification) {
+               // password_correct = 1;
+            }
+
+
+            // Clear the interrupt flags
+            GPIO_clearInterruptFlag(GPIO_PORT_P4, PIN_IDENTIFICATION);
+            printf("__USCITO__\n");
+        }
 }
-*/
+
 

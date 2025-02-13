@@ -57,13 +57,11 @@ void handle_grace(void) {
     if(password_correct) {
         finish_grace();
         current_state = DISARMED;
-        //state_code = ALARM_STATE_DISARMED;
         prepare_disarmed();
     }
     else if(grace_timer <= 0) {
         finish_grace();
         current_state = TRIGGERED;
-        //state_code = ALARM_STATE_TRIGGERED;
         prepare_triggered();
     }
 }
