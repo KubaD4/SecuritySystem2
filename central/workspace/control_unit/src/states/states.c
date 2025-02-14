@@ -14,4 +14,5 @@ extern volatile int menu_selection=0;
 extern volatile int back_to_menu = 0;
 extern volatile int last_selection = 0;
 extern volatile int menu_done = 0;
+extern volatile int light = 0;
 

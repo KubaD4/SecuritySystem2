@@ -108,6 +108,7 @@ void ADC14_IRQHandler(void) {
  * Gestione dell'interrupt per il pulsante
  */
 void PORT4_IRQHandler(void) {
+    printf("Entrato in P4 handler\n");
     uint64_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4);
     // Joystick Button Handling
         if (status & GPIO_PIN1 && current_state == DISARMED) {
