@@ -13,7 +13,7 @@ static inline Timer_A_UpModeConfig get_countdown_config(void) {
   return (Timer_A_UpModeConfig){
     TIMER_A_CLOCKSOURCE_SMCLK,
     TIMER_A_CLOCKSOURCE_DIVIDER_64,
-    750000,
+    4500000,
     TIMER_A_TAIE_INTERRUPT_ENABLE,
     TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE,
     TIMER_A_DO_CLEAR
