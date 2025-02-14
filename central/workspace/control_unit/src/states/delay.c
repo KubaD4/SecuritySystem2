@@ -43,6 +43,10 @@ void handle_delay(void) {
         finish_grace();
         current_state = DISARMED;
         prepare_disarmed();
+    }else if (light) {
+        finish_disarmed();
+        current_state = TRIGGERED;
+        prepare_triggered();
     }
 }
 

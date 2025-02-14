@@ -6,6 +6,7 @@
 //Generic constants
 extern volatile int state_code;
 extern volatile int password_correct;
+extern volatile int light;
 
 extern volatile int timer;
 

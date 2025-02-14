@@ -44,7 +44,7 @@ void handle_grace(void) {
         finish_grace();
         current_state = DISARMED;
         prepare_disarmed();
-    } else if(timer <= 0) {
+    } else if(timer <= 0 || light) {
         finish_grace();
         current_state = TRIGGERED;
         prepare_triggered();

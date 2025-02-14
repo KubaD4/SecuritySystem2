@@ -42,7 +42,7 @@ void handle_disarmed(void) {
             back_to_menu = 0;
     }
 
-    if ( flag ) {
+    if (light) {
         finish_disarmed();
         current_state = TRIGGERED;
         prepare_triggered();

@@ -8,6 +8,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "../include/timer.h"
+#include "../include/lux.h"
+#include "../include/HAL_I2C.h"
+#include "../include/HAL_OPT3001.h"
 
 /* TI Drivers & Board includes */
 #include <ti/drivers/Board.h>
@@ -57,7 +60,13 @@ int main(void){
     prepare_disarmed();
 
     while(1){
+        lux = OPT3001_getLux();
             if(current_state < NUM_STATES){
+                if (lux>1000){
+                    light = 1;
+                }else{
+                    light = 0;
+                }
                 (*fsm[current_state].state_function)();
             }
             else{
@@ -97,5 +106,6 @@ void _hwInit()
     _graphicsInit();
     _adcInit();
     _initButton();
-    //initSoundDetection();
+    _lightSensorInit();
+
 }

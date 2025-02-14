@@ -22,7 +22,7 @@ void handle_armed(void) {
         current_state = GRACE;
         prepare_grace();
     }
-    else if(opened_critical) {
+    else if(opened_critical || light) {
         finish_armed();
         current_state = TRIGGERED;
         prepare_triggered();
