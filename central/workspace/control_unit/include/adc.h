@@ -2,7 +2,8 @@
 #define ADC_H
 
 extern uint16_t resultsBuffer[2];
-extern uint8_t joystick_moving;
+extern uint8_t joystickMoved;
+extern int buttonPreviouslyPressed;
 
 void _adcInit(void);
 void ADC14_IRQHandler(void);

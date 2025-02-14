@@ -7,6 +7,7 @@
 #include "../include/adc.h"
 #include <stdint.h>
 #include <stdbool.h>
+#include "../include/timer.h"
 
 /* TI Drivers & Board includes */
 #include <ti/drivers/Board.h>
@@ -20,7 +21,7 @@
 
 #include "../include/button1.h"
 
-//#include "../include/sound.h"
+#include "../include/sound.h"
 
 void _hwInit();
 
@@ -40,12 +41,7 @@ StateMachine_t fsm[] = {
 };
 
 
-
-/* ADC results buffer */
-//static uint16_t resultsBuffer[2];
-
-int main(void)
-{
+int main(void){
     _hwInit();
     printf("main");
 
@@ -56,7 +52,7 @@ int main(void)
     current_state = DISARMED;
 
     // Start in DISARMED state
-    //state_code = ALARM_STATE_DISARMED;
+
     prepare_disarmed();
 
     while(1){
@@ -71,27 +67,6 @@ int main(void)
     }
 
 
-
-    /*
-    while (1)
-    {
-        switch (state_code) {
-            case ALARM_STATE_ARMED:
-                handle_armed();
-                break;
-            case ALARM_STATE_DISARMED:
-                handle_disarmed();
-                break;
-            case ALARM_STATE_GRACE:
-                handle_grace();
-                break;
-            case ALARM_STATE_TRIGGERED:
-                handle_triggered();
-                break;
-        }
-    }
-    return 0;
-    */
 }
 
 

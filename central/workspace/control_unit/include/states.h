@@ -1,20 +1,23 @@
-#ifndef STATEMACHINEIOT_STATES_H
-#define STATEMACHINEIOT_STATES_H
+#ifndef STATES_H
+#define STATES_H
 
 // volatile variables
 
-//Generic constatns
+//Generic constants
 extern volatile int state_code;
 extern volatile int password_correct;
+
+extern volatile int grace_timer;
 
 //Disarmed constants
 extern volatile int menu_selection;
 extern volatile int go_in_maintenance;
 extern volatile int go_in_armed;
 extern volatile int flag;
+extern volatile int back_to_menu;
+extern volatile int last_selection;
+extern volatile int menu_done;
 
-//Grace constants
-extern volatile int grace_timer;
 
 //Triggered constants
 extern volatile int opened_safe;
@@ -26,11 +29,6 @@ extern volatile int opened_critical;
 #define ALARM_STATE_DISARMED    2
 #define ALARM_STATE_GRACE       3
 #define ALARM_STATE_TRIGGERED   4
-
-//Armed constants
-#define ARMED_FULL          1
-#define ARMED_VOLUMETRIC    2
-#define ARMED_PERIMETRAL    3
 
 
 /* States:

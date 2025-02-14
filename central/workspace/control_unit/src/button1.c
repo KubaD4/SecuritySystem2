@@ -22,14 +22,4 @@ void _initButton(void) {
     Interrupt_setPriority(INT_PORT5, 2);
 }
 
-void PORT5_IRQHandler(void) {
-    uint32_t status = GPIO_getEnabledInterruptStatus(BUTTON_PORT);
 
-    if(status & BUTTON_PIN) {
-        printf("Button1 pressed\n");
-
-        flag = 1;
-
-        GPIO_clearInterruptFlag(BUTTON_PORT, BUTTON_PIN);
-    }
-}

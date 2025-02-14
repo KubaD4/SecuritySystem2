@@ -4,28 +4,7 @@
 #include "../include/states.h"
 #include <stdio.h>
 
-// !! ASSUMING THE FOLLOWING STRUCTURE OF THE MQTT MESSAGE: [identification(1bit) - movement(1bit) - roomID(3bits)]
 
-// Pin definitions on Port 4
-#define PIN_IDENTIFICATION  GPIO_PIN0  // P4.0 - Authentication bit
-#define PIN_MOVEMENT       GPIO_PIN1  // P4.1 - Movement bit
-#define PIN_ROOM_0        GPIO_PIN2  // P4.2 - Room bit 0 (LSB)
-#define PIN_ROOM_1        GPIO_PIN3  // P4.3 - Room bit 1
-#define PIN_ROOM_2        GPIO_PIN4  // P4.4 - Room bit 2 (MSB)
-
-#define ALL_SENSOR_PINS (PIN_IDENTIFICATION | PIN_MOVEMENT | PIN_ROOM_0 | PIN_ROOM_1 | PIN_ROOM_2)
-
-// Room names lookup table
-static const char* ROOM_NAMES[] = {
-    "Unknown",
-    "Main Door",
-    "Living Room",
-    "Kitchen",
-    "Bedroom 1",
-    "Bedroom 2",
-    "Bathroom",
-    "Garage"
-};
 
 // Get room name from room number
 const char* getRoomName(uint8_t room_number) {
@@ -37,90 +16,93 @@ const char* getRoomName(uint8_t room_number) {
 
 // Initialize GPIO pins for sensor input
 void initSensorGPIO(void) {
-    // Configure pins as input with pull-down resistors
-    //GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P4, ALL_SENSOR_PINS);
+    // Configure PIN_IDENTIFICATION as input with pull-down resistor
+    GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P4, PIN_IDENTIFICATION);
 
-    // Configure interrupt on rising edge (when ESP sets pins high)
-    //GPIO_interruptEdgeSelect(GPIO_PORT_P4, ALL_SENSOR_PINS, GPIO_HIGH_TO_LOW_TRANSITION);
+    // Configure room bits (assuming they are in Port 5)
+    GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P5, PIN_ROOM_0);
+    GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P5, PIN_ROOM_1);
+
+    // Configure interrupts
+    GPIO_interruptEdgeSelect(GPIO_PORT_P4, PIN_IDENTIFICATION, GPIO_LOW_TO_HIGH_TRANSITION);
+    GPIO_interruptEdgeSelect(GPIO_PORT_P5, PIN_ROOM_0 | PIN_ROOM_1, GPIO_LOW_TO_HIGH_TRANSITION);
+
 
     // Clear any previous interrupts
-    //GPIO_clearInterruptFlag(GPIO_PORT_P4, ALL_SENSOR_PINS);
+    GPIO_clearInterruptFlag(GPIO_PORT_P4, PIN_IDENTIFICATION);
+    GPIO_clearInterruptFlag(GPIO_PORT_P5, PIN_ROOM_0 | PIN_ROOM_1);
 
-    // Enable interrupts for all sensor pins
-   // GPIO_enableInterrupt(GPIO_PORT_P4, ALL_SENSOR_PINS);
+    // Enable interrupts for sensor pins
+    GPIO_enableInterrupt(GPIO_PORT_P4, PIN_IDENTIFICATION);
+    GPIO_enableInterrupt(GPIO_PORT_P5, PIN_ROOM_0 | PIN_ROOM_1);
 
-    // Enable Port 4 interrupt in NVIC
-   // Interrupt_enableInterrupt(INT_PORT4);
-
+    // Enable Port interrupts in NVIC
+    Interrupt_enableInterrupt(INT_PORT4);
+    Interrupt_enableInterrupt(INT_PORT5);
 }
 
+
 // Read and decode sensor data from GPIO pins
-static SensorData readSensorData(void) {
+SensorData readSensorData(void) {
     SensorData data;
-    uint8_t pinStates = GPIO_getInputPinValue(GPIO_PORT_P4, ALL_SENSOR_PINS);
 
-    // Extract individual bits
-    data.identification = (pinStates & PIN_IDENTIFICATION) ? 1 : 0;
-    data.movement = (pinStates & PIN_MOVEMENT) ? 1 : 0;
+    data.identification = GPIO_getInputPinValue(GPIO_PORT_P4, PIN_IDENTIFICATION);
 
-    // Combine room bits
     data.room = 0;
-    if (pinStates & PIN_ROOM_0) data.room |= 1;
-    if (pinStates & PIN_ROOM_1) data.room |= 2;
-    if (pinStates & PIN_ROOM_2) data.room |= 4;
+    if (GPIO_getInputPinValue(GPIO_PORT_P5, PIN_ROOM_0)) data.room |= 1;
+    if (GPIO_getInputPinValue(GPIO_PORT_P5, PIN_ROOM_1)) data.room |= 2;
 
     return data;
 }
 
-// Process sensor data and update system state
-void processSensorData(void) {
-    SensorData sensor_data = readSensorData();
 
-    // Handle authentication
-    if (sensor_data.identification) {
-        password_correct = 1;
-        return;
+
+void PORT5_IRQHandler(void) {
+    uint32_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P5);
+
+    if (status & (PIN_ROOM_0 | PIN_ROOM_1)) {
+        printf("Entrato in P5 handler\n");
+
+        SensorData sensor_data = readSensorData();
+
+
+        // Clear the interrupt flags for the triggered pins
+        GPIO_clearInterruptFlag(GPIO_PORT_P5, status & (PIN_ROOM_0 | PIN_ROOM_1));
+
+        // Only process sensor triggers if system is armed
+            if (current_state != ARMED) {
+                return;
+            }
+
+            // Store trigger information
+            setTriggerInfo(sensor_data.room);
+
+            // Handle main door (room 1) specially
+            if (sensor_data.room == 1) {
+                opened_safe = 1;
+                return;
+            }
+
+            // Handle movement sensors or other entries
+            if (sensor_data.room > 1) {
+                opened_critical = 1;
+                return;
+            }
+
+
+
     }
 
-    // Only process sensor triggers if system is armed
-    if (state_code != ALARM_STATE_ARMED) {
-        return;
-    }
 
-    // Store trigger information
-    setTriggerInfo(sensor_data.room, sensor_data.movement);
+        if(status & BUTTON_PIN) {
 
-    // Handle main door (room 1) specially
-    if (sensor_data.room == 1 && !sensor_data.movement) {
-        opened_safe = 1;
-        return;
-    }
+            password_correct = 1;
 
-    // Handle movement sensors or other entries
-    if (sensor_data.movement || sensor_data.room > 1) {
-        opened_critical = 1;
-        return;
-    }
+            GPIO_clearInterruptFlag(BUTTON_PORT, BUTTON_PIN);
+        }
 }
 
 
 
 
-// Interrupt handler for Port 4
-/*
-void PORT4_IRQHandler(void) {
-    uint32_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4);
-
-    if (status & ALL_SENSOR_PINS) {
-
-        printf("Entrato in P4 handler");
-
-        // Process the sensor data
-        processSensorData();
-
-        // Clear the interrupt flags
-        GPIO_clearInterruptFlag(GPIO_PORT_P4, status);
-        printf("__USCITO__");
-    }
-}*/
 
