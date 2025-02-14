@@ -1,7 +1,7 @@
-#include "../include/states.h"
-#include "../include/alarm.h"
-#include "../include/grap.h"
-#include "../include/adc.h"
+#include "../../include/states.h"
+#include "../../include/alarm.h"
+#include "../../include/grap.h"
+#include "../../include/adc.h"
 //#include "../include/sound.h"
 
 void prepare_disarmed(){
@@ -52,8 +52,8 @@ void handle_disarmed(void) {
         prepare_maintenance();
     } else if ( password_correct && go_in_armed ) {
         finish_disarmed();
-        current_state = GRACE;
-        prepare_grace();
+        current_state = DELAY;
+        prepare_delay();
         //current_state = ARMED;
         //prepare_armed();
     }

@@ -13,13 +13,13 @@
 #endif
 
 
-#include "../include/grap.h"
-#include "../include/adc.h"
-#include "../include/led.h"
+#include "../../include/grap.h"
+#include "../../include/adc.h"
+#include "../../include/led.h"
 
 #include <ti/devices/DeviceFamily.h>
 
-#include "../include/ti_drivers_config.h"
+#include "../../include/ti_drivers_config.h"
 
 /*
  *  =============================== DMA ===============================

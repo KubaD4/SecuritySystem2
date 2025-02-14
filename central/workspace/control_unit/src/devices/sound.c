@@ -3,8 +3,8 @@
 //#include <ti/grlib/grlib.h>
 //#include "LcdDriver/Crystalfontz128x128_ST7735.h"
 //#include <stdio.h>
-//#include "../include/states.h"
-//#include "../include/alarm.h"
+//#include "../../include/states.h"
+//#include "../../include/alarm.h"
 //
 //// Define sound threshold for triggering
 //#define SOUND_THRESHOLD 20000  // Adjust this value based on testing
