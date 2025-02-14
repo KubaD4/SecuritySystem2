@@ -39,6 +39,10 @@ void handle_delay(void) {
         finish_delay();
         current_state = ARMED;
         prepare_armed();
+    }else if (password_correct){
+        finish_grace();
+        current_state = DISARMED;
+        prepare_disarmed();
     }
 }
 
