@@ -25,15 +25,15 @@ void handle_disarmed(void) {
 
     if (!menu_done){
         if( go_in_maintenance + go_in_armed > 0){
-               writeLCDMessage(" Enter Password ");
-                   writeLCDsubtitle("<- to go back");
-                   menu_done = 1;
-               }else {
-                   if ( menu_selection != last_selection ) {
-                       updateSelection(menu_selection);
-                   }
-                   last_selection = menu_selection;
-               }
+           writeLCDMessage(" Enter Password ");
+           writeLCDsubtitle("<- to go back");
+           menu_done = 1;
+        }else {
+            if ( menu_selection != last_selection ) {
+                updateSelection(menu_selection);
+            }
+            last_selection = menu_selection;
+        }
     }
 
     if (back_to_menu) {

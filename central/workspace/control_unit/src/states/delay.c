@@ -14,7 +14,9 @@ void prepare_delay(){
     writeLCDsubtitle("Exit the house");
     handleLEDGrace();
 
-    Timer_A_configureUpMode(TIMER_A3_BASE, &countdownConfig);
+    Timer_A_UpModeConfig conf = get_countdown_config();
+
+    Timer_A_configureUpMode(TIMER_A3_BASE, &conf);
     Timer_A_startCounter(TIMER_A3_BASE, TIMER_A_UP_MODE);
     Interrupt_enableInterrupt(INT_TA3_N);
 }
@@ -34,9 +36,13 @@ void handle_delay(void) {
     writeLCDtime(message);
 
     if(timer <= 0) {
-        finish_grace();
+        finish_delay();
         current_state = ARMED;
         prepare_armed();
+    }else if (password_correct){
+        finish_grace();
+        current_state = DISARMED;
+        prepare_disarmed();
     }
 }
 
