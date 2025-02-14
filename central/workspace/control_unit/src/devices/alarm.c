@@ -1,4 +1,4 @@
-#include "../include/alarm.h"
+#include "../../include/alarm.h"
 #include <ti/devices/msp432p4xx/inc/msp.h>
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 

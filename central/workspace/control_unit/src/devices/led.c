@@ -1,6 +1,6 @@
-#include "../include/LED.h"
+#include "../../include/LED.h"
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
-#include "../include/states.h"
+#include "../../include/states.h"
 #include <ti/devices/msp432p4xx/inc/msp.h>
 
 /* Timer config for LED blinking */

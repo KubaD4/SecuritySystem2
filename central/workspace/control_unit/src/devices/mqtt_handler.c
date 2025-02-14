@@ -1,7 +1,7 @@
-#include "../include/mqtt_handler.h"
-#include "../include/alarm.h"
-#include "../include/grap.h"
-#include "../include/states.h"
+#include "../../include/mqtt_handler.h"
+#include "../../include/alarm.h"
+#include "../../include/grap.h"
+#include "../../include/states.h"
 #include <stdio.h>
 
 

@@ -1,4 +1,4 @@
-#include "../include/states.h"
+#include "../../include/states.h"
 
 volatile int state_code = ALARM_STATE_DISARMED;  // Start disarmed
 volatile int password_correct = 0;

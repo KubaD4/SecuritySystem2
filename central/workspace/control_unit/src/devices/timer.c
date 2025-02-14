@@ -2,7 +2,7 @@
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 #include <ti/grlib/grlib.h>
 #include <stdio.h>
-#include "../include/states.h"
+#include "../../include/states.h"
 
 
 static const Timer_A_UpModeConfig countdownConfig = {

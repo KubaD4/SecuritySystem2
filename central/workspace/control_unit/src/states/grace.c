@@ -1,10 +1,10 @@
 #include <ti/devices/msp432p4xx/inc/msp.h>
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
-#include "../include/states.h"
-#include "../include/alarm.h"
-#include "../include/grap.h"
-#include "../include/led.h"
-#include "../include/timer.h"
+#include "../../include/states.h"
+#include "../../include/alarm.h"
+#include "../../include/grap.h"
+#include "../../include/led.h"
+#include "../../include/timer.h"
 
 void prepare_grace(){
     //reset password field

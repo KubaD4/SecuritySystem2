@@ -1,7 +1,7 @@
-#include "../include/states.h"
-#include "../include/alarm.h"
-#include "../include/grap.h"
-#include "../include/mqtt_handler.h"  // Added for room name functions
+#include "../../include/states.h"
+#include "../../include/alarm.h"
+#include "../../include/grap.h"
+#include "../../include/mqtt_handler.h"  // Added for room name functions
 
 // Added globals to store trigger information
 static uint8_t triggered_room = 0;

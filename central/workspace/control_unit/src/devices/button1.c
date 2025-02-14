@@ -1,8 +1,8 @@
 #include <ti/devices/msp432p4xx/inc/msp.h>
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
-#include "../include/button1.h"
+#include "../../include/button1.h"
 #include <stdio.h>
-#include "../include/states.h"
+#include "../../include/states.h"
 
 #define BUTTON_PORT GPIO_PORT_P5
 #define BUTTON_PIN GPIO_PIN1
