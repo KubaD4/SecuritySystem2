@@ -73,32 +73,30 @@ void ADC14_IRQHandler(void) {
         // Joystick Direction Handling
         if (current_state == DISARMED) {
 
-                    if (resultsBuffer[1] > 12000) { // Su
-                        if (!joystickMoved) {
-                            joystickMoved = 1;  // Joystick è in movimento
-                            if (menu_selection == 0) {
-                                menu_selection = 1; // Vai all'ultimo
-                            } else {
-                                menu_selection = 0;  // Scendi
-                            }
-                        }
-                    } else if (resultsBuffer[1] < 3000) { // Giù
-                        if (!joystickMoved) {
-                            joystickMoved = 1;  // Joystick è in movimento
-                            if (menu_selection == 1) {
-                                menu_selection = 0; // Torna al primo
-                            } else {
-                                menu_selection = 1;  // Salta
-                            }
-                        }
+            if (resultsBuffer[1] > 11000) { // Su
+                if (!joystickMoved) {
+                    joystickMoved = 1;  // Joystick è in movimento
+                    if (menu_selection == 0) {
+                        menu_selection = 1; // Vai all'ultimo
                     } else {
-                        joystickMoved = 0;  // Joystick fermo
+                        menu_selection = 0;  // Scendi
                     }
-
-
                 }
+            } else if (resultsBuffer[1] < 4000) { // Giù
+                if (!joystickMoved) {
+                    joystickMoved = 1;  // Joystick è in movimento
+                    if (menu_selection == 0) {
+                        menu_selection = 1; // Torna al primo
+                    } else {
+                        menu_selection = 0;  // Salta
+                    }
+                }
+            } else {
+                joystickMoved = 0;  // Joystick fermo
+            }
+        }
 
-        if ((current_state == MAINTENANCE || current_state == DISARMED) && resultsBuffer[0] > 10000) { // SX
+        if ((current_state == MAINTENANCE || menu_done == 1) && resultsBuffer[0] > 10000) { // SX
                 back_to_menu = 1;
         }
 

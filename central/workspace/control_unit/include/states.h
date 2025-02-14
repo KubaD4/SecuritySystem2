@@ -14,7 +14,9 @@ extern volatile int menu_selection;
 extern volatile int go_in_maintenance;
 extern volatile int go_in_armed;
 extern volatile int flag;
- volatile int back_to_menu;
+extern volatile int back_to_menu;
+extern volatile int last_selection;
+extern volatile int menu_done;
 
 
 //Triggered constants

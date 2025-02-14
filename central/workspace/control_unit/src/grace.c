@@ -44,6 +44,7 @@ void finish_grace(){
     Interrupt_disableInterrupt(INT_TA3_N);
     grace_timer = 0;
     password_correct = 0;
+    go_in_armed = 0;
 }
 
 void handle_grace(void) {
@@ -58,11 +59,16 @@ void handle_grace(void) {
         finish_grace();
         current_state = DISARMED;
         prepare_disarmed();
-    }
-    else if(grace_timer <= 0) {
-        finish_grace();
-        current_state = TRIGGERED;
-        prepare_triggered();
+    } else if(grace_timer <= 0) {
+        if(go_in_armed) {
+            finish_grace();
+            current_state = ARMED;
+            prepare_armed();
+        } else {
+            finish_grace();
+            current_state = TRIGGERED;
+            prepare_triggered();
+        }
     }
 }
 

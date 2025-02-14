@@ -11,4 +11,7 @@ extern volatile int flag = 0;
 extern volatile int go_in_maintenance = 0;
 extern volatile int go_in_armed = 0;
 extern volatile int menu_selection=0;
+extern volatile int back_to_menu = 0;
+extern volatile int last_selection = 0;
+extern volatile int menu_done = 0;
 

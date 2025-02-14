@@ -4,8 +4,6 @@
 #include "../include/adc.h"
 //#include "../include/sound.h"
 
-static int menu_done = 0;
-
 void prepare_disarmed(){
     _alarmStop();
     opened_safe = 0;
@@ -19,11 +17,11 @@ void prepare_disarmed(){
     handleLEDDisarmed();
     updateSelection(menu_selection);
     //disableSoundDetection();
+    last_selection = 0;
 }
 
 
 void handle_disarmed(void) {
-    static int last_selection = 0;
 
     if (!menu_done){
         if( go_in_maintenance + go_in_armed > 0){
@@ -54,8 +52,10 @@ void handle_disarmed(void) {
         prepare_maintenance();
     } else if ( password_correct && go_in_armed ) {
         finish_disarmed();
-        current_state = ARMED;
-        prepare_armed();
+        current_state = GRACE;
+        prepare_grace();
+        //current_state = ARMED;
+        //prepare_armed();
     }
 
 
