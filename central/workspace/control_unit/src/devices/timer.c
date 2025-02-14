@@ -18,7 +18,7 @@ static const Timer_A_UpModeConfig countdownConfig = {
 void TA3_N_IRQHandler(void) {
     Timer_A_clearInterruptFlag(TIMER_A3_BASE);
 
-    if(grace_timer > 0) {
-        grace_timer--;
+    if(timer > 0) {
+        timer--;
     }
 }

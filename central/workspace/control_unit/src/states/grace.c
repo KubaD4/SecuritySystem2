@@ -10,7 +10,7 @@ void prepare_grace(){
     //reset password field
     password_correct = 0;
 
-    grace_timer = 30;  // 30 second grace period
+    timer = 30;  // 30 second grace period
 
     writeLCDMessage("GRACE PERIOD:");
     writeLCDsubtitle("Enter Password");
@@ -25,7 +25,7 @@ void finish_grace(){
     Timer_A_stopTimer(TIMER_A3_BASE);    // Stop countdown timer
     Timer_A_stopTimer(TIMER_A1_BASE);    // Stop LED blinking timer
     Interrupt_disableInterrupt(INT_TA3_N);
-    grace_timer = 0;
+    timer = 0;
     password_correct = 0;
     go_in_armed = 0;
 }
@@ -33,7 +33,7 @@ void finish_grace(){
 void handle_grace(void) {
     char message[32];  // Buffer to write in the screen
 
-    sprintf(message, "%d s", grace_timer);
+    sprintf(message, "%d s", timer);
     clearLCDtime();
     writeLCDtime(message);
 
@@ -42,10 +42,10 @@ void handle_grace(void) {
         finish_grace();
         current_state = DISARMED;
         prepare_disarmed();
-    } else if(grace_timer <= 0) {
-            finish_grace();
-            current_state = TRIGGERED;
-            prepare_triggered();
+    } else if(timer <= 0) {
+        finish_grace();
+        current_state = TRIGGERED;
+        prepare_triggered();
     }
 }
 

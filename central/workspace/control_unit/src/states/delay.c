@@ -8,7 +8,7 @@
 
 void prepare_delay(){
 
-    delay_timer = 15;  // 15 second delay period
+    timer = 15;  // 15 second delay period
 
     writeLCDMessage("DELAY PERIOD:");
     writeLCDsubtitle("Exit the house");
@@ -23,17 +23,17 @@ void finish_delay(){
     Timer_A_stopTimer(TIMER_A3_BASE);    // Stop countdown timer
     Timer_A_stopTimer(TIMER_A1_BASE);    // Stop LED blinking timer
     Interrupt_disableInterrupt(INT_TA3_N);
-    delay_timer = 0;
+    timer = 0;
 }
 
 void handle_delay(void) {
     char message[32];  // Buffer to write in the screen
 
-    sprintf(message, "%d s", grace_timer);
+    sprintf(message, "%d s", timer);
     clearLCDtime();
     writeLCDtime(message);
 
-    if(grace_timer <= 0) {
+    if(timer <= 0) {
         finish_grace();
         current_state = ARMED;
         prepare_armed();

@@ -7,8 +7,7 @@
 extern volatile int state_code;
 extern volatile int password_correct;
 
-extern volatile int grace_timer;
-extern volatile int delay_timer;
+extern volatile int timer;
 
 //Disarmed constants
 extern volatile int menu_selection;
