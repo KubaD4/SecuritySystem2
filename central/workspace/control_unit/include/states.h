@@ -8,6 +8,7 @@ extern volatile int state_code;
 extern volatile int password_correct;
 
 extern volatile int grace_timer;
+extern volatile int delay_timer;
 
 //Disarmed constants
 extern volatile int menu_selection;
@@ -62,12 +63,18 @@ void prepare_maintenance();
 void handle_maintenance();
 void finish_maintenance();
 
+//Delay interface
+void prepare_delay();
+void handle_delay();
+void finish_delay();
+
 typedef enum {
     DISARMED,
     ARMED,
     TRIGGERED,
     GRACE,
     MAINTENANCE,
+    DELAY,
     NUM_STATES
 }State_t;
 

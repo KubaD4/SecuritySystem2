@@ -37,7 +37,8 @@ StateMachine_t fsm[] = {
                       {ARMED, handle_armed},
                       {TRIGGERED, handle_triggered},
                       {GRACE, handle_grace},
-                      {MAINTENANCE, handle_maintenance}
+                      {MAINTENANCE, handle_maintenance},
+                      {DELAY, handle_delay}
 };
 
 
