@@ -29,7 +29,7 @@ void handle_triggered(void) {
 
 State_t evaluate_triggered(){
     if(password_correct) {
-        current_state = DISARMED;
+        return DISARMED;
     }
     return TRIGGERED;
 }
