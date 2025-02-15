@@ -60,7 +60,6 @@ int main(void) {
         // Read light sensor value
         lux = OPT3001_getLux();
         light = (lux > 1000) ? 1 : 0;
-        printf("LUCE: %d\n",light);
 
         // Handle current state
         if (current_state < NUM_STATES) {

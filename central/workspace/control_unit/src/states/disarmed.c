@@ -43,6 +43,7 @@ void handle_disarmed(void) {
 
 State_t evaluate_disarmed() {
     if ( light ) {
+        printf("AAAAAAAAAAAAAAA\n");
         return TRIGGERED;
     } else if ( password_correct && go_in_maintenance ) {
         return MAINTENANCE;
