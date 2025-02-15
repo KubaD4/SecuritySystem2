@@ -21,23 +21,23 @@ void prepare_disarmed(){
 
 
 void handle_disarmed(void) {
-    if ( go_in_maintenance + go_in_armed <= 0 ){
-        if ( menu_done == 0 ){
-            displayDisarmedMenu(menu_selection);
-            updateSelection(menu_selection);
-            menu_done = 1;
-        }else{
+    if (!menu_done){
+        if( go_in_maintenance + go_in_armed > 0){
+           writeLCDMessage(" Enter Password ");
+           writeLCDsubtitle("<- to go back");
+           menu_done = 1;
+        }else {
             if ( menu_selection != last_selection ) {
                 updateSelection(menu_selection);
             }
             last_selection = menu_selection;
         }
-    }else{
-        if ( menu_done == 0 ){
-            writeLCDMessage(" Enter Password ");
-            writeLCDsubtitle("<- to go back");
-            menu_done = 1;
-        }
+    }
+
+    if (back_to_menu) {
+            finish_disarmed();
+            prepare_disarmed();
+            back_to_menu = 0;
     }
 }
 

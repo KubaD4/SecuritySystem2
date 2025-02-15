@@ -72,28 +72,34 @@ void ADC14_IRQHandler(void) {
 
         // Joystick Direction Handling
         if (current_state == DISARMED) {
-            // Up and Down
-            if ( resultsBuffer[1] > 11000 || resultsBuffer[1] < 4000 ) {
-                if (!joystickMoved) {
-                    joystickMoved = 1;  // Joystick is moving
 
-                    menu_selection++;
-                    menu_selection = menu_selection%2;
-                }
-            // Left
-            }else if( resultsBuffer[0] > 10000 ){
+            if (resultsBuffer[1] > 11000) { // Su
                 if (!joystickMoved) {
-                    joystickMoved = 1; // Joystick is moving
-
-                    menu_selection = 0;
-                    go_in_maintenance = 0;
-                    go_in_armed = 0;
-                    menu_done = 0;
+                    joystickMoved = 1;  // Joystick � in movimento
+                    if (menu_selection == 0) {
+                        menu_selection = 1; // Vai all'ultimo
+                    } else {
+                        menu_selection = 0;  // Scendi
+                    }
                 }
-            }else{
+            } else if (resultsBuffer[1] < 4000) { // Gi�
+                if (!joystickMoved) {
+                    joystickMoved = 1;  // Joystick � in movimento
+                    if (menu_selection == 0) {
+                        menu_selection = 1; // Torna al primo
+                    } else {
+                        menu_selection = 0;  // Salta
+                    }
+                }
+            } else {
                 joystickMoved = 0;  // Joystick fermo
             }
         }
+
+        if ((current_state == MAINTENANCE || menu_done == 1) && resultsBuffer[0] > 10000) { // SX
+                back_to_menu = 1;
+        }
+
     }
 
 }
@@ -106,7 +112,6 @@ void PORT4_IRQHandler(void) {
     uint64_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4);
     // Joystick Button Handling
         if (status & GPIO_PIN1 && current_state == DISARMED) {
-            printf("PREMUTO\n");
             int buttonPressed = !(P4IN & GPIO_PIN1);
             if (buttonPressed && !buttonPreviouslyPressed) {
                 if (menu_selection == 0) {
@@ -117,7 +122,6 @@ void PORT4_IRQHandler(void) {
                     go_in_maintenance = 1;
                     go_in_armed = 0;
                 }
-                menu_done = 0;
             }
             buttonPreviouslyPressed = buttonPressed;
             GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);
@@ -126,8 +130,6 @@ void PORT4_IRQHandler(void) {
             if (buttonPressed && !buttonPreviouslyPressed) {
                 back_to_menu = 1;
             }
-
-            buttonPreviouslyPressed = buttonPressed;
             GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);
         }
 
@@ -148,5 +150,4 @@ void PORT4_IRQHandler(void) {
             printf("__USCITO__\n");
         }
 }
-
 
