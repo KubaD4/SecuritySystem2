@@ -13,6 +13,7 @@ void prepare_disarmed(){
     menu_selection = 0;
     menu_done = 0;
     last_selection = 0;
+    back_to_menu = 0;
 
     displayDisarmedMenu(menu_selection);
     handleLEDDisarmed();
@@ -35,8 +36,8 @@ void handle_disarmed(void) {
     }
 
     if (back_to_menu) {
-            finish_disarmed();
-            prepare_disarmed();
+            displayDisarmedMenu(menu_selection);
+            updateSelection(menu_selection);
             back_to_menu = 0;
     }
 }
@@ -62,4 +63,5 @@ void finish_disarmed(){
     menu_selection = 0;
     menu_done = 0;
     last_selection = 0;
+    back_to_menu = 0;
 }
