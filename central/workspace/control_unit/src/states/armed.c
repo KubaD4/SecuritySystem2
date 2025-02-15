@@ -6,17 +6,16 @@
 
 // Bind interrupt handlers for sensor signal
 void prepare_armed(){
-    _alarmStop();
     opened_safe = 0;
     opened_critical = 0;
     password_correct = 0;
+    light = 0;
+
     writeLCDMessage("System Armed");
     handleLEDArmed();
-    //enableSoundDetection();
 }
 
 void handle_armed(void) {
-    //State related operations
 }
 
 State_t evaluate_armed() {
@@ -33,5 +32,8 @@ State_t evaluate_armed() {
 }
 
 void finish_armed(){
+    opened_safe = 0;
+    opened_critical = 0;
     password_correct = 0;
+    light = 0;
 }

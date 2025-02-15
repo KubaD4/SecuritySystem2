@@ -7,25 +7,18 @@
 #include "../../include/timer.h"
 
 void prepare_delay(){
-
     timer = 15;  // 15 second delay period
+    password_correct = 0;
+    light = 0;
 
     writeLCDMessage("DELAY PERIOD:");
     writeLCDsubtitle("Exit the house");
     handleLEDGrace();
 
     Timer_A_UpModeConfig conf = get_countdown_config();
-
     Timer_A_configureUpMode(TIMER_A3_BASE, &conf);
     Timer_A_startCounter(TIMER_A3_BASE, TIMER_A_UP_MODE);
     Interrupt_enableInterrupt(INT_TA3_N);
-}
-
-void finish_delay(){
-    Timer_A_stopTimer(TIMER_A3_BASE);    // Stop countdown timer
-    Timer_A_stopTimer(TIMER_A1_BASE);    // Stop LED blinking timer
-    Interrupt_disableInterrupt(INT_TA3_N);
-    timer = 0;
 }
 
 void handle_delay(void) {
@@ -34,8 +27,6 @@ void handle_delay(void) {
     sprintf(message, "%d s", timer);
     clearLCDtime();
     writeLCDtime(message);
-
-    next_state = evaluate_delay();
 }
 
 State_t evaluate_delay() {
@@ -47,6 +38,16 @@ State_t evaluate_delay() {
         return TRIGGERED;
     }
     return DELAY;
+}
+
+void finish_delay(){
+    timer = 0;
+    password_correct = 0;
+    light = 0;
+
+    Timer_A_stopTimer(TIMER_A3_BASE);    // Stop countdown timer
+    Timer_A_stopTimer(TIMER_A1_BASE);    // Stop LED blinking timer
+    Interrupt_disableInterrupt(INT_TA3_N);
 }
 
 

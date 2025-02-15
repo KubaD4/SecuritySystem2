@@ -4,27 +4,16 @@
 
 
 void prepare_maintenance(){
-    _alarmStop();
-    writeLCDMessage("System Maintenance");
-    writeLCDsubtitle("<- to go back");
-    opened_safe = 0;
-    opened_critical = 0;
-    password_correct = 0;
-    go_in_maintenance = 0;
     back_to_menu = 0;
+
+    writeLCDMessage("System Maintenance");
+    writeLCDsubtitle("Press to go back");
 }
 
 void handle_maintenance(){
 }
 
 void finish_maintenance(){
-    _alarmStop();
-    opened_safe = 0;
-    opened_critical = 0;
-    go_in_maintenance = 0;
-    go_in_armed = 0;
-    password_correct = 0;
-    flag = 0;
     back_to_menu = 0;
 }
 

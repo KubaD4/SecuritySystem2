@@ -72,34 +72,28 @@ void ADC14_IRQHandler(void) {
 
         // Joystick Direction Handling
         if (current_state == DISARMED) {
+            // Up and Down
+            if ( resultsBuffer[1] > 11000 || resultsBuffer[1] < 4000 ) {
+                if (!joystickMoved) {
+                    joystickMoved = 1;  // Joystick is moving
 
-            if (resultsBuffer[1] > 11000) { // Su
-                if (!joystickMoved) {
-                    joystickMoved = 1;  // Joystick è in movimento
-                    if (menu_selection == 0) {
-                        menu_selection = 1; // Vai all'ultimo
-                    } else {
-                        menu_selection = 0;  // Scendi
-                    }
+                    menu_selection++;
+                    menu_selection = menu_selection%2;
                 }
-            } else if (resultsBuffer[1] < 4000) { // Giù
+            // Left
+            }else if( resultsBuffer[0] > 10000 ){
                 if (!joystickMoved) {
-                    joystickMoved = 1;  // Joystick è in movimento
-                    if (menu_selection == 0) {
-                        menu_selection = 1; // Torna al primo
-                    } else {
-                        menu_selection = 0;  // Salta
-                    }
+                    joystickMoved = 1; // Joystick is moving
+
+                    menu_selection = 0;
+                    go_in_maintenance = 0;
+                    go_in_armed = 0;
+                    menu_done = 0;
                 }
-            } else {
+            }else{
                 joystickMoved = 0;  // Joystick fermo
             }
         }
-
-        if ((current_state == MAINTENANCE || menu_done == 1) && resultsBuffer[0] > 10000) { // SX
-                back_to_menu = 1;
-        }
-
     }
 
 }
@@ -122,6 +116,7 @@ void PORT4_IRQHandler(void) {
                     go_in_maintenance = 1;
                     go_in_armed = 0;
                 }
+                menu_done = 0;
             }
             buttonPreviouslyPressed = buttonPressed;
             GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);
