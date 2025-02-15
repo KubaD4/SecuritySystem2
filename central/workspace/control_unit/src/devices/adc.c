@@ -75,16 +75,16 @@ void ADC14_IRQHandler(void) {
 
             if (resultsBuffer[1] > 11000) { // Su
                 if (!joystickMoved) {
-                    joystickMoved = 1;  // Joystick in movimento
+                    joystickMoved = 1;  // Joystick � in movimento
                     if (menu_selection == 0) {
                         menu_selection = 1; // Vai all'ultimo
                     } else {
                         menu_selection = 0;  // Scendi
                     }
                 }
-            } else if (resultsBuffer[1] < 4000) { // Gi
+            } else if (resultsBuffer[1] < 4000) { // Gi�
                 if (!joystickMoved) {
-                    joystickMoved = 1;  // Joystick in movimento
+                    joystickMoved = 1;  // Joystick � in movimento
                     if (menu_selection == 0) {
                         menu_selection = 1; // Torna al primo
                     } else {
@@ -121,8 +121,6 @@ void PORT4_IRQHandler(void) {
                 else if (menu_selection == 1) {
                     go_in_maintenance = 1;
                     go_in_armed = 0;
-                }else{
-
                 }
             }
             buttonPreviouslyPressed = buttonPressed;
@@ -133,6 +131,23 @@ void PORT4_IRQHandler(void) {
                 back_to_menu = 1;
             }
             GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);
+        }
+
+
+        if (status & PIN_IDENTIFICATION) {
+            printf("Entrato in P4 handler\n");
+
+            SensorData sensor_data = readSensorData();
+
+            // Handle authentication
+            if (sensor_data.identification) {
+               password_correct = 1;
+            }
+
+
+            // Clear the interrupt flags
+            GPIO_clearInterruptFlag(GPIO_PORT_P4, PIN_IDENTIFICATION);
+            printf("__USCITO__\n");
         }
 }
 
