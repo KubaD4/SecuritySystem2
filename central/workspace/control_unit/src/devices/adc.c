@@ -106,6 +106,7 @@ void PORT4_IRQHandler(void) {
     uint64_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4);
     // Joystick Button Handling
         if (status & GPIO_PIN1 && current_state == DISARMED) {
+            printf("PREMUTO\n");
             int buttonPressed = !(P4IN & GPIO_PIN1);
             if (buttonPressed && !buttonPreviouslyPressed) {
                 if (menu_selection == 0) {
@@ -125,6 +126,8 @@ void PORT4_IRQHandler(void) {
             if (buttonPressed && !buttonPreviouslyPressed) {
                 back_to_menu = 1;
             }
+
+            buttonPreviouslyPressed = buttonPressed;
             GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);
         }
 
