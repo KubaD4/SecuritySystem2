@@ -38,3 +38,7 @@ void finish_triggered() {
     _alarmStop();
     password_correct = 0;
 }
+
+void setTriggerInfo(uint8_t room) {
+    triggered_room = room;
+}
