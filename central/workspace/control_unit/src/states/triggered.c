@@ -23,11 +23,6 @@ void prepare_triggered() {
 
 void handle_triggered(void) {
     handleLEDTriggered();
-    if(password_correct) {
-        finish_triggered();
-        current_state = DISARMED;
-        prepare_disarmed();
-    }
 }
 
 void finish_triggered() {
@@ -42,4 +37,13 @@ void finish_triggered() {
 
 void setTriggerInfo(uint8_t room) {
     triggered_room = room;
+}
+
+State_t evaluate_triggered(){
+    if(password_correct) {
+        finish_triggered();
+        current_state = DISARMED;
+        prepare_disarmed();
+    }
+    return TRIGGERED;
 }

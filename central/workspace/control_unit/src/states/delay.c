@@ -35,19 +35,18 @@ void handle_delay(void) {
     clearLCDtime();
     writeLCDtime(message);
 
+    next_state = evaluate_delay();
+}
+
+State_t evaluate_delay() {
     if(timer <= 0) {
-        finish_delay();
-        current_state = ARMED;
-        prepare_armed();
+        return ARMED;
     }else if (password_correct){
-        finish_grace();
-        current_state = DISARMED;
-        prepare_disarmed();
+        return DISARMED;
     }else if (light) {
-        finish_disarmed();
-        current_state = TRIGGERED;
-        prepare_triggered();
+        return TRIGGERED;
     }
+    return DELAY;
 }
 
 

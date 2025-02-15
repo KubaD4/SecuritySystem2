@@ -37,29 +37,20 @@ void handle_disarmed(void) {
     }
 
     if (back_to_menu) {
-            finish_disarmed();
-            prepare_disarmed();
+            menu_done = 0;
             back_to_menu = 0;
     }
+}
 
+State_t evaluate_disarmed() {
     if (light) {
-        finish_disarmed();
-        current_state = TRIGGERED;
-        prepare_triggered();
+        return TRIGGERED;
     } else if ( password_correct && go_in_maintenance ) {
-        finish_disarmed();
-        current_state = MAINTENANCE;
-        prepare_maintenance();
+        return MAINTENANCE;
     } else if ( password_correct && go_in_armed ) {
-        finish_disarmed();
-        current_state = DELAY;
-        prepare_delay();
-        //current_state = ARMED;
-        //prepare_armed();
+        return DELAY;
     }
-
-
-
+    return DISARMED;
 }
 
 

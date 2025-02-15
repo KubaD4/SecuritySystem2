@@ -15,13 +15,6 @@ void prepare_maintenance(){
 }
 
 void handle_maintenance(){
-    if(back_to_menu) {
-        back_to_menu = 0;
-        finish_triggered();
-        finish_maintenance();
-        current_state = DISARMED;
-        prepare_disarmed();
-     }
 }
 
 void finish_maintenance(){
@@ -33,4 +26,11 @@ void finish_maintenance(){
     password_correct = 0;
     flag = 0;
     back_to_menu = 0;
+}
+
+State_t evaluate_maintenance(){
+    if(back_to_menu) {
+        return DISARMED;
+    }
+    return MAINTENANCE;
 }

@@ -38,17 +38,15 @@ void handle_grace(void) {
     sprintf(message, "%d s", timer);
     clearLCDtime();
     writeLCDtime(message);
+}
 
-
+State_t evaluate_grace() {
     if(password_correct) {
-        finish_grace();
-        current_state = DISARMED;
-        prepare_disarmed();
+        return DISARMED;
     } else if(timer <= 0 || light) {
-        finish_grace();
-        current_state = TRIGGERED;
-        prepare_triggered();
+        return TRIGGERED;
     }
+    return GRACE;
 }
 
 
