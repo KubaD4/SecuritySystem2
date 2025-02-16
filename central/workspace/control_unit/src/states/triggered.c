@@ -10,7 +10,7 @@
 #include "../../include/mqtt_handler.h"  // Added for room name functions
 
 // Added globals to store trigger information
-static uint8_t triggered_room = 0;
+static int triggered_room = 0;
 
 void prepare_triggered() {
     password_correct = 0;
@@ -41,7 +41,7 @@ void finish_triggered() {
     password_correct = 0;
 }
 
-void setTriggerInfo(uint8_t room) {
+void setTriggerInfo(int room) {
     triggered_room = room;
 }
 

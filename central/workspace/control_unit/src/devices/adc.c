@@ -88,9 +88,9 @@ void ADC14_IRQHandler(void) {
             }
         }
 
-        if ((current_state == MAINTENANCE || menu_done == 1) && resultsBuffer[0] > 10000) { // SX
-                back_to_menu = 1;
-        }
+//        if ((current_state == MAINTENANCE || menu_done == 1) && resultsBuffer[0] > 10000) { // SX
+//                back_to_menu = 1;
+//        }
     }
 }
 
@@ -127,22 +127,6 @@ void PORT4_IRQHandler(void) {
                 back_to_menu = 1;
             }
             GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);
-        }
-
-
-        if (status & PIN_IDENTIFICATION) {
-            printf("Entrato in P4 handler\n");
-
-            SensorData sensor_data = readSensorData();
-
-            // Handle authentication
-            if (sensor_data.identification) {
-               password_correct = 1;
-            }
-
-            // Clear the interrupt flags
-            GPIO_clearInterruptFlag(GPIO_PORT_P4, PIN_IDENTIFICATION);
-            printf("__USCITO__\n");
         }
 }
 

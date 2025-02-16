@@ -9,10 +9,13 @@
 #include "../../include/led.h"
 #include "../../include/timer.h"
 
+int prev_time;
+
 void prepare_delay(){
     timer = 15;  // 15 second delay period
     password_correct = 0;
     light = 0;
+    prev_time = 15;
 
     writeLCDMessage("DELAY PERIOD:");
     writeLCDsubtitle("Exit the house");
@@ -27,9 +30,15 @@ void prepare_delay(){
 void handle_delay(void) {
     char message[32];  // Buffer to write in the screen
 
-    sprintf(message, "%d s", timer);
-    clearLCDtime();
-    writeLCDtime(message);
+
+
+    if(prev_time != timer){
+        sprintf(message, "%d s", timer);
+        clearLCDtime();
+        writeLCDtime(message);
+        prev_time=timer;
+    }
+
 }
 
 void finish_delay(){

@@ -35,11 +35,6 @@ static const Timer_A_UpModeConfig upConfigLED = {
 
 /* Initialize alarm: configure and start LED and buzzer */
 void _alarmInit(void) {
-    /* Setup RED LED on P2.5 for blinking */
-    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN5);
-    /* Setup GREEN LED on P2.6 */
-    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN6);
-    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);  // Turn off GREEN LED during alarm
 
     Timer_A_configureUpMode(TIMER_A1_BASE, &upConfigLED);
     Timer_A_startCounter(TIMER_A1_BASE, TIMER_A_UP_MODE);
@@ -59,7 +54,5 @@ void _alarmStop(void) {
    Timer_A_stop(TIMER_A1_BASE);         // Stop LED timer
    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN7);
    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN7);  // Turn off buzzer
-   GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN5);  // Turn off RED LED
-   GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN6); // Turn on GREEN LED
 
 }
