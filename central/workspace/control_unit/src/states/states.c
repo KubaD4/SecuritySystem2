@@ -5,6 +5,9 @@
  ******************************/
 State_t current_state = DISARMED;
 State_t next_state = DISARMED;
+#ifndef PIN_LENGTH
+#define PIN_LENGTH 4
+#endif
 
 /******************************
  *      System Variables      *
@@ -14,7 +17,7 @@ volatile int password_correct = 0;
 volatile int opened_safe = 0;      // Door opened
 volatile int opened_critical = 0;  // Other sensor opened
 volatile int light = 0;
-
+char globalPassword[PIN_LENGTH + 1] = "0000";
 /******************************
  *      Menu Variables        *
  ******************************/
@@ -28,5 +31,7 @@ volatile int menu_done = 0;
  ******************************/
 volatile int go_in_maintenance = 0;
 volatile int go_in_armed = 0;
+volatile int go_in_change_password = 0;
+volatile int change_password = 0;
 volatile int flag = 0;
 

@@ -17,7 +17,7 @@ void prepare_armed(){
 }
 
 void handle_armed(void) {
-    if (keypad_authenticate("1234") == KEYPAD_CORRECT) {
+    if (keypad_authenticate(globalPassword) == KEYPAD_CORRECT) {
         password_correct = 1;
     }
 }

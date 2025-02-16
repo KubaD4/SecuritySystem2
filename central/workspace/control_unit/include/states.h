@@ -13,6 +13,7 @@ typedef enum {
     GRACE,
     MAINTENANCE,
     DELAY,
+    CHANGE_PASSWORD, //AGGIUNTA
     NUM_STATES // Number of states (automatically calculated)
 } State_t;
 
@@ -29,6 +30,9 @@ typedef struct {
 /******************************
  *       Global Variables     *
  ******************************/
+#ifndef PIN_LENGTH
+#define PIN_LENGTH 4
+#endif
 
 // State variables
 extern State_t current_state;
@@ -39,11 +43,13 @@ extern volatile int state_code;
 extern volatile int password_correct;
 extern volatile int light;
 extern volatile int timer;
+extern char globalPassword[PIN_LENGTH + 1];
 
 // Disarmed constants
 extern volatile int menu_selection;
 extern volatile int go_in_maintenance;
 extern volatile int go_in_armed;
+extern volatile int go_in_change_password;
 extern volatile int flag;
 extern volatile int back_to_menu;
 extern volatile int last_selection;
@@ -100,5 +106,11 @@ void prepare_delay(void);
 void handle_delay(void);
 State_t evaluate_delay(void);
 void finish_delay(void);
+
+// Password Change interface (AGGIUNTA)
+void prepare_change_password(void);
+void handle_change_password(void);
+State_t evaluate_change_password(void);
+void finish_change_password(void);
 
 #endif // STATES_H

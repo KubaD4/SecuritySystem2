@@ -161,30 +161,39 @@ bool keypad_verifyPassword(const char * correctPin) {
 // cancellare l'area superiore (dove possono esserci altri messaggi).
 //
 void keypad_updateDisplay(void) {
+    // Area in cui visualizzare gli asterischi (puoi regolare i valori in base alle tue esigenze)
     int y_start = 100;
     int height = 28;
-    Graphics_Rectangle rect;
-    rect.xMin = 0;
-    rect.yMin = y_start;
-    rect.xMax = 128 - 1;
-    rect.yMax = y_start + height - 1;
 
-    // Cancella l'area inferiore (colore bianco)
-    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-    Graphics_fillRectangle(&g_sContext, &rect);
-
-    // Crea una stringa con tanti asterischi quante cifre sono state inserite
+    // Costruisce la stringa con tanti asterischi quanti sono i caratteri inseriti
     char displayStr[PIN_LENGTH + 1];
     for (uint8_t i = 0; i < keyBufferIndex; i++) {
         displayStr[i] = '*';
     }
     displayStr[keyBufferIndex] = '\0';
 
-    // Scrive la stringa in rosso nell'area bassa
+    // Usa una variabile statica per ricordare l'ultimo contenuto visualizzato
+    static char lastDisplayed[PIN_LENGTH + 1] = "";
+
+    // Se la stringa corrente è identica a quella già mostrata, non fare nulla (evita vibrazioni)
+    if (strcmp(displayStr, lastDisplayed) == 0) {
+        return;
+    }
+
+    // Aggiorna il contenuto memorizzato
+    strcpy(lastDisplayed, displayStr);
+
+    // Cancella l'area in cui devono comparire gli asterischi
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, y_start, 127, y_start + height - 1});
+
+    // Disegna la stringa centrata (sia orizzontalmente che verticalmente nell'area dedicata)
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
-    Graphics_drawString(&g_sContext, (int8_t *)displayStr, AUTO_STRING_LENGTH, 56, y_start + 10, OPAQUE_TEXT);
+    Graphics_drawStringCentered(&g_sContext, (int8_t *)displayStr, AUTO_STRING_LENGTH, 64, y_start + (height / 2), OPAQUE_TEXT);
+
     Graphics_flushBuffer(&g_sContext);
 }
+
 
 //
 // Funzione che esegue l'aggiornamento del tastierino e, se il buffer è completo, controlla il PIN.

@@ -27,7 +27,7 @@ void prepare_triggered() {
 
 void handle_triggered(void) {
     handleLEDTriggered();
-    if (keypad_authenticate("1234") == KEYPAD_CORRECT) {
+    if (keypad_authenticate(globalPassword) == KEYPAD_CORRECT) {
         password_correct = 1;
     }
 }

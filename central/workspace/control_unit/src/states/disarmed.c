@@ -13,6 +13,7 @@ void prepare_disarmed(){
     menu_selection = 0;
     go_in_maintenance = 0;
     go_in_armed = 0;
+    go_in_change_password = 0;
     menu_done = 0;
     displayDisarmedMenu(menu_selection);
     handleLEDDisarmed();
@@ -24,13 +25,14 @@ void prepare_disarmed(){
 
 void handle_disarmed(void) {
 
-    if (!menu_done){
-        if( go_in_maintenance + go_in_armed > 0){
+    if (!menu_done) {
+        // MODALITA INSERIMENTO PASSWORD
+        if (go_in_maintenance + go_in_armed + go_in_change_password > 0) {
            writeLCDMessage(" Enter Password ");
            writeLCDsubtitle("<- to go back");
            menu_done = 1;
-        }else {
-            if ( menu_selection != last_selection ) {
+        } else {
+            if (menu_selection != last_selection) {
                 updateSelection(menu_selection);
             }
             last_selection = menu_selection;
@@ -38,16 +40,22 @@ void handle_disarmed(void) {
     }
 
     if (back_to_menu) {
-            finish_disarmed();
-            prepare_disarmed();
-            back_to_menu = 0;
+        finish_disarmed();
+        prepare_disarmed();
+        back_to_menu = 0;
     }
 
-    // Se siamo in modalita "inserimento password" (menu_done == 1),
-    // controlliamo il PIN tramite il tastierino.
-    if(menu_done) {
-        if(keypad_authenticate("1234") == KEYPAD_CORRECT) {
-            password_correct = 1;
+    if (menu_done) {
+        if (menu_selection == 2) {  // "Change Password" SELEZIONATO
+            // VERIFICA PASSWORD CORRENTE
+            if (keypad_authenticate(globalPassword) == KEYPAD_CORRECT) {
+                password_correct = 1;
+                go_in_change_password = 1;
+            }
+        } else {
+            if (keypad_authenticate(globalPassword) == KEYPAD_CORRECT) {
+                password_correct = 1;
+            }
         }
     }
 }
@@ -55,10 +63,12 @@ void handle_disarmed(void) {
 State_t evaluate_disarmed(){
     if (light) {
         return TRIGGERED;
-    } else if ( password_correct && go_in_maintenance ) {
+    } else if (password_correct && go_in_maintenance) {
         return MAINTENANCE;
-    } else if ( password_correct && go_in_armed ) {
+    } else if (password_correct && go_in_armed) {
         return DELAY;
+    } else if (password_correct && go_in_change_password) {
+        return CHANGE_PASSWORD;
     }
     return DISARMED;
 }

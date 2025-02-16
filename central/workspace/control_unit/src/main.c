@@ -36,7 +36,8 @@ StateMachine_t fsm[] = {
     {TRIGGERED, prepare_triggered, handle_triggered, evaluate_triggered, finish_triggered},
     {GRACE, prepare_grace, handle_grace, evaluate_grace, finish_grace},
     {MAINTENANCE, prepare_maintenance, handle_maintenance, evaluate_maintenance, finish_maintenance},
-    {DELAY, prepare_delay, handle_delay, evaluate_delay, finish_delay}
+    {DELAY, prepare_delay, handle_delay, evaluate_delay, finish_delay},
+    {CHANGE_PASSWORD, prepare_change_password, handle_change_password, evaluate_change_password, finish_change_password}
 };
 
 /******************************
