@@ -1,4 +1,4 @@
-#include "../../include/STATES.h"
+#include "../../include/states.h"
 #include "../../include/keypad.h"
 #include "../../include/grap.h"
 #include "../../LcdDriver/Crystalfontz128x128_ST7735.h"
@@ -12,7 +12,6 @@
 #endif
 
 // globalPassword definita in states.c e dichiarata in states.h
-extern char globalPassword[PIN_LENGTH + 1];
 
 // In questo stato, assumiamo che la verifica della password corrente sia già avvenuta (da DISARMED)
 // e che entriamo direttamente nella fase di inserimento della nuova password.
@@ -57,9 +56,9 @@ void handle_change_password(void) {
 // Valutazione: se il buffer raggiunge la lunghezza attesa (o viene premuto back_to_menu),
 // visualizza "New Passcode enabled", salva la nuova password e torna a DISARMED.
 State_t evaluate_change_password(void) {
-    if (strlen(keypad_getBuffer()) >= PIN_LENGTH || back_to_menu) {
+    if (strlen(keyBuffer) >= PIN_LENGTH || back_to_menu) {
         // Salva la nuova password senza interagire con il display
-        strcpy(globalPassword, keypad_getBuffer());
+        strcpy(globalPassword, keyBuffer);
         return DISARMED;
     }
     return CHANGE_PASSWORD;

@@ -43,7 +43,8 @@ extern volatile int state_code;
 extern volatile int password_correct;
 extern volatile int light;
 extern volatile int timer;
-extern char globalPassword[PIN_LENGTH + 1];
+extern volatile char globalPassword[PIN_LENGTH + 1];
+extern volatile char keyBuffer[PIN_LENGTH + 1];
 
 // Disarmed constants
 extern volatile int menu_selection;

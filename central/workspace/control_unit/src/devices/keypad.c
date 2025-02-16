@@ -1,4 +1,5 @@
 #include "../../include/keypad.h"
+#include "../../include/states.h"
 #include <stdio.h>
 #include <string.h>
 #include <ti/devices/msp432p4xx/inc/msp.h>
@@ -18,7 +19,7 @@ static char keymap[4][4] = {
 };
 
 // Buffer per salvare i tasti inseriti
-static char keyBuffer[PIN_LENGTH + 1] = {0};
+// static char keyBuffer[PIN_LENGTH + 1] = {0};
 static uint8_t keyBufferIndex = 0;
 
 // Variabile per evitare di rilevare ripetutamente lo stesso tasto (debounce)
