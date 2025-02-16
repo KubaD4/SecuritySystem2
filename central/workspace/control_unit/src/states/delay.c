@@ -1,6 +1,9 @@
+#include "../../include/states.h"
+
+#ifndef TEST_BUILD
+
 #include <ti/devices/msp432p4xx/inc/msp.h>
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
-#include "../../include/states.h"
 #include "../../include/alarm.h"
 #include "../../include/grap.h"
 #include "../../include/led.h"
@@ -29,17 +32,6 @@ void handle_delay(void) {
     writeLCDtime(message);
 }
 
-State_t evaluate_delay() {
-    if(timer <= 0) {
-        return ARMED;
-    }else if (password_correct){
-        return DISARMED;
-    }else if (light) {
-        return TRIGGERED;
-    }
-    return DELAY;
-}
-
 void finish_delay(){
     timer = 0;
     password_correct = 0;
@@ -50,4 +42,15 @@ void finish_delay(){
     Interrupt_disableInterrupt(INT_TA3_N);
 }
 
+#endif
 
+State_t evaluate_delay() {
+    if(timer <= 0) {
+        return ARMED;
+    }else if (password_correct){
+        return DISARMED;
+    }else if (light) {
+        return TRIGGERED;
+    }
+    return DELAY;
+}

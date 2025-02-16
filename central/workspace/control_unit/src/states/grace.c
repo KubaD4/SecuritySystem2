@@ -1,6 +1,9 @@
+#include "../../include/states.h"
+
+#ifndef TEST_BUILD
+
 #include <ti/devices/msp432p4xx/inc/msp.h>
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
-#include "../../include/states.h"
 #include "../../include/alarm.h"
 #include "../../include/grap.h"
 #include "../../include/led.h"
@@ -34,15 +37,6 @@ void handle_grace(void) {
     }
 }
 
-State_t evaluate_grace() {
-    if(password_correct) {
-        return DISARMED;
-    } else if(timer <= 0 || light) {
-        return TRIGGERED;
-    }
-    return GRACE;
-}
-
 void finish_grace(){
     password_correct = 0;
     timer = 0;  // 30 second grace period
@@ -53,4 +47,13 @@ void finish_grace(){
     Interrupt_disableInterrupt(INT_TA3_N);
 }
 
+#endif
 
+State_t evaluate_grace() {
+    if(password_correct) {
+        return DISARMED;
+    } else if(timer <= 0 || light) {
+        return TRIGGERED;
+    }
+    return GRACE;
+}

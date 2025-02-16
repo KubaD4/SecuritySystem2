@@ -1,4 +1,8 @@
 #include "../../include/states.h"
+
+#ifndef TEST_BUILD
+
+#include <stdio.h>
 #include "../../include/alarm.h"
 #include "../../include/grap.h"
 #include "../../include/led.h"
@@ -32,13 +36,6 @@ void handle_triggered(void) {
     }
 }
 
-State_t evaluate_triggered(){
-    if(password_correct) {
-        return DISARMED;
-    }
-    return TRIGGERED;
-}
-
 void finish_triggered() {
     _alarmStop();
     password_correct = 0;
@@ -46,4 +43,13 @@ void finish_triggered() {
 
 void setTriggerInfo(uint8_t room) {
     triggered_room = room;
+}
+
+#endif
+
+State_t evaluate_triggered(){
+    if(password_correct) {
+        return DISARMED;
+    }
+    return TRIGGERED;
 }

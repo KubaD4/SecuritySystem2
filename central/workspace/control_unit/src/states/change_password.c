@@ -1,15 +1,15 @@
 #include "../../include/states.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+#ifndef TEST_BUILD
+
 #include "../../include/keypad.h"
 #include "../../include/grap.h"
 #include "../../LcdDriver/Crystalfontz128x128_ST7735.h"
-#include <string.h>
 #include <ti/grlib/grlib.h>
-#include <stdio.h>
-#include <stdbool.h>
 
-#ifndef PIN_LENGTH
-#define PIN_LENGTH 4
-#endif
 
 // globalPassword definita in states.c e dichiarata in states.h
 
@@ -53,6 +53,15 @@ void handle_change_password(void) {
     Graphics_flushBuffer(&g_sContext);
 }
 
+// Finitura: mostra un messaggio finale e resetta il buffer e i flag
+void finish_change_password(void) {
+    writeLCDMessage("Password Changed");
+    __delay_cycles(7000000);
+    keypad_clearBuffer();
+}
+
+#endif
+
 // Valutazione: se il buffer raggiunge la lunghezza attesa (o viene premuto back_to_menu),
 // visualizza "New Passcode enabled", salva la nuova password e torna a DISARMED.
 State_t evaluate_change_password(void) {
@@ -64,9 +73,3 @@ State_t evaluate_change_password(void) {
     return CHANGE_PASSWORD;
 }
 
-// Finitura: mostra un messaggio finale e resetta il buffer e i flag
-void finish_change_password(void) {
-    writeLCDMessage("Password Changed");
-    __delay_cycles(7000000);
-    keypad_clearBuffer();
-}

@@ -1,9 +1,12 @@
 #include "../../include/states.h"
+
+#ifndef TEST_BUILD
+
 #include "../../include/alarm.h"
 #include "../../include/grap.h"
 #include "../../include/adc.h"
 #include "../../include/keypad.h"
-//#include "../include/sound.h"
+#include "../../include/led.h"
 
 void prepare_disarmed(){
     _alarmStop();
@@ -60,6 +63,16 @@ void handle_disarmed(void) {
     }
 }
 
+
+void finish_disarmed(){
+    menu_selection = 0;
+    menu_done = 0;
+    buttonPreviouslyPressed = 0;
+    password_correct = 0;
+}
+
+#endif
+
 State_t evaluate_disarmed(){
     if (light) {
         return TRIGGERED;
@@ -71,12 +84,4 @@ State_t evaluate_disarmed(){
         return CHANGE_PASSWORD;
     }
     return DISARMED;
-}
-
-
-void finish_disarmed(){
-    menu_selection = 0;
-    menu_done = 0;
-    buttonPreviouslyPressed = 0;
-    password_correct = 0;
 }

@@ -1,9 +1,11 @@
 #include "../../include/states.h"
+
+#ifndef TEST_BUILD
+
 #include "../../include/alarm.h"
 #include "../../include/grap.h"
 #include "../../include/led.h"
 #include "../../include/keypad.h"
-//#include "../include/sound.h"
 
 // Bind interrupt handlers for sensor signal
 void prepare_armed(){
@@ -22,6 +24,15 @@ void handle_armed(void) {
     }
 }
 
+void finish_armed(){
+    opened_safe = 0;
+    opened_critical = 0;
+    password_correct = 0;
+    light = 0;
+}
+
+#endif
+
 State_t evaluate_armed() {
     if (opened_safe) {
         return GRACE;
@@ -33,11 +44,4 @@ State_t evaluate_armed() {
         return DISARMED;
     }
     return ARMED;
-}
-
-void finish_armed(){
-    opened_safe = 0;
-    opened_critical = 0;
-    password_correct = 0;
-    light = 0;
 }
