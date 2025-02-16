@@ -34,31 +34,23 @@ void handle_change_password(void) {
     keypad_update();
     strcpy(newPass, keypad_getBuffer());
 
-    // Se il contenuto non cambiato, esci senza aggiornare display
+    // Aggiorna il display solo se il contenuto è cambiato
     if (strcmp(newPass, lastDisplayed) == 0) {
         return;
     }
-
-    // Altrimenti memorizza il nuovo contenuto
     strcpy(lastDisplayed, newPass);
 
-    // Non cancellare l'intero display: lasciamo il titolo fisso in alto
-    // Cancella solo l'area di inserimento (ad es. da y = 70 a 110)
+    // Non cancellare il titolo fisso ("INSERT NEW PASSWORD:")
+    // Cancella solo l'area destinata ai tasti inseriti (ad es. da y=70 a y=110)
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 70, 127, 110});
 
-    // Se buffer vuoto, visualizza il prompt fisso
     if (strlen(newPass) == 0) {
-        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-        Graphics_drawStringCentered(&g_sContext, (int8_t *)"INSERT NEW PASSWORD:",
-                                    AUTO_STRING_LENGTH, 64, 50, TRANSPARENT_TEXT);
+        // Se il buffer è vuoto, non fare nulla (il titolo rimane)
     } else {
-        // Altrimenti visualizza il contenuto inserito in rosso
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
-        Graphics_drawStringCentered(&g_sContext, (int8_t *)newPass,
-                                    AUTO_STRING_LENGTH, 64, 90, OPAQUE_TEXT);
+        Graphics_drawStringCentered(&g_sContext, (int8_t *)newPass, AUTO_STRING_LENGTH, 64, 90, OPAQUE_TEXT);
     }
-
     Graphics_flushBuffer(&g_sContext);
 }
 
@@ -66,15 +58,7 @@ void handle_change_password(void) {
 // visualizza "New Passcode enabled", salva la nuova password e torna a DISARMED.
 State_t evaluate_change_password(void) {
     if (strlen(keypad_getBuffer()) >= PIN_LENGTH || back_to_menu) {
-        // Mostra il messaggio di conferma nell'area di inserimento
-        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-        Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 70, 127, 110});
-        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-        Graphics_drawStringCentered(&g_sContext, (int8_t *)"New Passcode enabled", AUTO_STRING_LENGTH, 64, 90, OPAQUE_TEXT);
-        Graphics_flushBuffer(&g_sContext);
-        __delay_cycles(3000000);
-
-        // Aggiorna la password globale
+        // Salva la nuova password senza interagire con il display
         strcpy(globalPassword, keypad_getBuffer());
         return DISARMED;
     }
