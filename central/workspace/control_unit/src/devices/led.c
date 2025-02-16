@@ -43,10 +43,10 @@ void handleLEDTriggered(void) {
 // Interrupt handler for LED blinking
 void TA1_N_IRQHandler(void) {
     Timer_A_clearInterruptFlag(TIMER_A1_BASE);
-    if(state_code == ALARM_STATE_TRIGGERED) {
+    if(current_state == TRIGGERED ) {
         GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN5);  // Toggle only red
     }
-    else if(state_code == ALARM_STATE_GRACE) {
+    else if( current_state == GRACE) {
         GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN5);  // Toggle both
         GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN6);
     }

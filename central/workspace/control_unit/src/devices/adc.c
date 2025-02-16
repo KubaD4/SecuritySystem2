@@ -73,35 +73,25 @@ void ADC14_IRQHandler(void) {
         // Joystick Direction Handling
         if (current_state == DISARMED) {
 
-            if (resultsBuffer[1] > 11000) { // Su
+            if (resultsBuffer[1] > 11000) { // SU
                 if (!joystickMoved) {
-                    joystickMoved = 1;  // Joystick è in movimento
-                    if (menu_selection == 0) {
-                        menu_selection = 1; // Vai all'ultimo
-                    } else {
-                        menu_selection = 0;  // Scendi
-                    }
+                    joystickMoved = 1;
+                    menu_selection = (menu_selection - 1 + 3) % 3; // ORA GESTISCE 3 SELEZIONI  IN MODO CICLICO
                 }
-            } else if (resultsBuffer[1] < 4000) { // Giù
+            } else if (resultsBuffer[1] < 4000) { // GIU
                 if (!joystickMoved) {
-                    joystickMoved = 1;  // Joystick è in movimento
-                    if (menu_selection == 0) {
-                        menu_selection = 1; // Torna al primo
-                    } else {
-                        menu_selection = 0;  // Salta
-                    }
+                    joystickMoved = 1;
+                    menu_selection = (menu_selection + 1) % 3;
                 }
             } else {
-                joystickMoved = 0;  // Joystick fermo
+                joystickMoved = 0;
             }
         }
 
         if ((current_state == MAINTENANCE || menu_done == 1) && resultsBuffer[0] > 10000) { // SX
                 back_to_menu = 1;
         }
-
     }
-
 }
 
 /*
@@ -115,11 +105,17 @@ void PORT4_IRQHandler(void) {
             int buttonPressed = !(P4IN & GPIO_PIN1);
             if (buttonPressed && !buttonPreviouslyPressed) {
                 if (menu_selection == 0) {
-                    go_in_maintenance = 0;
                     go_in_armed = 1;
+                    go_in_maintenance = 0;
+                    go_in_change_password = 0;
                 }
                 else if (menu_selection == 1) {
                     go_in_maintenance = 1;
+                    go_in_armed = 0;
+                    go_in_change_password = 0;
+                }else if (menu_selection == 2) {
+                    go_in_change_password = 1;
+                    go_in_maintenance = 0;
                     go_in_armed = 0;
                 }
             }
@@ -144,11 +140,9 @@ void PORT4_IRQHandler(void) {
                password_correct = 1;
             }
 
-
             // Clear the interrupt flags
             GPIO_clearInterruptFlag(GPIO_PORT_P4, PIN_IDENTIFICATION);
             printf("__USCITO__\n");
         }
 }
-
 

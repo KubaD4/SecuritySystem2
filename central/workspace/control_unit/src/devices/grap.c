@@ -81,107 +81,62 @@ void clearLCDtime() {
 }
 
 void displayDisarmedMenu(uint8_t selected_option) {
-
-    // Clear previous display
+    // Pulisce il display
     Graphics_clearDisplay(&g_sContext);
 
     const int CENTER_X = 64;
+    // Aggiorniamo l'array con le 3 opzioni
     const char* MENU_ITEMS[] = {
         "Armed",
-        "Maintenance"
+        "Maintenance",
+        "Change Password"
     };
-    const int MENU_Y_POSITIONS[] = {55, 75};
+    // Impostiamo le posizioni verticali per le 3 opzioni
+    const int MENU_Y_POSITIONS[] = {45, 65, 85};
 
-    // Set default color and draw static text
+    // Imposta il colore nero per il testo
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
 
-    // Draw title
-    Graphics_drawStringCentered(
-        &g_sContext,
-        (int8_t*)"DISARMED MENU",
-        AUTO_STRING_LENGTH,
-        CENTER_X,
-        20,
-        TRANSPARENT_TEXT
-    );
+    // Disegna il titolo e le istruzioni
+    Graphics_drawStringCentered(&g_sContext, (int8_t*)"DISARMED MENU", AUTO_STRING_LENGTH, CENTER_X, 20, TRANSPARENT_TEXT);
+    Graphics_drawStringCentered(&g_sContext, (int8_t*)"Up/Down to select", AUTO_STRING_LENGTH, CENTER_X, 35, TRANSPARENT_TEXT);
 
-    // Draw instruction
-    Graphics_drawStringCentered(
-        &g_sContext,
-        (int8_t*)"Up/Down to select",
-        AUTO_STRING_LENGTH,
-        CENTER_X,
-        35,
-        TRANSPARENT_TEXT
-    );
-
-    // Draw menu items
-    for (int i = 0; i < 2; i++) {
-        // Draw all items in black first
+    // Disegna le opzioni di menu
+    for (int i = 0; i < 3; i++) {
+        // Disegna ogni opzione in nero
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-        Graphics_drawStringCentered(
-            &g_sContext,
-            (int8_t*)MENU_ITEMS[i],
-            AUTO_STRING_LENGTH,
-            CENTER_X,
-            MENU_Y_POSITIONS[i],
-            TRANSPARENT_TEXT
-        );
-
-        // If this is the selected item, redraw it in red
+        Graphics_drawStringCentered(&g_sContext, (int8_t*)MENU_ITEMS[i], AUTO_STRING_LENGTH, CENTER_X, MENU_Y_POSITIONS[i], TRANSPARENT_TEXT);
+        // Se l'opzione è quella selezionata, la ridisegna in rosso (con sfondo opaco)
         if (selected_option == i) {
             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
-            Graphics_drawStringCentered(
-                &g_sContext,
-                (int8_t*)MENU_ITEMS[i],
-                AUTO_STRING_LENGTH,
-                CENTER_X,
-                MENU_Y_POSITIONS[i],
-                OPAQUE_TEXT
-            );
+            Graphics_drawStringCentered(&g_sContext, (int8_t*)MENU_ITEMS[i], AUTO_STRING_LENGTH, CENTER_X, MENU_Y_POSITIONS[i], OPAQUE_TEXT);
         }
     }
 }
 
 void updateSelection(uint8_t selected_option) {
-    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE); // Set to background color
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE); // Imposta il colore di sfondo
+    // Aggiorna l'area (ad esempio, da y = 90 a 105) per cancellare il vecchio testo
     Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 90, 127, 105});
 
     const int CENTER_X = 64;
+    // Ora usiamo 3 opzioni
     const char* MENU_ITEMS[] = {
         "Armed",
-        "Maintenance"
+        "Maintenance",
+        "Change Password"
     };
-    const int MENU_Y_POSITIONS[] = {55, 75};
+    const int MENU_Y_POSITIONS[] = {45, 65, 85};
 
-    // Draw menu items
-    for (int i = 0; i < 2; i++) {
-        // Draw all items in black first
+    for (int i = 0; i < 3; i++) {
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
-        Graphics_drawStringCentered(
-            &g_sContext,
-            (int8_t*)MENU_ITEMS[i],
-            AUTO_STRING_LENGTH,
-            CENTER_X,
-            MENU_Y_POSITIONS[i],
-            TRANSPARENT_TEXT
-        );
-
-        // If this is the selected item, redraw it in red
+        Graphics_drawStringCentered(&g_sContext, (int8_t*)MENU_ITEMS[i], AUTO_STRING_LENGTH, CENTER_X, MENU_Y_POSITIONS[i], TRANSPARENT_TEXT);
         if (selected_option == i) {
             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
-            Graphics_drawStringCentered(
-                &g_sContext,
-                (int8_t*)MENU_ITEMS[i],
-                AUTO_STRING_LENGTH,
-                CENTER_X,
-                MENU_Y_POSITIONS[i],
-                OPAQUE_TEXT
-            );
+            Graphics_drawStringCentered(&g_sContext, (int8_t*)MENU_ITEMS[i], AUTO_STRING_LENGTH, CENTER_X, MENU_Y_POSITIONS[i], OPAQUE_TEXT);
         }
     }
 }
-
 
 /*
  * Vecchia
