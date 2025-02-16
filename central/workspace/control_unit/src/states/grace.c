@@ -5,6 +5,7 @@
 #include "../../include/grap.h"
 #include "../../include/led.h"
 #include "../../include/timer.h"
+#include "../../include/keypad.h"
 
 void prepare_grace(){
     password_correct = 0;
@@ -19,6 +20,7 @@ void prepare_grace(){
     Timer_A_configureUpMode(TIMER_A3_BASE, &conf);
     Timer_A_startCounter(TIMER_A3_BASE, TIMER_A_UP_MODE);
     Interrupt_enableInterrupt(INT_TA3_N);
+    keypad_clearBuffer();
 }
 
 void handle_grace(void) {
@@ -27,6 +29,9 @@ void handle_grace(void) {
     sprintf(message, "%d s", timer);
     clearLCDtime();
     writeLCDtime(message);
+    if (keypad_authenticate("1234") == KEYPAD_CORRECT) {
+        password_correct = 1;
+    }
 }
 
 State_t evaluate_grace() {

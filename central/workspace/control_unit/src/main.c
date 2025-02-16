@@ -16,6 +16,7 @@
 #include "../include/grap.h"
 #include "../include/adc.h"
 #include "../include/timer.h"
+#include "../include/keypad.h"
 #include "../include/lux.h"
 #include "../include/HAL_I2C.h"
 #include "../include/HAL_OPT3001.h"
@@ -108,4 +109,5 @@ void _hwInit() {
     _adcInit();
     _initButton();
     _lightSensorInit();
+    keypad_init();
 }

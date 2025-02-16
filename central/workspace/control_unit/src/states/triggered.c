@@ -2,6 +2,7 @@
 #include "../../include/alarm.h"
 #include "../../include/grap.h"
 #include "../../include/led.h"
+#include "../../include/keypad.h"
 #include "../../include/mqtt_handler.h"  // Added for room name functions
 
 // Added globals to store trigger information
@@ -21,10 +22,14 @@ void prepare_triggered() {
     writeLCDMessage(message);
 
     _alarmInit();
+    keypad_clearBuffer();
 }
 
 void handle_triggered(void) {
     handleLEDTriggered();
+    if (keypad_authenticate("1234") == KEYPAD_CORRECT) {
+        password_correct = 1;
+    }
 }
 
 State_t evaluate_triggered(){

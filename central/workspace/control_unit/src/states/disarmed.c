@@ -2,6 +2,7 @@
 #include "../../include/alarm.h"
 #include "../../include/grap.h"
 #include "../../include/adc.h"
+#include "../../include/keypad.h"
 //#include "../include/sound.h"
 
 void prepare_disarmed(){
@@ -17,6 +18,7 @@ void prepare_disarmed(){
     handleLEDDisarmed();
     updateSelection(menu_selection);
     last_selection = 0;
+    keypad_clearBuffer();
 }
 
 
@@ -39,6 +41,14 @@ void handle_disarmed(void) {
             finish_disarmed();
             prepare_disarmed();
             back_to_menu = 0;
+    }
+
+    // Se siamo in modalita "inserimento password" (menu_done == 1),
+    // controlliamo il PIN tramite il tastierino.
+    if(menu_done) {
+        if(keypad_authenticate("1234") == KEYPAD_CORRECT) {
+            password_correct = 1;
+        }
     }
 }
 

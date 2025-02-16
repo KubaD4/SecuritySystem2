@@ -22,4 +22,8 @@ static inline Timer_A_UpModeConfig get_countdown_config(void) {
 
 void TA3_0_IRQHandler(void);
 
+// --- Nuove firme per il tastierino ---
+void TA2_0_IRQHandler(void);
+void keypadTimer_init(void);
+
 #endif
