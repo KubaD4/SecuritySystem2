@@ -6,7 +6,7 @@
 #include <ti/grlib/grlib.h>
 #include <stdio.h>
 
-//Grace constants
+// Grace constants
 extern volatile int grace_timer;
 
 static inline Timer_A_UpModeConfig get_countdown_config(void) {
@@ -22,7 +22,7 @@ static inline Timer_A_UpModeConfig get_countdown_config(void) {
 
 void TA3_0_IRQHandler(void);
 
-// --- Nuove firme per il tastierino ---
+// --- New signatures for the keypad ---
 void TA2_0_IRQHandler(void);
 void keypadTimer_init(void);
 

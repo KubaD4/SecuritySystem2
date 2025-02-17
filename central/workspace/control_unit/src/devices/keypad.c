@@ -7,10 +7,10 @@
 #include <ti/grlib/grlib.h>
 #include "LcdDriver/Crystalfontz128x128_ST7735.h"
 
-// Il contesto grafico è definito altrove (ad es. in main.c)
+// The graphic context is defined elsewhere (e.g., in main.c)
 extern Graphics_Context g_sContext;
 
-// Mappa del tastierino 4x4
+// 4x4 keypad mapping
 static char keymap[4][4] = {
     {'1', '2', '3', 'A'},
     {'4', '5', '6', 'B'},
@@ -18,18 +18,18 @@ static char keymap[4][4] = {
     {'*', '0', '#', 'D'}
 };
 
-// Buffer per salvare i tasti inseriti
+// Buffer to store the entered keys
 // static char keyBuffer[PIN_LENGTH + 1] = {0};
 static uint8_t keyBufferIndex = 0;
 
-// Variabile per evitare di rilevare ripetutamente lo stesso tasto (debounce)
+// Variable to avoid repeatedly detecting the same key (debounce)
 static bool keyAlreadyPressed = false;
 
 //
-// Configura i pin per il tastierino
+// Configures the pins for the keypad
 //
 void keypad_init(void) {
-    // Configura le colonne come uscite e portale HIGH
+    // Configure columns as outputs and set them HIGH
     GPIO_setAsOutputPin(GPIO_PORT_P6, GPIO_PIN6);
     GPIO_setOutputHighOnPin(GPIO_PORT_P6, GPIO_PIN6);
 
@@ -42,33 +42,33 @@ void keypad_init(void) {
     GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN5);
     GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN5);
 
-    // Configura le righe come ingressi con pull-up
+    // Configure rows as inputs with pull-up resistors
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P3, GPIO_PIN0);  // Row 0
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN7);  // Row 1
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P5, GPIO_PIN2);  // Row 2
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P3, GPIO_PIN6);  // Row 3
 
-    // Azzeriamo il buffer e lo stato di debounce
+    // Clear the buffer and debounce state
     keypad_clearBuffer();
     keyAlreadyPressed = false;
 }
 
 //
-// Funzione non bloccante per scansionare il tastierino.
-// Se viene rilevato un nuovo tasto, lo restituisce; altrimenti, restituisce '\0'.
+// Non-blocking function to scan the keypad.
+// If a new key is detected, it returns the key; otherwise, it returns '\0'.
 //
 char keypad_poll(void) {
     char detectedKey = '\0';
 
-    // Scansiona ogni colonna
+    // Scan each column
     for (int col = 0; col < 4; col++) {
-        // Prima, assicura che tutte le colonne siano HIGH
+        // First, ensure all columns are HIGH
         GPIO_setOutputHighOnPin(GPIO_PORT_P6, GPIO_PIN6);
         GPIO_setOutputHighOnPin(GPIO_PORT_P6, GPIO_PIN7);
         GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN3);
         GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN5);
 
-        // Imposta la colonna corrente LOW
+        // Set the current column LOW
         switch (col) {
             case 0:
                 GPIO_setOutputLowOnPin(GPIO_PORT_P6, GPIO_PIN6);
@@ -83,10 +83,10 @@ char keypad_poll(void) {
                 GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_PIN5);
                 break;
         }
-        // Breve attesa per stabilizzare il segnale
+        // Short delay to stabilize the signal
         __delay_cycles(500);
 
-        // Scansiona le righe
+        // Scan the rows
         for (int row = 0; row < 4; row++) {
             uint8_t pinValue = 1;
             switch (row) {
@@ -103,7 +103,7 @@ char keypad_poll(void) {
                     pinValue = GPIO_getInputPinValue(GPIO_PORT_P3, GPIO_PIN6);
                     break;
             }
-            if (pinValue == 0) {  // Tasto premuto (pul-up)
+            if (pinValue == 0) {  // Key pressed (pull-up)
                 detectedKey = keymap[row][col];
                 break;
             }
@@ -112,7 +112,7 @@ char keypad_poll(void) {
             break;
     }
 
-    // Se viene rilevato un tasto e non è già stato registrato, restituiscilo
+    // If a key is detected and it hasn't been registered yet, return it
     if (detectedKey != '\0') {
         if (!keyAlreadyPressed) {
             keyAlreadyPressed = true;
@@ -127,8 +127,8 @@ char keypad_poll(void) {
 }
 
 //
-// Funzione da chiamare periodicamente (es. dal timer interrupt o dal main loop)
-// per aggiornare il buffer del tastierino
+// Function to be called periodically (e.g., from a timer interrupt or main loop)
+// to update the keypad buffer
 //
 void keypad_update(void) {
     char key = keypad_poll();
@@ -149,58 +149,56 @@ const char* keypad_getBuffer(void) {
 }
 
 //
-// Verifica se il PIN inserito corrisponde a quello atteso.
-// Restituisce true se uguale, false altrimenti.
+// Checks if the entered PIN matches the expected one.
+// Returns true if they match, false otherwise.
 //
 bool keypad_verifyPassword(const char * correctPin) {
     return (strcmp(keyBuffer, correctPin) == 0);
 }
 
 //
-// Aggiorna l'area bassa dello schermo con gli asterischi che rappresentano
-// i tasti inseriti. Si limita ad aggiornare un'area (es. y da 100 a 127) senza
-// cancellare l'area superiore (dove possono esserci altri messaggi).
+// Updates the lower area of the screen with asterisks representing
+// the entered keys. It only updates a specific area (e.g., y from 100 to 127)
+// without clearing the upper area (where other messages might be displayed).
 //
 void keypad_updateDisplay(void) {
-    // Area in cui visualizzare gli asterischi (puoi regolare i valori in base alle tue esigenze)
+    // Area to display the asterisks (you can adjust the values as needed)
     int y_start = 100;
     int height = 28;
 
-    // Costruisce la stringa con tanti asterischi quanti sono i caratteri inseriti
+    // Builds a string with as many asterisks as the entered characters
     char displayStr[PIN_LENGTH + 1];
     for (uint8_t i = 0; i < keyBufferIndex; i++) {
         displayStr[i] = '*';
     }
     displayStr[keyBufferIndex] = '\0';
 
-    // Usa una variabile statica per ricordare l'ultimo contenuto visualizzato
+    // Use a static variable to remember the last displayed content
     static char lastDisplayed[PIN_LENGTH + 1] = "";
 
-    // Se la stringa corrente è identica a quella già mostrata, non fare nulla (evita vibrazioni)
+    // If the current string is identical to the one already shown, do nothing (avoid flickering)
     if (strcmp(displayStr, lastDisplayed) == 0) {
         return;
     }
 
-    // Aggiorna il contenuto memorizzato
+    // Update the stored content
     strcpy(lastDisplayed, displayStr);
 
-    // Cancella l'area in cui devono comparire gli asterischi
+    // Clear the area where the asterisks should appear
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, y_start, 127, 112});
 
-    // Disegna la stringa centrata (sia orizzontalmente che verticalmente nell'area dedicata)
+    // Draw the string centered (both horizontally and vertically in the dedicated area)
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
     Graphics_drawStringCentered(&g_sContext, (int8_t *)displayStr, AUTO_STRING_LENGTH, 64, 100, OPAQUE_TEXT);
 
     Graphics_flushBuffer(&g_sContext);
 }
 
-
 //
-// Funzione che esegue l'aggiornamento del tastierino e, se il buffer è completo, controlla il PIN.
-// Restituisce KEYPAD_CORRECT, KEYPAD_ERROR o KEYPAD_NONE.
+// Function that performs keypad updates and, if the buffer is complete, checks the PIN.
+// Returns KEYPAD_CORRECT, KEYPAD_ERROR, or KEYPAD_NONE.
 //
-
 KeypadResult keypad_authenticate(const char * correctPin) {
     keypad_update();
     if (strlen(keypad_getBuffer()) >= PIN_LENGTH) {
@@ -210,10 +208,10 @@ KeypadResult keypad_authenticate(const char * correctPin) {
 }
 
 //
-// Funzione che controlla se il buffer ha raggiunto il PIN completo e lo verifica.
-// Se il buffer contiene almeno PIN_LENGTH caratteri, confronta il contenuto con il PIN atteso.
-// Se corretto, azzera il buffer e restituisce KEYPAD_CORRECT. Se errato, visualizza un messaggio di errore,
-// azzera il buffer e restituisce KEYPAD_ERROR. Se il buffer non è completo, restituisce KEYPAD_NONE.
+// Function that checks if the buffer has reached the full PIN length and verifies it.
+// If the buffer contains at least PIN_LENGTH characters, it compares the content with the expected PIN.
+// If correct, it clears the buffer and returns KEYPAD_CORRECT. If incorrect, it displays an error message,
+// clears the buffer, and returns KEYPAD_ERROR. If the buffer is not complete, it returns KEYPAD_NONE.
 //
 KeypadResult keypad_checkInput(const char * correctPin) {
     if (strlen(keyBuffer) < PIN_LENGTH)
@@ -223,8 +221,8 @@ KeypadResult keypad_checkInput(const char * correctPin) {
         keypad_clearBuffer();
         return KEYPAD_CORRECT;
     } else {
-        // Visualizza "Codice Errato" nell'area bassa
-        Graphics_drawStringCentered(&g_sContext, (int8_t*)"Codice Errato", AUTO_STRING_LENGTH, 64, 110, OPAQUE_TEXT);
+        // Display "Wrong Code" in the lower area
+        Graphics_drawStringCentered(&g_sContext, (int8_t*)"Wrong Code", AUTO_STRING_LENGTH, 64, 110, OPAQUE_TEXT);
         Graphics_flushBuffer(&g_sContext);
         keypad_clearBuffer();
         return KEYPAD_ERROR;

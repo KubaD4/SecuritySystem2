@@ -23,9 +23,6 @@
 #include "../include/HAL_OPT3001.h"
 #include "../include/alarm.h" // _alarmInit to start alarm and _alarmStop to stop it
 #include "../include/states.h"
-#include "../include/button1.h"
-#include "../include/sound.h"
-
 /******************************
  *      Global Variables      *
  ******************************/
@@ -70,8 +67,8 @@ int main(void) {
 
 
 
-        ambient = (lux > 1000 || temp > 50) ? 1 : 0;
-        if(ambient==1){
+        environment = (lux > 1000 || temp > 50) ? 1 : 0;
+        if(environment==1){
             setTriggerInfo(0);
         }
 
@@ -120,7 +117,6 @@ void _hwInit() {
     /* Initialize peripherals */
     _graphicsInit();
     _adcInit();
-    _initButton();
     _lightSensorInit();
     keypad_init();
     _temperatureSensorInit();
