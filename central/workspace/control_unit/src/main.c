@@ -18,6 +18,7 @@
 #include "../include/timer.h"
 #include "../include/keypad.h"
 #include "../include/lux.h"
+#include "../include/tmp.h"
 #include "../include/HAL_I2C.h"
 #include "../include/HAL_OPT3001.h"
 #include "../include/alarm.h" // _alarmInit to start alarm and _alarmStop to stop it
@@ -114,4 +115,5 @@ void _hwInit() {
     _initButton();
     _lightSensorInit();
     keypad_init();
+    _temperatureSensorInit();
 }
