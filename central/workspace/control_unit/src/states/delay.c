@@ -14,7 +14,7 @@ int prev_time;
 void prepare_delay(){
     timer = 15;  // 15 second delay period
     password_correct = 0;
-    light = 0;
+    ambient = 0;
     prev_time = 15;
 
     writeLCDMessage("DELAY PERIOD:");
@@ -44,7 +44,7 @@ void handle_delay(void) {
 void finish_delay(){
     timer = 0;
     password_correct = 0;
-    light = 0;
+    ambient = 0;
 
     Timer_A_stopTimer(TIMER_A3_BASE);    // Stop countdown timer
     Timer_A_stopTimer(TIMER_A1_BASE);    // Stop LED blinking timer
@@ -58,7 +58,7 @@ State_t evaluate_delay() {
         return ARMED;
     }else if (password_correct){
         return DISARMED;
-    }else if (light) {
+    }else if (ambient) {
         return TRIGGERED;
     }
     return DELAY;

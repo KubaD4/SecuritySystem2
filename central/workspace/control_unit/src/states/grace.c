@@ -15,7 +15,7 @@ int prev_time;
 void prepare_grace(){
     password_correct = 0;
     timer = 30;  // 30 second grace period
-    light = 0;
+    ambient = 0;
     prev_time = 30;
 
     writeLCDMessage("GRACE PERIOD:");
@@ -46,7 +46,7 @@ void handle_grace(void) {
 void finish_grace(){
     password_correct = 0;
     timer = 0;  // 30 second grace period
-    light = 0;
+    ambient = 0;
 
     Timer_A_stopTimer(TIMER_A3_BASE);    // Stop countdown timer
     Timer_A_stopTimer(TIMER_A1_BASE);    // Stop LED blinking timer
@@ -58,7 +58,7 @@ void finish_grace(){
 State_t evaluate_grace() {
     if(password_correct) {
         return DISARMED;
-    } else if(timer <= 0 || light) {
+    } else if(timer <= 0 || ambient) {
         return TRIGGERED;
     }
     return GRACE;

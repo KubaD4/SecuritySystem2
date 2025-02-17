@@ -12,7 +12,7 @@ void prepare_armed(){
     opened_safe = 0;
     opened_critical = 0;
     password_correct = 0;
-    light = 0;
+    ambient = 0;
     writeLCDMessage("System Armed");
     handleLEDArmed();
     keypad_clearBuffer();
@@ -28,7 +28,7 @@ void finish_armed(){
     opened_safe = 0;
     opened_critical = 0;
     password_correct = 0;
-    light = 0;
+    ambient = 0;
 }
 
 #endif
@@ -37,7 +37,7 @@ State_t evaluate_armed() {
     if (opened_safe) {
         return GRACE;
     }
-    if (opened_critical || light) {
+    if (opened_critical || ambient) {
         return TRIGGERED;
     }
     if (password_correct) {

@@ -42,6 +42,16 @@ void handle_disarmed(void) {
         }
     }
 
+    /* Display temperature */
+    if(temp!=prevtemp){
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+        Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 119, 127, 127});
+        char string[10];
+        sprintf(string, "%d°C", temp);
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
+        Graphics_drawStringCentered(&g_sContext, (int8_t *)string, AUTO_STRING_LENGTH, 64, 119, OPAQUE_TEXT);
+    }
+
     if (back_to_menu) {
         finish_disarmed();
         prepare_disarmed();
@@ -74,7 +84,7 @@ void finish_disarmed(){
 #endif
 
 State_t evaluate_disarmed(){
-    if (light) {
+    if (ambient) {
         return TRIGGERED;
     } else if (password_correct && go_in_maintenance) {
         return MAINTENANCE;

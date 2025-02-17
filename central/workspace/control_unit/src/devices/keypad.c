@@ -186,11 +186,11 @@ void keypad_updateDisplay(void) {
 
     // Cancella l'area in cui devono comparire gli asterischi
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-    Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, y_start, 127, y_start + height - 1});
+    Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, y_start, 127, 112});
 
     // Disegna la stringa centrata (sia orizzontalmente che verticalmente nell'area dedicata)
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
-    Graphics_drawStringCentered(&g_sContext, (int8_t *)displayStr, AUTO_STRING_LENGTH, 64, y_start + (height / 2), OPAQUE_TEXT);
+    Graphics_drawStringCentered(&g_sContext, (int8_t *)displayStr, AUTO_STRING_LENGTH, 64, 100, OPAQUE_TEXT);
 
     Graphics_flushBuffer(&g_sContext);
 }
