@@ -88,7 +88,7 @@ void PORT5_IRQHandler(void) {
 //        setTriggerInfo(2);
 //
 //        if (GPIO_getInputPinValue(GPIO_PORT_P2, PIN_ROOM_0)) {
-//            printf("Tua mamma\n");
+//            printf("Non va\n");
 //            opened_safe = 1;
 //            opened_critical = 0;
 //        }
