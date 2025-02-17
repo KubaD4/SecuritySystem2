@@ -62,6 +62,9 @@ int main(void) {
         // Read light sensor value
         lux = OPT3001_getLux();
         light = (lux > 1000) ? 1 : 0;
+        if(light==1){
+            setTriggerInfo(0);
+        }
 
         // Handle current state
         if (current_state < NUM_STATES) {
