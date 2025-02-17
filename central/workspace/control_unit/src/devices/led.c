@@ -15,26 +15,26 @@ static const Timer_A_UpModeConfig upConfigLED = {
 
 void setupLEDs(void) {
     // Setup LED pins
-    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN5);  // Red LED
-    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN6);  // Green LED
+//    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN5);  // Red LED
+//    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN6);  // Green LED
 }
 
 void handleLEDDisarmed(void) {
-    stopLEDBlinking();  // Stop any blinking
-    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN5);   // Red off
-    GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN6);  // Green on
+//    stopLEDBlinking();  // Stop any blinking
+//    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN5);   // Red off
+//    GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN6);  // Green on
 }
 
 void handleLEDArmed(void) {
-    stopLEDBlinking();  // Stop any blinking
-    GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN5);  // Red on
-    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);   // Green off
+//    stopLEDBlinking();  // Stop any blinking
+//    GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN5);  // Red on
+//    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);   // Green off
 }
 
 void handleLEDTriggered(void) {
-    stopLEDBlinking();  // prevent multiple timer starts
-    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);   // Green off
-    // Start timer for red LED blinking
+//    stopLEDBlinking();  // prevent multiple timer starts
+//    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);   // Green off
+//    // Start timer for red LED blinking
     Timer_A_configureUpMode(TIMER_A1_BASE, &upConfigLED);
     Timer_A_startCounter(TIMER_A1_BASE, TIMER_A_UP_MODE);
     Interrupt_enableInterrupt(INT_TA1_N);
@@ -43,13 +43,13 @@ void handleLEDTriggered(void) {
 // Interrupt handler for LED blinking
 void TA1_N_IRQHandler(void) {
     Timer_A_clearInterruptFlag(TIMER_A1_BASE);
-    if(current_state == TRIGGERED ) {
-        GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN5);  // Toggle only red
-    }
-    else if( current_state == GRACE) {
-        GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN5);  // Toggle both
-        GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN6);
-    }
+//    if(current_state == TRIGGERED ) {
+//        GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN5);  // Toggle only red
+//    }
+//    else if( current_state == GRACE) {
+//        GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN5);  // Toggle both
+//        GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN6);
+//    }
 }
 
 void handleLEDGrace(void) {

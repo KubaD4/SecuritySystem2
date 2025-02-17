@@ -10,10 +10,13 @@
 #include "../../include/timer.h"
 #include "../../include/keypad.h"
 
+int prev_time;
+
 void prepare_grace(){
     password_correct = 0;
     timer = 30;  // 30 second grace period
     light = 0;
+    prev_time = 30;
 
     writeLCDMessage("GRACE PERIOD:");
     writeLCDsubtitle("Enter Password");
@@ -29,9 +32,12 @@ void prepare_grace(){
 void handle_grace(void) {
     char message[32];  // Buffer to write in the screen
 
-    sprintf(message, "%d s", timer);
-    clearLCDtime();
-    writeLCDtime(message);
+    if(prev_time != timer){
+        sprintf(message, "%d s", timer);
+        clearLCDtime();
+        writeLCDtime(message);
+        prev_time=timer;
+      }
     if (keypad_authenticate(globalPassword) == KEYPAD_CORRECT) {
         password_correct = 1;
     }
