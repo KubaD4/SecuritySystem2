@@ -45,6 +45,9 @@ StateMachine_t fsm[] = {
  *      Main Function         *
  ******************************/
 
+/* Variable for storing temperature value returned from TMP006 */
+float temp;
+
 int main(void) {
     // Initialize hardware
     _hwInit();
@@ -62,6 +65,13 @@ int main(void) {
     while (1) {
         // Read light sensor value
         lux = OPT3001_getLux();
+        temp = TMP006_getTemp();
+
+                /* Display temperature */
+                char string[10];
+                sprintf(string, "%f", temp);
+                writeLCDMessage(string);
+
         light = (lux > 1000) ? 1 : 0;
         if(light==1){
             setTriggerInfo(0);
