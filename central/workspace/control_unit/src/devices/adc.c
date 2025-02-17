@@ -88,9 +88,9 @@ void ADC14_IRQHandler(void) {
             }
         }
 
-//        if ((current_state == MAINTENANCE || menu_done == 1) && resultsBuffer[0] > 10000) { // SX
-//                back_to_menu = 1;
-//        }
+        if ((current_state == MAINTENANCE || menu_done == 1) && resultsBuffer[0] > 10000) { // SX
+                back_to_menu = 1;
+        }
     }
 }
 

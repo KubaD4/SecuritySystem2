@@ -19,7 +19,7 @@
 
 // Room names lookup table
 static const char* ROOM_NAMES[] = {
-    "xiao",
+    "Box (Lux)",
     "Living Room",
     "Main Door",
 };
