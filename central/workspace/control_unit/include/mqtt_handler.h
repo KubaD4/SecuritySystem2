@@ -11,17 +11,15 @@
 
 // !! ASSUMING THE FOLLOWING STRUCTURE OF THE MQTT MESSAGE: [identification(1bit) - roomID(2bits)]
 
-#define PIN_ROOM_0        GPIO_PIN5    // P2.5 - Room bit 0
+//#define PIN_ROOM_0        GPIO_PIN5    // P2.5 - Room bit 0
 #define PIN_ROOM_1        GPIO_PIN5    // P5.5 - Room bit 1
 
 
-#define ALL_SENSOR_PINS (PIN_IDENTIFICATION | PIN_ROOM_0 | PIN_ROOM_1 )
 
 // Room names lookup table
 static const char* ROOM_NAMES[] = {
-    "Box (Lux)",
-    "Living Room",
-    "Main Door",
+    "Box Tampered",
+    "Sensor Triggered"
 };
 
 // Structure to hold decoded sensor data
