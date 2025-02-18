@@ -13,6 +13,10 @@ Follow the instructions below to set up the CCS project.
 
 ---
 
+## FINITE STATE MACHINE DIAGRAM
+
+![FSM of Alarm System](FSM%20IMAGE/FSM_IOT.png)
+
 ## Requirements
 
 ### Hardware
@@ -37,6 +41,11 @@ Sensor connected via MQTT:
 - PIR – movement detection
 - Magnets
 You can easily see the pin you have to connect a sensor to in the code, the Vcc, SGN and GND pins may vary depending on your sensor, please consult the Datasheet.
+
+### Connections
+
+#### Keypad
+- Column 0 ==> 
 
 ---
 ## Setting Up the CCS Project
@@ -109,10 +118,10 @@ Set up the sensor using the "publisher" code in the Host_broker folder with the 
 ## Team Members
 - Niccolò Lechthaler - setup of MQTT and the respective sensors, user interface with joystick interaction
 - Alessandro Nardin - development of the FSM and of the testing
-- Bilal Susanne - keypad interaction, light and temperature sensor
+- Bilal Soussane - Authentication Process: Keypad interaction, UI and logic for PASSWORD_CHANGE, light and temperature sensor
 - Kuba Di Quattro - alarm interface using buzzer, leds and management of the signal from the ESP32
 
-## Project Diagram
+Note: All team members have collaborated together and/or in pairs throughout the entire development process, from system design to the debugging phase.
 
 ## Project Structure
 ```
