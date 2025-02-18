@@ -109,8 +109,10 @@ Set up the sensor using the "publisher" code in the Host_broker folder with the 
 ## Team Members
 - Niccolò Lechthaler - setup of MQTT and the respective sensors, user interface with joystick interaction
 - Alessandro Nardin - development of the FSM and of the testing
-- Bilal Susanne -
-- Kuba Di Quattro - 
+- Bilal Susanne - keypad interaction, light and temperature sensor
+- Kuba Di Quattro - alarm interface using buzzer, leds and management of the signal from the ESP32
+
+## Project Diagram
 
 ## Project Structure
 ```
