@@ -7,7 +7,7 @@
   - [Project diagram](#project-diagram)
   - [Project Structure](#project-structure)
 
-- [Video presentation]()
+- [Video presentation](https://youtu.be/eTPUM3vqygU)
 
 This repository contains the source code for the SecuritySystem project, developed for the Embedded Software for the Internet of Things course at the University of Trento. The project is designed using Code Composer Studio (Version 12.7.1.00001) and includes all necessary dependencies, which are already present in the repository.  
 
