@@ -19,7 +19,7 @@ Follow the instructions below to set up the CCS project.
 
 ## Requirements
 
-### Hardware
+### Hardware Requirements
 
 Main Board:
 - [TI MSP432P401R Microcontroller](https://www.ti.com/lit/ds/slas826e/slas826e.pdf)
@@ -55,6 +55,10 @@ The system is designed around the MSP432P401R Microcontroller + Boosterpack, whi
 - **ESP32**: Handles communication with other ESPs to signal door/window opening and movement detection. It's connected to P5.5.
 
 These components are integral to the functionality of the alarm system, ensuring robust monitoring and interaction capabilities.
+
+## Software Requirements
+
+[CodeComposerStudio](https://www.ti.com/tool/download/CCSTUDIO/12.2.0)
 
 ## Setting Up the CCS Project
 
