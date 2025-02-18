@@ -11,10 +11,10 @@
 
 int prev_time;
 
-void prepare_delay(){
+void prepare_delay() {
     timer = 15;  // 15 second delay period
     password_correct = 0;
-    light = 0;
+    environment = 0;
     prev_time = 15;
 
     writeLCDMessage("DELAY PERIOD:");
@@ -30,35 +30,32 @@ void prepare_delay(){
 void handle_delay(void) {
     char message[32];  // Buffer to write in the screen
 
-
-
-    if(prev_time != timer){
+    if (prev_time != timer) {
         sprintf(message, "%d s", timer);
         clearLCDtime();
         writeLCDtime(message);
-        prev_time=timer;
+        prev_time = timer;
     }
-
 }
 
-void finish_delay(){
+void finish_delay() {
     timer = 0;
     password_correct = 0;
-    light = 0;
+    environment = 0;
 
-    Timer_A_stopTimer(TIMER_A3_BASE);    // Stop countdown timer
-    Timer_A_stopTimer(TIMER_A1_BASE);    // Stop LED blinking timer
+    Timer_A_stopTimer(TIMER_A3_BASE);  // Stop countdown timer
+    Timer_A_stopTimer(TIMER_A1_BASE);  // Stop LED blinking timer
     Interrupt_disableInterrupt(INT_TA3_N);
 }
 
 #endif
 
 State_t evaluate_delay() {
-    if(timer <= 0) {
+    if (timer <= 0) {
         return ARMED;
-    }else if (password_correct){
+    } else if (password_correct) {
         return DISARMED;
-    }else if (light) {
+    } else if (environment) {
         return TRIGGERED;
     }
     return DELAY;

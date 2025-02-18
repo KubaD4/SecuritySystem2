@@ -12,54 +12,52 @@ uint16_t resultsBuffer[2];
 uint8_t joystickMoved = 0;
 int buttonPreviouslyPressed = 0;
 
-
 /*
- * Inizializzazione ADC
+ * ADC Initialization
  */
 void _adcInit() {
     /* Configures Pin 6.0 and 4.4 as ADC input */
-         GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P6, GPIO_PIN0, GPIO_TERTIARY_MODULE_FUNCTION);
-         GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P4, GPIO_PIN4, GPIO_TERTIARY_MODULE_FUNCTION);
+    GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P6, GPIO_PIN0, GPIO_TERTIARY_MODULE_FUNCTION);
+    GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P4, GPIO_PIN4, GPIO_TERTIARY_MODULE_FUNCTION);
 
-         /* Initializing ADC (ADCOSC/64/8) */
-         ADC14_enableModule();
-         ADC14_initModule(ADC_CLOCKSOURCE_ADCOSC, ADC_PREDIVIDER_64, ADC_DIVIDER_8, 0);
+    /* Initializing ADC (ADCOSC/64/8) */
+    ADC14_enableModule();
+    ADC14_initModule(ADC_CLOCKSOURCE_ADCOSC, ADC_PREDIVIDER_64, ADC_DIVIDER_8, 0);
 
-         /* Configuring ADC Memory (ADC_MEM0 - ADC_MEM1 (A15, A9)  with repeat)
-              * with internal 2.5v reference */
-         ADC14_configureMultiSequenceMode(ADC_MEM0, ADC_MEM1, true);
-         ADC14_configureConversionMemory(ADC_MEM0,
-                 ADC_VREFPOS_AVCC_VREFNEG_VSS,
-                 ADC_INPUT_A15, ADC_NONDIFFERENTIAL_INPUTS);
+    /* Configuring ADC Memory (ADC_MEM0 - ADC_MEM1 (A15, A9) with repeat)
+     * with internal 2.5v reference */
+    ADC14_configureMultiSequenceMode(ADC_MEM0, ADC_MEM1, true);
+    ADC14_configureConversionMemory(ADC_MEM0,
+            ADC_VREFPOS_AVCC_VREFNEG_VSS,
+            ADC_INPUT_A15, ADC_NONDIFFERENTIAL_INPUTS);
 
-         ADC14_configureConversionMemory(ADC_MEM1,
-                 ADC_VREFPOS_AVCC_VREFNEG_VSS,
-                 ADC_INPUT_A9, ADC_NONDIFFERENTIAL_INPUTS);
+    ADC14_configureConversionMemory(ADC_MEM1,
+            ADC_VREFPOS_AVCC_VREFNEG_VSS,
+            ADC_INPUT_A9, ADC_NONDIFFERENTIAL_INPUTS);
 
-         /* Enabling the interrupt when a conversion on channel 1 (end of sequence)
-          *  is complete and enabling conversions */
-         ADC14_enableInterrupt(ADC_INT1);
+    /* Enabling the interrupt when a conversion on channel 1 (end of sequence)
+     * is complete and enabling conversions */
+    ADC14_enableInterrupt(ADC_INT1);
 
-         /* Enabling Interrupts */
-         Interrupt_enableInterrupt(INT_ADC14);
-         Interrupt_enableMaster();
+    /* Enabling Interrupts */
+    Interrupt_enableInterrupt(INT_ADC14);
+    Interrupt_enableMaster();
 
-         /* Setting up the sample timer to automatically step through the sequence
-          * convert.
-          */
-         ADC14_enableSampleTimer(ADC_AUTOMATIC_ITERATION);
+    /* Setting up the sample timer to automatically step through the sequence
+     * convert.
+     */
+    ADC14_enableSampleTimer(ADC_AUTOMATIC_ITERATION);
 
-         /* Triggering the start of the sample */
-         ADC14_enableConversion();
-         ADC14_toggleConversionTrigger();
+    /* Triggering the start of the sample */
+    ADC14_enableConversion();
+    ADC14_toggleConversionTrigger();
 
-         GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P4, GPIO_PIN1);  // Pulsante su P4.1
-         GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);  // Pulisce eventuali flag di interrupt
-         GPIO_enableInterrupt(GPIO_PORT_P4, GPIO_PIN1);  // Abilita l'interrupt per P4.1
+    GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P4, GPIO_PIN1);  // Button on P4.1
+    GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);  // Clear any interrupt flags
+    GPIO_enableInterrupt(GPIO_PORT_P4, GPIO_PIN1);  // Enable interrupt for P4.1
 
-         NVIC_SetPriority(PORT4_IRQn, 1);
-         NVIC_SetPriority(ADC14_IRQn, 2);
-
+    NVIC_SetPriority(PORT4_IRQn, 1);
+    NVIC_SetPriority(ADC14_IRQn, 2);
 }
 
 void ADC14_IRQHandler(void) {
@@ -73,12 +71,12 @@ void ADC14_IRQHandler(void) {
         // Joystick Direction Handling
         if (current_state == DISARMED) {
 
-            if (resultsBuffer[1] > 11000) { // SU
+            if (resultsBuffer[1] > 11000) { // UP
                 if (!joystickMoved) {
                     joystickMoved = 1;
-                    menu_selection = (menu_selection - 1 + 3) % 3; // ORA GESTISCE 3 SELEZIONI  IN MODO CICLICO
+                    menu_selection = (menu_selection - 1 + 3) % 3; // NOW HANDLES 3 SELECTIONS IN A CYCLIC MANNER
                 }
-            } else if (resultsBuffer[1] < 4000) { // GIU
+            } else if (resultsBuffer[1] < 4000) { // DOWN
                 if (!joystickMoved) {
                     joystickMoved = 1;
                     menu_selection = (menu_selection + 1) % 3;
@@ -88,17 +86,17 @@ void ADC14_IRQHandler(void) {
             }
         }
 
-        if ((current_state == MAINTENANCE || menu_done == 1) && resultsBuffer[0] > 10000) { // SX
+        if ((current_state == MAINTENANCE || menu_done == 1) && resultsBuffer[0] > 10000) { // LEFT
                 back_to_menu = 1;
         }
     }
 }
 
 /*
- * Gestione dell'interrupt per il pulsante
+ * Button Interrupt Handling
  */
 void PORT4_IRQHandler(void) {
-    printf("Entrato in P4 handler\n");
+    printf("Entered P4 handler\n");
     uint64_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4);
     // Joystick Button Handling
         if (status & GPIO_PIN1 && current_state == DISARMED) {
@@ -129,4 +127,3 @@ void PORT4_IRQHandler(void) {
             GPIO_clearInterruptFlag(GPIO_PORT_P4, GPIO_PIN1);
         }
 }
-

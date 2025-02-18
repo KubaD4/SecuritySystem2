@@ -16,7 +16,7 @@ volatile int timer = 30;  // 30-second initial value
 volatile int password_correct = 0;
 volatile int opened_safe = 0;      // Door opened
 volatile int opened_critical = 0;  // Other sensor opened
-volatile int light = 0;
+volatile int environment = 0;
 volatile char globalPassword[PIN_LENGTH + 1] = "0000";
 volatile char keyBuffer[PIN_LENGTH + 1] = {0};
 /******************************
@@ -26,6 +26,8 @@ volatile int menu_selection = 0;
 volatile int back_to_menu = 0;
 volatile int last_selection = 0;
 volatile int menu_done = 0;
+volatile int temp=20;
+volatile int prevtemp=20;
 
 /******************************
  *      Mode Transition Flags *

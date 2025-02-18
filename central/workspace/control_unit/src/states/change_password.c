@@ -10,42 +10,41 @@
 #include "../../LcdDriver/Crystalfontz128x128_ST7735.h"
 #include <ti/grlib/grlib.h>
 
+// globalPassword defined in states.c and declared in states.h
 
-// globalPassword definita in states.c e dichiarata in states.h
+// In this state, we assume that the verification of the current password has already occurred (from DISARMED)
+// and that we directly enter the phase of entering the new password.
 
-// In questo stato, assumiamo che la verifica della password corrente sia già avvenuta (da DISARMED)
-// e che entriamo direttamente nella fase di inserimento della nuova password.
-
-// Prepara lo stato: visualizza il titolo fisso "INSERT NEW PASSWORD:"
-void prepare_change_password(void) {
+// Prepares the state: displays the fixed title "INSERT NEW PASSWORD:"
+void prepare_change_password() {
     back_to_menu = 0;
     keypad_clearBuffer();
-    // Visualizza il titolo (questo cancella l'intero display)
+    // Display the title (this clears the entire display)
     writeLCDMessage("INSERT NEW PASSWORD:");
 }
 
-// aggiorna solo l'area dove mostrare i tasti inseriti
-void handle_change_password(void) {
+// Updates only the area where the entered keys are shown
+void handle_change_password() {
     static char lastDisplayed[PIN_LENGTH + 1] = "";
     char newPass[PIN_LENGTH + 1];
 
-    // Aggiorna il buffer dal tastierino
+    // Update the buffer from the keypad
     keypad_update();
     strcpy(newPass, keypad_getBuffer());
 
-    // Aggiorna il display solo se il contenuto è cambiato
+    // Update the display only if the content has changed
     if (strcmp(newPass, lastDisplayed) == 0) {
         return;
     }
     strcpy(lastDisplayed, newPass);
 
-    // Non cancellare il titolo fisso ("INSERT NEW PASSWORD:")
-    // Cancella solo l'area destinata ai tasti inseriti (ad es. da y=70 a y=110)
+    // Do not clear the fixed title ("INSERT NEW PASSWORD:")
+    // Clear only the area intended for the entered keys (e.g., from y=70 to y=110)
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 70, 127, 110});
 
     if (strlen(newPass) == 0) {
-        // Se il buffer è vuoto, non fare nulla (il titolo rimane)
+        // If the buffer is empty, do nothing (the title remains)
     } else {
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
         Graphics_drawStringCentered(&g_sContext, (int8_t *)newPass, AUTO_STRING_LENGTH, 64, 90, OPAQUE_TEXT);
@@ -53,8 +52,8 @@ void handle_change_password(void) {
     Graphics_flushBuffer(&g_sContext);
 }
 
-// Finitura: mostra un messaggio finale e resetta il buffer e i flag
-void finish_change_password(void) {
+// Finishing: displays a final message and resets the buffer and flags
+void finish_change_password() {
     writeLCDMessage("Password Changed");
     __delay_cycles(7000000);
     keypad_clearBuffer();
@@ -62,14 +61,13 @@ void finish_change_password(void) {
 
 #endif
 
-// Valutazione: se il buffer raggiunge la lunghezza attesa (o viene premuto back_to_menu),
-// visualizza "New Passcode enabled", salva la nuova password e torna a DISARMED.
-State_t evaluate_change_password(void) {
+// Evaluation: if the buffer reaches the expected length (or back_to_menu is pressed),
+// displays "New Passcode enabled", saves the new password, and returns to DISARMED.
+State_t evaluate_change_password() {
     if (strlen(keyBuffer) >= PIN_LENGTH || back_to_menu) {
-        // Salva la nuova password senza interagire con il display
+        // Save the new password without interacting with the display
         strcpy(globalPassword, keyBuffer);
         return DISARMED;
     }
     return CHANGE_PASSWORD;
 }
-

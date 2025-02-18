@@ -2,10 +2,10 @@
 #define LED_H_
 
 void setupLEDs(void);
-void handleLEDDisarmed(void);   // Verde on
-void handleLEDArmed(void);      // Rosso fisso
-void handleLEDTriggered(void);  // Rosso lampeggia
-void handleLEDGrace(void);      // Entrambi lampeggiano
+void handleLEDDisarmed(void);   // Green on
+void handleLEDArmed(void);      // Red steady
+void handleLEDTriggered(void);  // Red blinking
+void handleLEDGrace(void);      // Both blinking
 void stopLEDBlinking(void);
 
 #endif

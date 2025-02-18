@@ -3,11 +3,10 @@
 #include "../../include/states.h"
 #include <ti/devices/msp432p4xx/inc/msp.h>
 
-
 int countL = 0;
 int overL = 0;
 
-/* Timer config for LED blinking */
+/* Timer configuration for LED blinking */
 static const Timer_A_UpModeConfig upConfigLED = {
 //    TIMER_A_CLOCKSOURCE_SMCLK,
 //    TIMER_A_CLOCKSOURCE_DIVIDER_12,
@@ -26,7 +25,7 @@ static const Timer_A_UpModeConfig upConfigLED = {
 
 void setupLEDs(void) {
     // Setup LED pins
-    GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN6);  // Blu LED
+    GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN6);  // Blue LED
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN6);  // Red LED
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN4);  // Green LED
 }
@@ -34,21 +33,21 @@ void setupLEDs(void) {
 void handleLEDDisarmed(void) {
     stopLEDBlinking();  // Stop any blinking
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);   // Red off
-    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);  // Blu off
+    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);  // Blue off
     GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN4);  // Green on
 }
 
 void handleLEDArmed(void) {
     stopLEDBlinking();  // Stop any blinking
-    GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN6);  // Rosso on
-    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);   // Blu off
+    GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN6);  // Red on
+    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);   // Blue off
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN4);   // Green off
 }
 
 void handleLEDTriggered(void) {
-    //stopLEDBlinking();  // prevent multiple timer starts
-    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);  // Rosso off
-    GPIO_setOutputHighOnPin(GPIO_PORT_P5, GPIO_PIN6);   // Blu off
+    //stopLEDBlinking();  // Prevent multiple timer starts
+    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);  // Red off
+    GPIO_setOutputHighOnPin(GPIO_PORT_P5, GPIO_PIN6);   // Blue off
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN4);   // Green off
     // Start timer for red LED blinking
     Timer_A_configureUpMode(TIMER_A1_BASE, &upConfigLED);
@@ -80,7 +79,7 @@ void TA1_N_IRQHandler(void) {
 
 void handleLEDGrace(void) {
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);   // Red off
-    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);  // Blu off
+    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);  // Blue off
     GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN4);  // Green on
     // Start timer for both LEDs blinking
     Timer_A_configureUpMode(TIMER_A1_BASE, &upConfigLED);

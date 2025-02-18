@@ -12,7 +12,7 @@ void reset_system_variables() {
     password_correct = 0;
     opened_safe = 0;         // Door opened
     opened_critical = 0;     // Other sensor opened
-    light = 0;
+    environment = 0;
 
     /******************************
      *      Menu Variables        *
@@ -45,11 +45,11 @@ void test_grace_state() {
     next_state = evaluate_grace();
     print_test_result("No Transition", next_state == GRACE);
 
-    // Test light alarm trigger
+    // Test environment alarm trigger
     reset_system_variables();
-    light = 1;
+    environment = 1;
     next_state = evaluate_grace();
-    print_test_result("Light Alarm Trigger", next_state == TRIGGERED);
+    print_test_result("Environment Alarm Trigger", next_state == TRIGGERED);
 
     // Test timer expired
     reset_system_variables();
@@ -93,11 +93,11 @@ void test_armed_state() {
     next_state = evaluate_armed();
     print_test_result("Open Critical", next_state == TRIGGERED);
 
-    // Test light
+    // Test environment
     reset_system_variables();
-    light = 1;
+    environment = 1;
     next_state = evaluate_armed();
-    print_test_result("Light Trigger", next_state == TRIGGERED);
+    print_test_result("Environment Trigger", next_state == TRIGGERED);
 
     printf("\n");
 }
@@ -111,11 +111,11 @@ void test_disarmed_state() {
     next_state = evaluate_disarmed();
     print_test_result("No Transition", next_state == DISARMED);
 
-    // Test light
+    // Test environment
     reset_system_variables();
-    light = 1;
+    environment = 1;
     next_state = evaluate_disarmed();
-    print_test_result("Light Trigger", next_state == TRIGGERED);
+    print_test_result("Environment Trigger", next_state == TRIGGERED);
 
     // Test go in maintenance
     reset_system_variables();
@@ -174,11 +174,11 @@ void test_delay_state() {
     next_state = evaluate_delay();
     print_test_result("Password Correct", next_state == DISARMED);
 
-    // Test light
+    // Test environment
     reset_system_variables();
-    light = 1;
+    environment = 1;
     next_state = evaluate_delay();
-    print_test_result("Light Trigger", next_state == TRIGGERED);
+    print_test_result("Environment Trigger", next_state == TRIGGERED);
 
     // Test timer
     reset_system_variables();

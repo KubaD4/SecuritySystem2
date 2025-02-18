@@ -8,14 +8,14 @@
 Graphics_Context g_sContext;
 
 /*
- * Inizializzazione LCD
+ * LCD Initialization
  */
 void _graphicsInit() {
-    /* Inizializza il display */
+    /* Initialize the display */
     Crystalfontz128x128_Init();
     Crystalfontz128x128_SetOrientation(LCD_ORIENTATION_UP);
 
-    /* Configura il contesto grafico */
+    /* Configure the graphic context */
     Graphics_initContext(&g_sContext, &g_sCrystalfontz128x128, &g_sCrystalfontz128x128_funcs);
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
     Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
@@ -81,32 +81,32 @@ void clearLCDtime() {
 }
 
 void displayDisarmedMenu(uint8_t selected_option) {
-    // Pulisce il display
+    // Clear the display
     Graphics_clearDisplay(&g_sContext);
 
     const int CENTER_X = 64;
-    // Aggiorniamo l'array con le 3 opzioni
+    // Update the array with the 3 options
     const char* MENU_ITEMS[] = {
         "Armed",
         "Maintenance",
         "Change Password"
     };
-    // Impostiamo le posizioni verticali per le 3 opzioni
+    // Set vertical positions for the 3 options
     const int MENU_Y_POSITIONS[] = {45, 65, 85};
 
-    // Imposta il colore nero per il testo
+    // Set black color for the text
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
 
-    // Disegna il titolo e le istruzioni
+    // Draw the title and instructions
     Graphics_drawStringCentered(&g_sContext, (int8_t*)"DISARMED MENU", AUTO_STRING_LENGTH, CENTER_X, 20, TRANSPARENT_TEXT);
     Graphics_drawStringCentered(&g_sContext, (int8_t*)"Up/Down to select", AUTO_STRING_LENGTH, CENTER_X, 35, TRANSPARENT_TEXT);
 
-    // Disegna le opzioni di menu
+    // Draw the menu options
     for (int i = 0; i < 3; i++) {
-        // Disegna ogni opzione in nero
+        // Draw each option in black
         Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_BLACK);
         Graphics_drawStringCentered(&g_sContext, (int8_t*)MENU_ITEMS[i], AUTO_STRING_LENGTH, CENTER_X, MENU_Y_POSITIONS[i], TRANSPARENT_TEXT);
-        // Se l'opzione è quella selezionata, la ridisegna in rosso (con sfondo opaco)
+        // If the option is selected, redraw it in red (with opaque background)
         if (selected_option == i) {
             Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
             Graphics_drawStringCentered(&g_sContext, (int8_t*)MENU_ITEMS[i], AUTO_STRING_LENGTH, CENTER_X, MENU_Y_POSITIONS[i], OPAQUE_TEXT);
@@ -115,12 +115,12 @@ void displayDisarmedMenu(uint8_t selected_option) {
 }
 
 void updateSelection(uint8_t selected_option) {
-    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE); // Imposta il colore di sfondo
-    // Aggiorna l'area (ad esempio, da y = 90 a 105) per cancellare il vecchio testo
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE); // Set background color
+    // Update the area (e.g., from y = 90 to 105) to clear the old text
     Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 90, 127, 105});
 
     const int CENTER_X = 64;
-    // Ora usiamo 3 opzioni
+    // Now we use 3 options
     const char* MENU_ITEMS[] = {
         "Armed",
         "Maintenance",
@@ -137,30 +137,3 @@ void updateSelection(uint8_t selected_option) {
         }
     }
 }
-
-/*
- * Vecchia
- */
-//void displayMenu(Graphics_Context *g_sContext, uint8_t selected_option) {
-//    Graphics_clearDisplay(&g_sContext);
-//
-//    Graphics_setForegroundColor(g_sContext, GRAPHICS_COLOR_BLACK);
-//
-//    if (selected_option == 1) {
-//        Graphics_drawStringCentered(g_sContext,
-//                                    (int8_t *)"ALLARME ATTIVO",
-//                                    AUTO_STRING_LENGTH,
-//                                    64,
-//                                    50,
-//                                    TRANSPARENT_TEXT);
-//    } else if (selected_option == 0) {
-//        Graphics_drawStringCentered(g_sContext,
-//                                    (int8_t *)"ALLARME DISATTIVATO",
-//                                    AUTO_STRING_LENGTH,
-//                                    64,
-//                                    50,
-//                                    OPAQUE_TEXT);
-//    }
-//}
-
-

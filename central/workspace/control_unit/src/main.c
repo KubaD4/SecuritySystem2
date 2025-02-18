@@ -23,9 +23,6 @@
 #include "../include/HAL_OPT3001.h"
 #include "../include/alarm.h" // _alarmInit to start alarm and _alarmStop to stop it
 #include "../include/states.h"
-#include "../include/button1.h"
-#include "../include/sound.h"
-
 /******************************
  *      Global Variables      *
  ******************************/
@@ -46,7 +43,6 @@ StateMachine_t fsm[] = {
  ******************************/
 
 /* Variable for storing temperature value returned from TMP006 */
-float temp;
 
 int main(void) {
     // Initialize hardware
@@ -65,15 +61,14 @@ int main(void) {
     while (1) {
         // Read light sensor value
         lux = OPT3001_getLux();
-        temp = TMP006_getTemp();
+        prevtemp=temp;
+        temp = (int) TMP006_getTemp();
+        temp = (int) (((temp - 32)*5)/9 - 7);
 
-                /* Display temperature */
-                char string[10];
-                sprintf(string, "%f", temp);
-                writeLCDMessage(string);
 
-        light = (lux > 1000) ? 1 : 0;
-        if(light==1){
+
+        environment = (lux > 1000 || temp > 50) ? 1 : 0;
+        if(environment==1){
             setTriggerInfo(0);
         }
 
@@ -122,7 +117,6 @@ void _hwInit() {
     /* Initialize peripherals */
     _graphicsInit();
     _adcInit();
-    _initButton();
     _lightSensorInit();
     keypad_init();
     _temperatureSensorInit();

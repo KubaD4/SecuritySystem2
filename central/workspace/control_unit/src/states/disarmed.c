@@ -8,7 +8,7 @@
 #include "../../include/keypad.h"
 #include "../../include/led.h"
 
-void prepare_disarmed(){
+void prepare_disarmed() {
     _alarmStop();
     opened_safe = 0;
     opened_critical = 0;
@@ -25,21 +25,29 @@ void prepare_disarmed(){
     keypad_clearBuffer();
 }
 
-
 void handle_disarmed(void) {
-
     if (!menu_done) {
-        // MODALITA INSERIMENTO PASSWORD
+        // PASSWORD ENTRY MODE
         if (go_in_maintenance + go_in_armed + go_in_change_password > 0) {
-           writeLCDMessage(" Enter Password ");
-           writeLCDsubtitle("<- to go back");
-           menu_done = 1;
+            writeLCDMessage(" Enter Password ");
+            writeLCDsubtitle("<- to go back");
+            menu_done = 1;
         } else {
             if (menu_selection != last_selection) {
                 updateSelection(menu_selection);
             }
             last_selection = menu_selection;
         }
+    }
+
+    /* Display temperature */
+    if (temp != prevtemp) {
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+        Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 119, 127, 127});
+        char string[10];
+        sprintf(string, "%d°C", temp);
+        Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
+        Graphics_drawStringCentered(&g_sContext, (int8_t *)string, AUTO_STRING_LENGTH, 64, 119, OPAQUE_TEXT);
     }
 
     if (back_to_menu) {
@@ -49,8 +57,8 @@ void handle_disarmed(void) {
     }
 
     if (menu_done) {
-        if (menu_selection == 2) {  // "Change Password" SELEZIONATO
-            // VERIFICA PASSWORD CORRENTE
+        if (menu_selection == 2) {  // "Change Password" SELECTED
+            // VERIFY CURRENT PASSWORD
             if (keypad_authenticate(globalPassword) == KEYPAD_CORRECT) {
                 password_correct = 1;
                 go_in_change_password = 1;
@@ -63,8 +71,7 @@ void handle_disarmed(void) {
     }
 }
 
-
-void finish_disarmed(){
+void finish_disarmed() {
     menu_selection = 0;
     menu_done = 0;
     buttonPreviouslyPressed = 0;
@@ -73,8 +80,8 @@ void finish_disarmed(){
 
 #endif
 
-State_t evaluate_disarmed(){
-    if (light) {
+State_t evaluate_disarmed() {
+    if (environment) {
         return TRIGGERED;
     } else if (password_correct && go_in_maintenance) {
         return MAINTENANCE;

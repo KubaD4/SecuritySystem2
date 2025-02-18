@@ -13,7 +13,7 @@ typedef enum {
     GRACE,
     MAINTENANCE,
     DELAY,
-    CHANGE_PASSWORD, //AGGIUNTA
+    CHANGE_PASSWORD,
     NUM_STATES // Number of states (automatically calculated)
 } State_t;
 
@@ -41,7 +41,7 @@ extern State_t next_state;
 // Generic constants
 extern volatile int state_code;
 extern volatile int password_correct;
-extern volatile int light;
+extern volatile int environment;
 extern volatile int timer;
 extern volatile char globalPassword[PIN_LENGTH + 1];
 extern volatile char keyBuffer[PIN_LENGTH + 1];
@@ -55,6 +55,8 @@ extern volatile int flag;
 extern volatile int back_to_menu;
 extern volatile int last_selection;
 extern volatile int menu_done;
+extern volatile int temp;
+extern volatile int prevtemp;
 
 // Triggered constants
 extern volatile int opened_safe;
