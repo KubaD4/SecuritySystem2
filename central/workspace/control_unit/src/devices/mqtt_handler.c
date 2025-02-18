@@ -4,37 +4,28 @@
 #include "../../include/states.h"
 #include <stdio.h>
 
-
-
 // Get room name from room number
 const char* getRoomName(int room_number) {
     return ROOM_NAMES[room_number];
 }
 
-// Initialize GPIO pins for sensor input
+// Initialize GPIO pin for sensor input
 void initSensorGPIO(void) {
 
-    // Configure room bits (assuming they are in Port 5)
-    //GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P2, PIN_ROOM_0);
     GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P5, PIN_ROOM_1);
 
     // Configure interrupts
     GPIO_interruptEdgeSelect(GPIO_PORT_P5, PIN_ROOM_1, GPIO_LOW_TO_HIGH_TRANSITION);
-    //GPIO_interruptEdgeSelect(GPIO_PORT_P2, PIN_ROOM_0, GPIO_LOW_TO_HIGH_TRANSITION);
 
 
     // Clear any previous interrupts
     GPIO_clearInterruptFlag(GPIO_PORT_P5, PIN_ROOM_1);
-    //GPIO_clearInterruptFlag(GPIO_PORT_P2, PIN_ROOM_0);
-
     // Enable interrupts for sensor pins
     GPIO_enableInterrupt(GPIO_PORT_P5, PIN_ROOM_1);
-    //GPIO_enableInterrupt(GPIO_PORT_P2, PIN_ROOM_0);
 
     // Enable Port interrupts in NVIC
     Interrupt_enableInterrupt(INT_PORT4);
     Interrupt_enableInterrupt(INT_PORT5);
-    //Interrupt_enableInterrupt(INT_PORT2);
 
     NVIC_SetPriority(PORT5_IRQn, 0);
 }
@@ -62,11 +53,6 @@ void PORT5_IRQHandler(void) {
                 setTriggerInfo(1);
                 return;
             }
-    }
-
-    if(status & BUTTON_PIN) {
-        password_correct = 1;
-        GPIO_clearInterruptFlag(BUTTON_PORT, BUTTON_PIN);
     }
 }
 

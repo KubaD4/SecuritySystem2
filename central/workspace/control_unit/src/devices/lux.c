@@ -1,6 +1,5 @@
 #include "../../include/lux.h"
 
-
 /* Variable for storing lux value returned from OPT3001 */
 float lux;
 

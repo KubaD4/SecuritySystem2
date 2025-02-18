@@ -6,6 +6,61 @@ Follow the instructions below to set up the CCS project.
 
 ---
 
+## Project Structure
+```
+├── include
+│   ├── adc.h
+│   ├── alarm.h
+│   ├── grap.h
+│   ├── HAL_I2C.h
+│   ├── HAL_OPT3001.h
+│   ├── HAL_TMP006.h
+│   ├── keypad.h
+│   ├── led.h
+│   ├── lux.h
+│   ├── mqtt_handler.h
+│   ├── states.h
+│   ├── timer.h
+│   ├── ti_drivers_config.h
+│   ├── tmp.h
+│
+├── LcdDriver
+│   ├── Crystalfontz128x128_ST7735.c
+│   ├── Crystalfontz128x128_ST7735.h
+│   ├── HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.c
+│   ├── HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.h
+│
+├── src
+│   ├── main.c
+│   │
+│   ├── devices
+│   │   ├── adc.c
+│   │   ├── alarm.c
+│   │   ├── grap.c
+│   │   ├── HAL_I2C.c
+│   │   ├── HAL_OPT3001.c
+│   │   ├── HAL_TMP006.c
+│   │   ├── keypad.c
+│   │   ├── led.c
+│   │   ├── lux.c
+│   │   ├── mqtt_handler.c
+│   │   ├── startup_msp432p401r_ccs.c
+│   │   ├── system_msp432p401r.c
+│   │   ├── timer.c
+│   │   ├── ti_drivers_config.c
+│   │   ├── tmp.c
+│   │
+│   ├── states
+│       ├── armed.c
+│       ├── change_password.c
+│       ├── delay.c
+│       ├── disarmed.c
+│       ├── grace.c
+│       ├── maintenance.c
+│       ├── states.c
+│       ├── triggered.c
+```
+
 ## Setting Up the CCS Project
 
 1. **Clone the Repository**

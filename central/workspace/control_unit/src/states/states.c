@@ -14,8 +14,8 @@ State_t next_state = DISARMED;
  ******************************/
 volatile int timer = 30;  // 30-second initial value
 volatile int password_correct = 0;
-volatile int opened_safe = 0;      // Door opened
-volatile int opened_critical = 0;  // Other sensor opened
+volatile int opened_safe = 0;      // Sensor opened
+volatile int opened_critical = 0;  // Temperature high or shield removed
 volatile int environment = 0;
 volatile char globalPassword[PIN_LENGTH + 1] = "0000";
 volatile char keyBuffer[PIN_LENGTH + 1] = {0};
@@ -36,5 +36,4 @@ volatile int go_in_maintenance = 0;
 volatile int go_in_armed = 0;
 volatile int go_in_change_password = 0;
 volatile int change_password = 0;
-volatile int flag = 0;
 
