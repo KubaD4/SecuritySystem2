@@ -44,7 +44,7 @@ You can easily see the pin you have to connect a sensor to in the code, the Vcc,
 
 ### Connections
 The system is designed around the MSP432P401R Microcontroller + Boosterpack, which coordinates various peripherals as follows:
-- **LEDs**: A series of LEDs are controlled directly by the MSP432, including:
+- **LEDs**: A series of LEDs embedded into the MSP432, including:
   - A Red LED connected to pin P2.5.
   - A Green LED connected to pin P2.6.
   - A Blue LED connected to pin P5.6.
