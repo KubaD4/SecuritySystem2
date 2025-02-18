@@ -6,15 +6,8 @@
 int countL = 0;
 int overL = 0;
 
-/* Timer configuration for LED blinking */
+/* Timer configuration */
 static const Timer_A_UpModeConfig upConfigLED = {
-//    TIMER_A_CLOCKSOURCE_SMCLK,
-//    TIMER_A_CLOCKSOURCE_DIVIDER_12,
-//    30000,                               // LED blink period
-//    TIMER_A_TAIE_INTERRUPT_ENABLE,
-//    TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE,
-//    TIMER_A_DO_CLEAR
-
      TIMER_A_CLOCKSOURCE_SMCLK,
      TIMER_A_CLOCKSOURCE_DIVIDER_64,
      4500000,
@@ -38,18 +31,16 @@ void handleLEDDisarmed(void) {
 }
 
 void handleLEDArmed(void) {
-    stopLEDBlinking();  // Stop any blinking
+    stopLEDBlinking();
     GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN6);  // Red on
     GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);   // Blue off
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN4);   // Green off
 }
 
 void handleLEDTriggered(void) {
-    //stopLEDBlinking();  // Prevent multiple timer starts
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);  // Red off
     GPIO_setOutputHighOnPin(GPIO_PORT_P5, GPIO_PIN6);   // Blue off
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN4);   // Green off
-    // Start timer for red LED blinking
     Timer_A_configureUpMode(TIMER_A1_BASE, &upConfigLED);
     Timer_A_startCounter(TIMER_A1_BASE, TIMER_A_UP_MODE);
     Interrupt_enableInterrupt(INT_TA1_N);
@@ -71,17 +62,12 @@ void TA1_N_IRQHandler(void) {
             overL = 0;
         }
     }
-//    else if( current_state == GRACE) {
-//        GPIO_toggleOutputOnPin(GPIO_PORT_P5, GPIO_PIN6);  // Toggle both
-//        GPIO_toggleOutputOnPin(GPIO_PORT_P2, GPIO_PIN6);
-//    }
 }
 
 void handleLEDGrace(void) {
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);   // Red off
     GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);  // Blue off
     GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN4);  // Green on
-    // Start timer for both LEDs blinking
     Timer_A_configureUpMode(TIMER_A1_BASE, &upConfigLED);
     Timer_A_startCounter(TIMER_A1_BASE, TIMER_A_UP_MODE);
     Interrupt_enableInterrupt(INT_TA1_N);
