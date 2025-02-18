@@ -1,14 +1,16 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
+#define PIN_TO_CONTROL1 17
+
 // Configurazione WiFi
-const char* ssid = "-----";       // insert your WiFi ID
-const char* password = "-----";   // insert your WiFi password
+const char* ssid = "---";       // insert your WiFi ID
+const char* password = "---";   // insert your WiFi password
 
 // Configurazione Broker MQTT
-const char* mqtt_server = "------";      // IP of the broker MQTT
+const char* mqtt_server = "---";      // IP of the broker MQTT
 const int mqtt_port = 1883;              
-const char* mqtt_topic = "test/topic";
+const char* mqtt_topic = "ROOM";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -18,10 +20,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Messagge on topic: ");
   Serial.println(topic);
   Serial.print("Content: ");
+  String message = "";  // Declare message variable
   for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
+    Serial.print((char)payload[i]);  // Print received character
+    message += (char)payload[i];     // Append character to message string
   }
   Serial.println();
+
+  // Compare the received message
+  if (message == "ALARMR1" || message == "ALARMR2") {
+    digitalWrite(PIN_TO_CONTROL1, HIGH);
+    Serial.println("Pin set to HIGH");
+  } else {
+    digitalWrite(PIN_TO_CONTROL1, LOW);
+    Serial.println("Pin set to LOW");
+  }
 }
 
 void setup_wifi() {
@@ -57,6 +70,8 @@ void setup() {
   setup_wifi();
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
+  pinMode(PIN_TO_CONTROL1, OUTPUT);
+  digitalWrite(PIN_TO_CONTROL1, LOW);
 }
 
 void loop() {
@@ -64,5 +79,6 @@ void loop() {
     reconnect();
   }
   client.loop();
+
 
 }

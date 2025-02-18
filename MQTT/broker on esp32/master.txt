@@ -2,7 +2,10 @@
 #include "EmbeddedMqttBroker.h"
 #include <PubSubClient.h>
 
+// Define MQTT Broker Namespace
 using namespace mqttBrokerName;
+
+const char* mqtt_topic = "ROOM";
 
 // WiFi credentials
 const char *ssid = "------------";
@@ -16,15 +19,28 @@ MqttBroker broker(mqttPort);
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-// Callback function to handle received messages
+// Define Control Pin
+#define PIN_TO_CONTROL1 5 // Set to appropriate GPIO
+
+// called when a message is received
 void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message received on topic: ");
-  Serial.print(topic);
-  Serial.print(". Content: ");
+  Serial.print("Message on topic: ");
+  Serial.println(topic);
+  Serial.print("Content: ");
+  String message = "";
   for (int i = 0; i < length; i++) {
     Serial.print((char)payload[i]);
+    message += (char)payload[i];
   }
   Serial.println();
+
+  if (message == "ALARMR1" || message == "ALARMR2") {
+    digitalWrite(PIN_TO_CONTROL1, HIGH);
+    Serial.println("Pin set to HIGH");
+  } else {
+    digitalWrite(PIN_TO_CONTROL1, LOW);
+    Serial.println("Pin set to LOW");
+  }
 }
 
 // Function to connect the MQTT client to the broker
@@ -37,55 +53,53 @@ void reconnectClient() {
 
     if (client.connect("Broker_Client")) {
       Serial.println("Connected as MQTT client!");
-      client.subscribe("test/topic");
+      client.subscribe(mqtt_topic);
     } else {
       Serial.print("Connection failed. State=");
       Serial.println(client.state());
-      delay(2000); // Retry connection after 2 seconds
+      delay(2000);
     }
   }
 }
 
 void setup() {
   Serial.begin(115200);
+  pinMode(PIN_TO_CONTROL1, OUTPUT);
 
-  // Start WiFi
   Serial.println("\n\nSimple MQTT Broker with client");
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
+  int attempts = 0;
+  while (WiFi.status() != WL_CONNECTED && attempts < 20) {
     delay(500);
     Serial.print(".");
+    attempts++;
+  }
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("\nFailed to connect to WiFi");
+    return;
   }
 
   Serial.println("\nWiFi connected");
-
-  // Start the MQTT broker
-  broker.setMaxNumClients(9); // Set the maximum number of clients
+  broker.setMaxNumClients(9);
   broker.startBroker();
   Serial.println("MQTT Broker started");
 
-  // Print connection information
   Serial.print("Use this IP: ");
   Serial.println(WiFi.localIP());
   Serial.print("and this port: ");
   Serial.println(mqttPort);
 
-/*
-  // Configure the MQTT client
-  client.setServer("------", mqttPort); // The broker is local
-  client.setCallback(callback); // Register the callback
-*/
+  client.setServer(WiFi.localIP().toString().c_str(), mqttPort);
+  client.setCallback(callback);
 }
 
 void loop() {
-  // Check MQTT client connection
-/*  if (!client.connected()) {
+  if (!client.connected()) {
     reconnectClient();
   }
-  client.loop(); // Handle the MQTT client loop
-*/
+  client.loop();
 }
