@@ -28,6 +28,8 @@ Main Board:
     - buzzer
     - leds
     - display
+  - keypad
+  - wires
 
 Sensor connected via MQTT:
 - ESP32 – 3 for this application
@@ -104,6 +106,11 @@ Now you can deploy it and this will be the one receiving the status of the senso
 
 Set up the sensor using the "publisher" code in the Host_broker folder with the same info as the subscriber, connect your sensors and deploy the code. Now you successfully have integrated the sensor and everything should be visible on the EMQX dashboard.
 
+## Team Members
+- Niccolò Lechthaler - setup of MQTT and the respective sensors, user interface with joystick interaction
+- Alessandro Nardin - development of the FSM and of the testing
+- Bilal Susanne -
+- Kuba Di Quattro - 
 
 ## Project Structure
 ```
