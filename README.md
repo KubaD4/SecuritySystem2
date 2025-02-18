@@ -43,11 +43,19 @@ Sensor connected via MQTT:
 You can easily see the pin you have to connect a sensor to in the code, the Vcc, SGN and GND pins may vary depending on your sensor, please consult the Datasheet.
 
 ### Connections
+The system is designed around the MSP432P401R Microcontroller + Boosterpack, which coordinates various peripherals as follows:
+- **LEDs**: A series of LEDs are controlled directly by the MSP432, including:
+  - A Red LED connected to pin P2.5.
+  - A Green LED connected to pin P2.6.
+  - A Blue LED connected to pin P5.6.
+- **Keypad**: A 4x4 keypad matrix is interfaced with the MSP432 to facilitate user input.
 
-#### Keypad
-- Column 0 ==> 
+  Columns are connected to pins P6.6, P6.7, P2.3, and P3.5, while rows are connected to pins P3.0, P1.7, P5.2, and P3.6.
+- **Alarm Buzzer**: The alarm buzzer outputs through pin P2.7, utilizing Timer PWM for operation.
+- **ESP32**: Handles communication with other ESPs to signal door/window opening and movement detection. It's connected to P5.5.
 
----
+These components are integral to the functionality of the alarm system, ensuring robust monitoring and interaction capabilities.
+
 ## Setting Up the CCS Project
 
 1. **Clone the Repository**
