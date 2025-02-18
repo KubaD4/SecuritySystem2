@@ -66,7 +66,7 @@ void TA1_N_IRQHandler(void) {
 
 void handleLEDGrace(void) {
     GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);   // Red off
-    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);  // Blue off
+    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN6);   // Blue off
     GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN4);  // Green on
     Timer_A_configureUpMode(TIMER_A1_BASE, &upConfigLED);
     Timer_A_startCounter(TIMER_A1_BASE, TIMER_A_UP_MODE);
