@@ -23,7 +23,7 @@ void TA3_N_IRQHandler(void) {
     }
 }
 
-//==========================Timer Bilal===================================//
+//==========================Timer Keypad===================================//
 
 // Timer configuration: we use, for example, TIMER_A2
 static Timer_A_UpModeConfig keypadTimerConfig =
