@@ -5,6 +5,7 @@ Follow the instructions below to set up the CCS project.
 
 - [Security System Project](#Security-System-Project)
   - [Video](#video)
+  - [FSM](#FINITE_STATE_MACHINE_DIAGRAM)
   - [Requirements](#requirements)
   - [Getting started](#Setting-Up-the-CCS-Project)
   - [Team members](#team-members)
