@@ -41,10 +41,10 @@ Follow the instructions below to set up the CCS project.
 MQTT (Message Queuing Telemetry Transport) is lightweight and efficient messaging protocol, that uses minimal bandwidth and system resources.
 In MQTT, the broker is a central server that manages message distribution between clients. It acts as an intermediary, receiving messages from publishers and forwarding them to the appropriate subscribers based on topic-based filtering.
 
-### For this project, two different solutions are available, primarily differing in how the broker is implemented:
+### For this project, two different solutions are available:
 #### 1. Broker Deployed on an ESP32
 In this approach, the broker runs directly on a single ESP32. This solution is ideal for a self-contained system, as all components are deployed on your devices without requiring external infrastructure. However, there are some important trade-offs to consider:
-- Security Risks: Since all data is stored locally on the ESP32, there is a higher risk of exposure in case of breaches or device failure.
+- Security Risks: Since all data is stored locally on the ESP32, there is a higher risk of exposure
 - Increased Power Consumption & Latency: The ESP32 is a low-power microcontroller, and running the broker on it adds computational overhead, leading to higher latency, reduced efficiency and scalability.
 Due to these limitations, we recommend this solution only for simple applications that do not require advanced security or high-performance communication.
 
