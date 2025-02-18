@@ -42,6 +42,11 @@ Sensor connected via MQTT:
 - Magnets
 You can easily see the pin you have to connect a sensor to in the code, the Vcc, SGN and GND pins may vary depending on your sensor, please consult the Datasheet.
 
+### Connections
+
+#### Keypad
+- Column 0 ==> 
+
 ---
 ## Setting Up the CCS Project
 
@@ -117,8 +122,6 @@ Set up the sensor using the "publisher" code in the Host_broker folder with the 
 - Kuba Di Quattro - alarm interface using buzzer, leds and management of the signal from the ESP32
 
 Note: All team members have collaborated together and/or in pairs throughout the entire development process, from system design to the debugging phase.
-
-## Project Diagram
 
 ## Project Structure
 ```
