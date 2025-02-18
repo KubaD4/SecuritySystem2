@@ -38,40 +38,44 @@ Follow the instructions below to set up the CCS project.
   Specifically, refer to the "Appendix - Doing it all from PowerShell - the copy-paste edition" section.
 
 ## MQTT Setup
-MQTT (Message Queuing Telemetry Transport) is lightweight and efficient messaging protocol, that uses minimal bandwidth and system resources, which is crucial for constrained environments. 
-Its publish-subscribe model enables scalable and decoupled communication between devices while ensuring reliable communication, since it allows messages to be delivered based on priority and network conditions.
-Security and scalability are also key strengths, as it can be secured with TLS encryption and authentication mechanisms, ensuring safe and flexible deployments.
+MQTT (Message Queuing Telemetry Transport) is lightweight and efficient messaging protocol, that uses minimal bandwidth and system resources.
 In MQTT, the broker is a central server that manages message distribution between clients. It acts as an intermediary, receiving messages from publishers and forwarding them to the appropriate subscribers based on topic-based filtering.
 
 ### For this project, two different solutions are available, primarily differing in how the broker is implemented:
 #### 1. Broker Deployed on an ESP32
 In this approach, the broker runs directly on a single ESP32. This solution is ideal for a self-contained system, as all components are deployed on your devices without requiring external infrastructure. However, there are some important trade-offs to consider:
 - Security Risks: Since all data is stored locally on the ESP32, there is a higher risk of exposure in case of breaches or device failure.
-- Increased Power Consumption & Latency: The ESP32 is a low-power microcontroller, and running the broker on it adds computational overhead, leading to higher latency and reduced efficiency.
-- Limited Scalability: This setup is better suited for small-scale applications where minimal communication is needed.
+- Increased Power Consumption & Latency: The ESP32 is a low-power microcontroller, and running the broker on it adds computational overhead, leading to higher latency, reduced efficiency and scalability.
 Due to these limitations, we recommend this solution only for simple applications that do not require advanced security or high-performance communication.
 
 #### 2. Broker Deployed on a Separate Host
 Instead of running the broker on an ESP32, it can be hosted on a separate, more powerful machine. A common choice for this setup is Mosquitto, an open-source MQTT broker. However, we have opted to use EMQX because it offers superior performance, enhanced security, and scalability.
 
 #### Why EMQX?
-- High Performance: EMQX supports millions of concurrent connections, making it an excellent choice for IoT applications with multiple devices.
-- Strong Security Features: Unlike basic MQTT implementations, EMQX supports TLS encryption for secure communication.
-- User & Component Management: EMQX allows user authentication, access control, and device whitelisting, ensuring that only authorized devices can connect to the network.
-- Flexibility & Extensibility: It supports various protocols beyond MQTT, such as MQTT over WebSockets, making it more versatile for different applications.
+- High Performance
+- Strong Security Features, it supports TLS encryption for secure communication.
+- User & Component Management, allows user authentication, access control, and device whitelisting, ensuring that only authorized devices can connect to the network.
+- Flexibility & Extensibility
 This solution is ideal for larger, more complex IoT deployments where security, scalability, and performance are critical.
+
+##Requirements
+- ESP32 – 3 for this application
+- 2 KY-003 – magnetic sensor used to detect door/window opening
+- PIR – movement detection
+- Magnets
+You can easily see the pin you have to connect a sensor to in the code, the Vcc, SGN and GND pins may vary depending on your sensor, please consult the Datasheet.
 
 ## Setup
 Keep in mind that everything has to be on the same network to work.
 
 ### First Solution
-Use the code provided in the ESP32_broker folder and load it with your network info, the "broker" code contains the necessary to create the broker and everything it need while the "publisher" node will cnnect to the broker to publish the state of the sensors.
+Use the code provided in the ESP32_broker folder and load it with your network info and the broker ip, the "broker" code contains the necessary to create the broker and everything it need while the other nodes will connect to the broker to publish the state of the sensors.
 
 ### Second Solution
-Follow thesetup guide on EMQX on their website, we suggest to use the docker:
+Follow the setup guide on EMQX on their website, we suggest to use the docker:
 [Install EMQX with Docker](https://docs.emqx.com/en/emqx/latest/deploy/install-docker.html)
 
-Using the "subscriber" code in the Host_broker folder, add your network info and the broker ip; to do that, once you are in the EMQX interface, open the terminal on your pc and find the IPv4 address using the command "ipconfig", and put that address in the corresponding slot in the code.
+Using the "subscriber" code in the Host_broker folder, add your network info and the broker ip; to do that, once you have your broker running, open the terminal on your pc acting as the host and find the IPv4 address using the command "ipconfig", and put that address in the corresponding slot in the code.
 Now you can deploy it and this will be the one receiving the status of the sensor and giving them to the MSP432 board.
 
 Set up the sensor using the "publisher" code in the Host_broker folder with the same info as the subscriber, connect your sensors and deploy the code. Now you successfully have integrated the sensor and everything should be visible on the EMQX dashboard.

@@ -3,15 +3,20 @@
 #include "esp_sleep.h"
 
 String msg;
-#define MOTION_SENSOR_PIN 4
-#define WINDOW 5
+#define DOOR 5
+
+
+ static int lastDoorState = LOW;
+static String lastRoomState = "";
+
+
 
 // Configura WiFi
-const char* ssid = "-----";
-const char* password = "-----";
+const char* ssid = "nickspot";
+const char* password = "123456789";
 
 // Configura EMQX
-const char* mqtt_server = "-----";
+const char* mqtt_server = "192.168.13.138";
 const int mqtt_port = 1883;
 
 WiFiClient espClient;
@@ -30,7 +35,7 @@ void setup_wifi() {
 void reconnect() {
   while (!client.connected()) {
     Serial.println("Connecting to broker MQTT...");
-    if (client.connect("ESP32Client")) {
+    if (client.connect("ESP32Client_door")) {
       Serial.println("Connected");
     } else {
       Serial.print("Connection failed, rc=");
@@ -44,8 +49,7 @@ void setup() {
   Serial.begin(115200);
   setup_wifi();
   client.setServer(mqtt_server, mqtt_port);
-  pinMode(MOTION_SENSOR_PIN, INPUT);
-  pinMode(WINDOW, INPUT);
+  pinMode(DOOR, INPUT);
 
   btStop();  // Disable Bluetooth
 }
@@ -55,25 +59,20 @@ void loop() {
     reconnect();
   }
   client.loop();
+int state = digitalRead(DOOR);
 
-  int motionState = digitalRead(MOTION_SENSOR_PIN);
-  if (motionState == HIGH) {
-    msg = "Movement";
-    client.publish("PIR1", msg.c_str());
+// Publish only if door state changes
+if (state != lastDoorState) {
+    lastDoorState = state;
+
+    if (state == HIGH) {
+        client.publish("ROOM", "ALARMR2");
+        client.publish("DOOR", "open");
+    } else {
+        client.publish("ROOM", "SECURE");
+        client.publish("DOOR", "closed");
+    }
+
     delay(500);
-  } else {
-      msg = "No movement";
-      client.publish("PIR1", msg.c_str());
-  }
-
-  int windowstate = digitalRead(WINDOW);
-  if (windowstate == LOW) {
-    msg = "Opened";
-    client.publish("window1", msg.c_str());
-    delay(500);
-  } else {
-    msg = "Closed";
-    client.publish("window1", msg.c_str());
-  }
-
+}
 }

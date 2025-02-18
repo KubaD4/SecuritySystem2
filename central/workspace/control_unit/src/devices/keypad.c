@@ -163,8 +163,7 @@ bool keypad_verifyPassword(const char * correctPin) {
 //
 void keypad_updateDisplay(void) {
     // Area to display the asterisks (you can adjust the values as needed)
-    int y_start = 100;
-    int height = 28;
+    int y_start = 97;
 
     // Builds a string with as many asterisks as the entered characters
     char displayStr[PIN_LENGTH + 1];
@@ -190,9 +189,7 @@ void keypad_updateDisplay(void) {
 
     // Draw the string centered (both horizontally and vertically in the dedicated area)
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
-    Graphics_drawStringCentered(&g_sContext, (int8_t *)displayStr, AUTO_STRING_LENGTH, 64, 100, OPAQUE_TEXT);
-
-    Graphics_flushBuffer(&g_sContext);
+    Graphics_drawStringCentered(&g_sContext, (int8_t*)displayStr, AUTO_STRING_LENGTH, 64, 100, OPAQUE_TEXT);
 }
 
 //
@@ -221,10 +218,16 @@ KeypadResult keypad_checkInput(const char * correctPin) {
         keypad_clearBuffer();
         return KEYPAD_CORRECT;
     } else {
-        // Display "Wrong Code" in the lower area
-        Graphics_drawStringCentered(&g_sContext, (int8_t*)"Wrong Code", AUTO_STRING_LENGTH, 64, 110, OPAQUE_TEXT);
-        Graphics_flushBuffer(&g_sContext);
-        keypad_clearBuffer();
-        return KEYPAD_ERROR;
+        int y_start = 97;
+                // Display "Wrong Code" in the lower area
+                Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+                Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, y_start, 127, 112});
+                Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
+                Graphics_drawStringCentered(&g_sContext, (int8_t*)"WRONG CODE", AUTO_STRING_LENGTH, 64, 104, OPAQUE_TEXT);
+
+                Graphics_flushBuffer(&g_sContext);
+                __delay_cycles(30000000);
+                keypad_clearBuffer();
+                return KEYPAD_ERROR;
     }
 }
