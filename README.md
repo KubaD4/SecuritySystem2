@@ -12,9 +12,10 @@ Follow the instructions below to set up the CCS project.
   - [Project diagram](#project-diagram)
   - [Project Structure](#project-structure)
 
-## Video
+## Presentation and video
 - [Video presentation](https://youtu.be/eTPUM3vqygU)
-
+- [Pdf presentation](https://github.com/KubaD4/SecuritySystem2/blob/main/presentation/Alarm_System.pdf)
+  
 ---
 
 ## FINITE STATE MACHINE DIAGRAM
