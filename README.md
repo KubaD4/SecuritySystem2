@@ -2,7 +2,6 @@
 
 - [Security System Project](#Security-System-Project)
   - [Requirements](#requirements)
-    - [Hardware](#hardware)
   - [Getting started](#Setting-Up-the-CCS-Project)
   - [Team members](#team-members)
   - [Project diagram](#project-diagram)
