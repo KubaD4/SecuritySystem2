@@ -74,7 +74,7 @@ void ADC14_IRQHandler(void) {
             if (resultsBuffer[1] > 11000) { // UP
                 if (!joystickMoved) {
                     joystickMoved = 1;
-                    menu_selection = (menu_selection - 1 + 3) % 3; // NOW HANDLES 3 SELECTIONS IN A CYCLIC MANNER
+                    menu_selection = (menu_selection - 1 + 3) % 3; // HANDLES 3 SELECTIONS IN A CYCLIC MANNER
                 }
             } else if (resultsBuffer[1] < 4000) { // DOWN
                 if (!joystickMoved) {

@@ -26,7 +26,6 @@ typedef struct {
     void (*finish_state)(void);
 } StateMachine_t;
 
-
 /******************************
  *       Global Variables     *
  ******************************/
@@ -51,7 +50,6 @@ extern volatile int menu_selection;
 extern volatile int go_in_maintenance;
 extern volatile int go_in_armed;
 extern volatile int go_in_change_password;
-extern volatile int flag;
 extern volatile int back_to_menu;
 extern volatile int last_selection;
 extern volatile int menu_done;

@@ -19,7 +19,6 @@ static char keymap[4][4] = {
 };
 
 // Buffer to store the entered keys
-// static char keyBuffer[PIN_LENGTH + 1] = {0};
 static uint8_t keyBufferIndex = 0;
 
 // Variable to avoid repeatedly detecting the same key (debounce)

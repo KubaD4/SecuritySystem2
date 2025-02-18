@@ -40,7 +40,7 @@ void writeLCDMessage(const char* message) {
                               TRANSPARENT_TEXT);
 }
 
-// Writes specified message on the screen
+// Writes specified message on a lower area of the screen
 void writeLCDsubtitle(const char* message) {
 
     // Set text color to black
@@ -55,12 +55,13 @@ void writeLCDsubtitle(const char* message) {
                               TRANSPARENT_TEXT);
 }
 
+// Clears the subtitle zone
 void clearLCDsubtitle() {
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE); // Set to background color
     Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 60, 127, 75});
 }
 
-// Writes specified message on the screen
+// Writes specified message on an area dedicate to the time
 void writeLCDtime(const char* message) {
 
     // Set text color to black
@@ -75,6 +76,7 @@ void writeLCDtime(const char* message) {
                               TRANSPARENT_TEXT);
 }
 
+// Clears the time zone
 void clearLCDtime() {
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE); // Set to background color
     Graphics_fillRectangle(&g_sContext, &(Graphics_Rectangle){0, 70, 127, 85});
@@ -114,6 +116,7 @@ void displayDisarmedMenu(uint8_t selected_option) {
     }
 }
 
+// Updates the selected option to be in red
 void updateSelection(uint8_t selected_option) {
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE); // Set background color
     // Update the area (e.g., from y = 90 to 105) to clear the old text
