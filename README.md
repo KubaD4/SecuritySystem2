@@ -13,6 +13,10 @@ Follow the instructions below to set up the CCS project.
 
 ---
 
+## FINITE STATE MACHINE DIAGRAM
+
+![FSM of Alarm System](FSM%20IMAGE/FSM_IOT.png)
+
 ## Requirements
 
 ### Hardware
