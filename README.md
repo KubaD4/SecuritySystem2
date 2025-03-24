@@ -1,6 +1,14 @@
 # Security System Project
 This repository contains the source code for the SecuritySystem project, developed for the Embedded Software for the Internet of Things course at the University of Trento. The project is designed using Code Composer Studio (Version 12.7.1.00001) and includes all necessary dependencies, which are already present in the repository.  
 
+
+The project was developed by:
+* [Alessandro Nardin](https://github.com/AlessandroNardin)
+* [Bilal Soussane](https://github.com/sousbila)
+* [Kuba Di Quattro](https://github.com/KubaD4)
+* [Niccolò Lechthaler](https://github.com/NickLech)
+
+
 Follow the instructions below to set up the CCS project.
 
 - [Security System Project](#Security-System-Project)
